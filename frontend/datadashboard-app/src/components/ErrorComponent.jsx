@@ -5,7 +5,8 @@ class ErrorComponent extends Component{
 render(){
     return(
         <div>
-            <p>Error. This is an incorect URI!</p>
+            <h1>Error 404</h1> 
+            <h1>This is an incorect URI!</h1>
         </div>
     )
 }
