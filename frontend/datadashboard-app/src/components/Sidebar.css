@@ -1,0 +1,5 @@
+.sidebar{
+    /* Acest container are width-ul de 20% */
+    flex: 0.15;
+    position: sticky;
+}

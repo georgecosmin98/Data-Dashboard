@@ -1,0 +1,26 @@
+.dashboard{
+    /* Acest container are width-ul de 80% */
+    flex:0.85;
+    display: flex;
+    flex-wrap: wrap;
+    background: #f9f9f9;
+    padding: 40px;
+    padding-bottom: 0;
+    justify-content: center;
+}
+
+.dashboard h2 {
+    margin-left: 5px;
+    margin-bottom: 20px;
+}
+
+.bar {
+    margin-bottom:30px;
+    padding-left: 20px;
+    padding: 0 auto;
+   }
+  .sBar:hover {
+    fill: brown;
+   }
+
+

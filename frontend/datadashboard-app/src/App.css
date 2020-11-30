@@ -1,43 +1,45 @@
 body {
-  overflow-y: hidden;
-  overflow-x: hidden;
+  overflow: hidden;
 }
-
-/* HeaderComponent styling */
-.HeaderComponent {
-  background-color: #1b2d52;
-}
-
-.HeaderComponent a {
-  color: white;
-}
-
-/* ErrorComponent styling */
 
 .ErrorComponent {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: darkgray;
-
+  flex: 0.85;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  color: black;
 }
 
 .NotFound {
-  width: 100%;
-  position: absolute;
-  top: 32.5%;
-  text-align: center;
+  display: block;
+  height: 100vh;
+  align-items: center;
+  margin-top: 32.5vh;
 }
 
 .ErrorComponent h1 {
-  font-size: 102px;
+  font-size: 10vh;
   font-weight: bold;
 }
 
 .ErrorComponent h2 {
-  font-size: 48px;
+  font-size: 6.5vh; 
 }
 
 .ErrorComponent h3 {
-  font-size: 32px;
+  font-size: 4vh;
+  text-align: center;
+}
+
+/* App page */
+
+.app-page {
+  display: flex;
+  flex: 1;
+}
+
+/* Utility */
+
+.clr {
+  clear: both;
 }
