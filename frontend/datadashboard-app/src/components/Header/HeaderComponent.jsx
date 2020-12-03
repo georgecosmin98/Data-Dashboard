@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import { Avatar } from '@material-ui/core';
-import './Header.css';
+
 class HeaderComponent extends Component {
 
     render() {

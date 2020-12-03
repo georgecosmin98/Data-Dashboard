@@ -1,5 +1,5 @@
 import React from 'react'
-import './SidebarRow.css'
+
 function SidebarRowComponent(props){
 
 return(

@@ -1,18 +1,71 @@
-body {
-  overflow: hidden;
+* {
+  margin: 0;
+  padding: 0;
 }
 
+body{
+  height:100vh;
+}
+
+/* App page */
+
+.app-page {
+  display: flex;
+  flex: 1;
+  background: #ddd;
+  min-height: 100vh;
+}
+
+/* Dashboard */
+
+.dashboard {
+  /* Acest container are width-ul de 80% */
+  flex: 0.9;
+  display: flex;
+  flex-wrap: wrap;
+  background: #f9f9f9;
+  padding-bottom: 0;
+  justify-content: center;
+}
+
+.dashboard p{
+  padding: 15px;
+}
+
+.dashboard h1{
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.dashboard h2 {
+  margin-left: 5px;
+  margin-bottom: 20px;
+}
+
+.bar {
+  margin-bottom: 30px;
+  padding-left: 20px;
+  padding: 0 auto;
+}
+
+.sBar:hover {
+  fill: brown;
+}
+
+/* Error Component */
+
 .ErrorComponent {
-  flex: 0.85;
+  flex: 0.90;
   justify-content: start;
   align-items: center;
   text-align: center;
   color: black;
+  background: #f9f9f9;
+  padding-bottom: 30%;
 }
 
 .NotFound {
   display: block;
-  height: 100vh;
   align-items: center;
   margin-top: 32.5vh;
 }
@@ -23,7 +76,7 @@ body {
 }
 
 .ErrorComponent h2 {
-  font-size: 6.5vh; 
+  font-size: 6.5vh;
 }
 
 .ErrorComponent h3 {
@@ -31,15 +84,137 @@ body {
   text-align: center;
 }
 
-/* App page */
+/* Footer Component */
 
-.app-page {
+.footer{
   display: flex;
-  flex: 1;
+  background: #333;
+  justify-content: center;
+  padding:10px;
+}
+
+.footer p{
+  font-size: 14px;
+  color: white;
+  text-align: center;
+  margin:0;
+}
+
+/* Header Component */
+
+.header {
+  display: flex;
+  align-items: center;
+  /* aliniem icon-urile in centrul headerului */
+  justify-content: space-between;
+  /* adaugam spatii intre div-uri */
+  padding: 5px 20px;
+  /* header-ul va ramane, indiferent de cat scroll facem */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #eee;
+}
+
+.header-logo {
+  height: 40px;
+  /* Scalam logo-ul astfel incat sa pastram aspect ratio-ul */
+  object-fit: contain;
+  margin-left: 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-icon {
+  margin-right: 15px;
 }
 
 /* Utility */
 
 .clr {
   clear: both;
+}
+
+/* Sidebar */
+
+.sidebar {
+  /* Acest container are width-ul de 20% */
+  flex: 0.10;
+  position: sticky;
+  top: 50px;
+  height: 100%;
+  background: #ddd;
+}
+
+/* Sidebar Row */
+
+.sidebarRow {
+  display: flex;
+  text-align: center;
+  padding: 20px;
+}
+
+.sidebarRow-icon {
+  color: #606060;
+  font-size: large !important;
+}
+
+.sidebarRow-title {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sidebarRow:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.sidebarRow:hover>.sidebarRow-icon {
+  color: blue;
+}
+
+.sidebarRow:hover>.sidebarRow-title {
+  font-weight: bold;
+}
+
+.sidebarRow.selected {
+  background: #eee;
+}
+
+/* Schimbam culoarea iconului din containerul selectat */
+.sidebarRow.selected>.sidebarRow-icon {
+  color: blue;
+}
+
+.sidebarRow.selected>.sidebarRow-title {
+  font-weight: bold;
+}
+
+
+
+/* Mobile Style */
+
+@media (max-width: 768px) {
+
+  /* Sidebar Row */
+
+  .sidebarRow {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .sidebarRow-title {
+    display: none;
+  }
+
 }

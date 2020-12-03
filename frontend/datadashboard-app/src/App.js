@@ -6,6 +6,7 @@ import HeaderComponent from './components/Header/HeaderComponent'
 import SidebarComponent from './components/SidebarComponent'
 import './App.css'
 import './bootstrap.css'
+import FooterComponent from './components/FooterComponent'
 class App extends Component {
   render() {
     return (
@@ -20,6 +21,7 @@ class App extends Component {
                 <Route component={ErrorComponent} />
               </Switch>
             </div>
+            <FooterComponent/>
           </>
         </Router>
       </div>

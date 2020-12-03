@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './Sidebar.css'
 import SidebarRowComponent from './SidebarRowComponent'
 import HomeIcon from '@material-ui/icons/Home';
 import ErrorIcon from '@material-ui/icons/Error';
