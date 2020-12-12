@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './App.css'
 import './bootstrap.css'
+import './App.css'
 import DashboardComponent from './components/DashboardComponent'
 import ErrorComponent from './components/ErrorComponent'
 import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/Header/HeaderComponent'
 import SidebarComponent from './components/SidebarComponent'
+import ContactComponent from './components/ContactComponent'
+
 class App extends Component {
 
-  componentWillMount(){
+  componentWillMount() {
     document.title = 'Harta Poluare Brasov'
   }
 
@@ -23,10 +25,11 @@ class App extends Component {
               <SidebarComponent />
               <Switch>
                 <Route path="/" exact component={DashboardComponent} />
+                <Route path="/contact" exact component={ContactComponent} />
                 <Route component={ErrorComponent} />
               </Switch>
             </div>
-            <FooterComponent/>
+            <FooterComponent />
           </>
         </Router>
       </div>

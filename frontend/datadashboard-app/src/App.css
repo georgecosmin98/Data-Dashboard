@@ -3,8 +3,8 @@
   padding: 0;
 }
 
-body{
-  height:100vh;
+body {
+  height: 100vh;
 }
 
 /* App page */
@@ -16,10 +16,77 @@ body{
   min-height: 100vh;
 }
 
+/* Button */
+
+.btn {
+  display: inline-block;
+  font-size: 22px;
+  color: #fff;
+  background: #333;
+  padding: 13px 30px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: blue;
+  color: #FFF;
+}
+
+.btn-center{
+  display:border-box;
+  text-align: center;
+  margin-bottom: 20px;
+}
+/* Contact */
+
+.contact {
+  flex: 0.9;
+  display: border-box;
+  flex-wrap: wrap;
+  background: #f9f9f9;
+  padding-bottom: 0;
+  justify-content: center;
+}
+
+
+.contact h1 {
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.form-group,
+.form p{
+  margin-bottom: 20px;
+  margin-left: 25px;
+}
+
+.contact label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.contact input,
+.contact textarea {
+  width: 90%;
+  padding: 10px;
+  border: 1px #ddd solid;
+}
+
+.contact textarea{
+  height:200px;
+}
+
+.contact input:focus,
+.contact textarea:focus{
+  outline:none;
+  border-color: blue;
+}
+
 /* Dashboard */
 
 .dashboard {
-  /* Acest container are width-ul de 80% */
   flex: 0.9;
   display: flex;
   flex-wrap: wrap;
@@ -28,11 +95,11 @@ body{
   justify-content: center;
 }
 
-.dashboard p{
+.dashboard p {
   padding: 15px;
 }
 
-.dashboard h1{
+.dashboard h1 {
   padding-top: 25px;
   padding-bottom: 25px;
 }
@@ -86,18 +153,18 @@ body{
 
 /* Footer Component */
 
-.footer{
+.footer {
   display: flex;
   background: #333;
   justify-content: center;
-  padding:10px;
+  padding: 10px;
 }
 
-.footer p{
+.footer p {
   font-size: 14px;
   color: white;
   text-align: center;
-  margin:0;
+  margin: 0;
 }
 
 /* Header Component */
@@ -141,6 +208,11 @@ body{
 
 .clr {
   clear: both;
+}
+
+.flex-break {
+  flex-basis: 100%;
+  height: 0;
 }
 
 /* Sidebar */
@@ -217,7 +289,7 @@ body{
     display: none;
   }
 
-  .header-logo{
+  .header-logo {
     margin-left: 0;
   }
 }
