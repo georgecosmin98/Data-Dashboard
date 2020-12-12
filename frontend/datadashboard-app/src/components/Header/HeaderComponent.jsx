@@ -2,7 +2,7 @@ import { Avatar } from '@material-ui/core';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import React, { Component } from 'react';
 import logo from '../../img/logo.png';
-
+import { Link } from 'react-router-dom';
 class HeaderComponent extends Component {
 
 
@@ -10,7 +10,9 @@ class HeaderComponent extends Component {
         return (
             <div className="header">
                 <div className="header-left">
-                    <img src={logo} className="header-logo"/>
+                    <Link to="./">
+                        <img src={logo} className="header-logo" />
+                    </Link>
                 </div>
 
                 <div className="header-right">
