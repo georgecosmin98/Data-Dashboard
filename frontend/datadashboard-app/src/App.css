@@ -217,4 +217,7 @@ body{
     display: none;
   }
 
+  .header-logo{
+    margin-left: 0;
+  }
 }

@@ -1,5 +1,4 @@
-import React, { useEffect, useState, Component } from 'react'
-import BarChartComponent from './BarChartComponent';
+import React, { Component } from 'react';
 
 
 class DashboardComponent extends Component {

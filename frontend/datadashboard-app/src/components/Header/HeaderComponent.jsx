@@ -1,20 +1,16 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import MenuIcon from '@material-ui/icons/Menu';
-import FeedbackIcon from '@material-ui/icons/Feedback';
 import { Avatar } from '@material-ui/core';
+import FeedbackIcon from '@material-ui/icons/Feedback';
+import React, { Component } from 'react';
+import logo from '../../img/logo.png';
 
 class HeaderComponent extends Component {
+
 
     render() {
         return (
             <div className="header">
                 <div className="header-left">
-                    <MenuIcon />
-                    <img
-                        className="header-logo"
-                        src="http://seekvectorlogo.com/wp-content/uploads/2019/03/pollution-probe-vector-logo.png"
-                        alt="" />
+                    <img src={logo} className="header-logo"/>
                 </div>
 
                 <div className="header-right">
