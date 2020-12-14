@@ -226,6 +226,11 @@ body {
   background: #ddd;
 }
 
+/* Active sidebarrow */
+.sidebar .active .sidebarRow{
+  background: #eee;
+}
+
 /* Sidebar Row */
 
 .sidebarRow {
@@ -258,9 +263,6 @@ body {
   font-weight: bold;
 }
 
-.sidebarRow.selected {
-  background: #eee;
-}
 
 /* Schimbam culoarea iconului din containerul selectat */
 .sidebarRow.selected>.sidebarRow-icon {
