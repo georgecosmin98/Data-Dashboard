@@ -2,7 +2,6 @@ package com.airquality.commons.airqualitypersistanceservice.service;
 
 import com.airquality.commons.airqualitypersistanceservice.model.Ascr2Dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-@Slf4j
 public class Ascr2Service {
 
 
