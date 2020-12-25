@@ -4,11 +4,13 @@ import com.airquality.commons.airqualitypersistanceservice.model.Ascr2Dto;
 import com.airquality.commons.airqualitypersistanceservice.repository.Ascr2Repository;
 import com.airquality.commons.airqualitypersistanceservice.service.Ascr2Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +38,10 @@ public class Ascr2Controller {
     @GetMapping("/findAll")
     public Iterable<Ascr2Dto> findAll() throws Exception{
         return ascr2Repository.findAll();
+    }
+
+    @GetMapping("/findAll/{date}")
+    public Iterable<Ascr2Dto> findByTimeInterval(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd")Date data) throws Exception{
+        return ascr2Repository.findByTimestampIsBetween(data,new Date(2020,12,3));
     }
 }
