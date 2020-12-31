@@ -7,6 +7,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
+
 @Service
 public class EmailServiceImpl implements EmailService {
 
@@ -25,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
         simpleMailMessage.setFrom(from);
         simpleMailMessage.setTo(mailTo);
         simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(message);
+        simpleMailMessage.setText(new String(Base64.getDecoder().decode(message)));
 
         javaMailSender.send(simpleMailMessage);
     }
