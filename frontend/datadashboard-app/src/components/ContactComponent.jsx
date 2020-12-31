@@ -8,14 +8,20 @@ class ContactComponent extends Component {
         super(props)
 
         this.state = {
-            name: '',
+            subject: '',
             email: '',
             message: ''
         }
+        this.onSubmit= this.onSubmit.bind(this)
     }
     
+    onSubmit(props){
+        ContactService.sendMail(props.email,props.subject,props.message)
+        .then(()=> this.props.history.push('/contact'))
+    }
+
     render() {
-        let { name, email, message } = this.state
+        let {subject, email, message } = this.state
         return (
             // <div className="contact">
             //     <div className="form">
@@ -45,11 +51,8 @@ class ContactComponent extends Component {
                         <h1 class="l-heading"><span class="text-primary">Contact </span>US</h1>
                         <p>Your questions, comments and feedbacks are important for us!</p>
                         <Formik
-                            initialValues={{ name, email,message }}
+                            initialValues={{ subject, email,message }}
                             onSubmit={this.onSubmit}
-                            validateOnChange={false}
-                            validateOnBlur={false}
-                            validate={this.validate}
                             enableReinitialize={true}
                         >
                             {
@@ -60,8 +63,8 @@ class ContactComponent extends Component {
                                         <ErrorMessage name="targetDate" component="div"
                                             className="alert alert-warning" />
                                         <fieldset className="form-group">
-                                            <label>Name</label>
-                                            <Field className="input" type="text" name="name" />
+                                            <label>Subject</label>
+                                            <Field className="input" type="text" name="subject" />
                                         </fieldset>
                                         <fieldset className="form-group">
                                             <label>Email</label>
