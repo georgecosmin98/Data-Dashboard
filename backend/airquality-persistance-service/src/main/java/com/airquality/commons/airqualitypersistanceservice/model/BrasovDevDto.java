@@ -12,7 +12,7 @@ import java.util.Date;
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
 @Document(indexName = "brasov.dev")
-public class brasovDevDto {
+public class BrasovDevDto {
     @Id
     @ReadOnlyProperty
     private String id;
