@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
-@Document(indexName = "brasov.dev")
+@Document(indexName = "brasov-dev")
 public class BrasovDevDto {
     @Id
     @ReadOnlyProperty
@@ -27,7 +27,7 @@ public class BrasovDevDto {
     @Field(name="LocationLong")
     private double locationLong;
     @Field(name="TimeStamp")
-    private Date timestamp;
+    private int timestamp;
     @Field(name="Measurement")
     private String measurement;
 
