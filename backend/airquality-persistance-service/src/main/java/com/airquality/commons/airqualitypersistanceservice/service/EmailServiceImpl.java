@@ -52,6 +52,7 @@ public class EmailServiceImpl implements EmailService {
         //It's not mandatory to provide the from address, but many SMTP
         //server would reject such messages
         simpleMailMessage.setFrom(from);
+        simpleMailMessage.setReplyTo(from);
         simpleMailMessage.setTo(mailTo);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(message);
