@@ -16,11 +16,12 @@ class ContactComponent extends Component {
         this.validate = this.validate.bind(this)
     }
 
-    onSubmit(values) {
+    onSubmit(values, { resetForm }) {
         ContactService.sendMail(values.email, values.subject, values.message)
             .then(() => this.props.history.push('/contact'))
+        resetForm();
+        alert('Contact form has been sent' +"\n Thank you!")
     }
-
     validate(values) {
         let errors = {}
 
@@ -30,7 +31,7 @@ class ContactComponent extends Component {
         if (!values.subject) {
             errors.subject = "Enter a subject"
         }
-        if(!values.message){
+        if (!values.message) {
             errors.message = "Enter a message"
         }
         return errors
@@ -41,7 +42,7 @@ class ContactComponent extends Component {
         return (
             <div className="contact">
                 <div className="form">
-                    <h1 class="l-heading"><span class="text-primary">Contact </span>US</h1>
+                    <h1 className="l-heading"><span className="text-primary">Contact </span>US</h1>
                     <p>Your questions, comments and feedbacks are important for us!</p>
                     <Formik
                         initialValues={{ subject, email, message }}
