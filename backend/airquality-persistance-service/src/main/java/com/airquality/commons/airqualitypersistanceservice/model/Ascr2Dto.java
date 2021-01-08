@@ -1,6 +1,5 @@
 package com.airquality.commons.airqualitypersistanceservice.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
