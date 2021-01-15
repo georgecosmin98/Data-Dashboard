@@ -2,6 +2,7 @@ package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.BrasovDevRepository;
+import com.airquality.commons.airqualitypersistanceservice.service.BrasovDevService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,7 @@ import java.util.List;
 public class BrasovDevController {
 
     @Autowired
-    private BrasovDevRepository brasovDevRepository;
+    private BrasovDevService brasovDevService;
 
     @GetMapping("/hello")
     public String helloWorld(){
@@ -24,6 +25,6 @@ public class BrasovDevController {
 
     @GetMapping("/{sensorName}")
     public List<BrasovDevDto> findBySensorName(@PathVariable String sensorName){
-        return brasovDevRepository.findBySensor(sensorName);
+        return brasovDevService.findBySensor(sensorName);
     }
 }

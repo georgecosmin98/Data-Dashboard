@@ -3,11 +3,10 @@ package com.airquality.commons.airqualitypersistanceservice.repository;
 import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevDto;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-import java.util.Date;
 import java.util.List;
 
 public interface BrasovDevRepository extends ElasticsearchRepository<BrasovDevDto,String> {
 
-    List<BrasovDevDto> findByTimestampIsBetween(Date firstDate, Date lastDate);
+    List<BrasovDevDto> findByTimestampIsBetween(int firstDate, int lastDate);
     List<BrasovDevDto> findBySensor(String sensorName);
 }
