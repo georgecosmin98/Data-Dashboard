@@ -10,7 +10,8 @@ class ContactComponent extends Component {
         this.state = {
             subject: '',
             email: '',
-            message: ''
+            message: '',
+            showFailedMessage: false
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.validate = this.validate.bind(this)
@@ -18,13 +19,25 @@ class ContactComponent extends Component {
 
     onSubmit(values, { resetForm }) {
         ContactService.sendMail(values.email, values.subject, values.message)
-            .then(() => this.props.history.push('/contact'))
-        resetForm();
-        alert('Contact form has been sent' +"\n Thank you!")
+            .then(response => {
+                 console.log(response)
+                if (response.data === 'OK'){
+                    this.props.history.push('/contact')
+                    this.setState({ showFailedMessage: false })
+                    resetForm()
+                }
+                else {
+                    this.setState({ showFailedMessage: true })
+                }
+            })
     }
     validate(values) {
         let errors = {}
+        console.log(values.showFailedMessage)
 
+        if (values.showFailedMessage) {
+            errors.message = "Mail send failed"
+        }
         if (!values.email) {
             errors.email = "Enter a Email address!"
         }
@@ -38,19 +51,18 @@ class ContactComponent extends Component {
     }
 
     render() {
-        let { subject, email, message } = this.state
+        let { subject, email, message, showFailedMessage } = this.state
         return (
             <div className="contact">
                 <div className="form">
                     <h1 className="l-heading"><span className="text-primary">Contact </span>US</h1>
                     <p>Your questions, comments and feedbacks are important for us!</p>
                     <Formik
-                        initialValues={{ subject, email, message }}
+                        initialValues={{ subject, email, message, showFailedMessage }}
                         onSubmit={this.onSubmit}
                         validateOnChange={false}
                         validateOnBlur={false}
                         validate={this.validate}
-                        enableReinitialize={true}
                     >
                         {
                             (props) => (
@@ -61,6 +73,9 @@ class ContactComponent extends Component {
                                         className="alert alert-warning" />
                                     <ErrorMessage name="message" component="div"
                                         className="alert alert-warning" />
+                                    <ErrorMessage name="showFailedMessage" component="div"
+                                        className="alert alert-warning" />
+                                    {this.state.showFailedMessage && <div className="errorSend"> Contact form can't be send! Try again later!</div>}
                                     <fieldset className="form-group">
                                         <label>Subject</label>
                                         <Field className="input" type="text" name="subject" />
