@@ -18,10 +18,11 @@ class ContactComponent extends Component {
     }
 
     onSubmit(values, { resetForm }) {
-        ContactService.sendMail(values.email, values.subject, values.message)
+        ContactService.verifyEmail(values.email)
             .then(response => {
                  console.log(response)
                 if (response.data === 'OK'){
+                    ContactService.sendMail(values.email, values.subject, values.message)
                     this.props.history.push('/contact')
                     this.setState({ showFailedMessage: false })
                     resetForm()
@@ -33,7 +34,6 @@ class ContactComponent extends Component {
     }
     validate(values) {
         let errors = {}
-        console.log(values.showFailedMessage)
 
         if (values.showFailedMessage) {
             errors.message = "Mail send failed"
