@@ -50,6 +50,17 @@ body {
   justify-content: center;
 }
 
+.contact .errorSend{
+  margin-left:25px;
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
 
 .contact h1 {
   width: 100%;
