@@ -1,5 +1,6 @@
 package com.airquality.commons.airqualitypersistanceservice.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
@@ -12,6 +13,7 @@ import java.util.Date;
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
 @Document(indexName = "brasov-dev")
+@AllArgsConstructor
 public class BrasovDevDto {
     @Id
     @ReadOnlyProperty

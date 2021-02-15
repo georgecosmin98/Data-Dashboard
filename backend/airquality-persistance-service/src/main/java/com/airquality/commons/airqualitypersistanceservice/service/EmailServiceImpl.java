@@ -2,10 +2,8 @@ package com.airquality.commons.airqualitypersistanceservice.service;
 
 import com.airquality.commons.airqualitypersistanceservice.service.api.EmailService;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

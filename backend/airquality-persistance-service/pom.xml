@@ -69,8 +69,6 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.6</version>
         </dependency>
-
-
         <!--	Utility 	-->
         <!--    Lombok    -->
         <dependency>
@@ -86,10 +84,18 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+
+
         <!--    Log4J2    -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <!--   Validator     -->
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
         </dependency>
 
     </dependencies>
