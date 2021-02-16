@@ -77,6 +77,7 @@
             <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
+
         <!--    JUnit    -->
         <dependency>
             <groupId>junit</groupId>
@@ -85,6 +86,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!--    GreenMail Test Server    -->
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail-spring</artifactId>
+            <version>1.6.2</version>
+        </dependency>
 
         <!--    Log4J2    -->
         <dependency>

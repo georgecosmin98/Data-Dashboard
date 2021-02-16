@@ -11,21 +11,20 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
-public class BrasovDevServiceTest {
+public class BrasovDevServiceImplTest {
 
     private BrasovDevDto brasovDevDto;
     private List listOfSensorData;
+
     @Mock
     BrasovDevRepository brasovDevRepository;
 
     @InjectMocks
-    BrasovDevService brasovDevService;
+    BrasovDevServiceImpl brasovDevServiceImpl;
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
@@ -43,10 +42,13 @@ public class BrasovDevServiceTest {
 
     @Test
     public void shouldReturnCorrectBrasovDevDtoBySensorName() {
+        //Return all mocked result set on find
         when(brasovDevRepository.findBySensor("testSensor")).thenReturn(listOfSensorData);
 
-        brasovDevService.findBySensor("testSensor");
+        //Call method we want to test
+        brasovDevServiceImpl.findBySensor("testSensor");
 
+        //Verify number of invocations method
         verify(brasovDevRepository).findBySensor("testSensor");
 
     }
