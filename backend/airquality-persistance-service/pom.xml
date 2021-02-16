@@ -89,8 +89,9 @@
         <!--    GreenMail Test Server    -->
         <dependency>
             <groupId>com.icegreen</groupId>
-            <artifactId>greenmail-spring</artifactId>
+            <artifactId>greenmail-junit5</artifactId>
             <version>1.6.2</version>
+            <scope>test</scope>
         </dependency>
 
         <!--    Log4J2    -->

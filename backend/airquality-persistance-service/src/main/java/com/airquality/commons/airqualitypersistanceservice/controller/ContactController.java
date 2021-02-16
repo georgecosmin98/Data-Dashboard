@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
+
 @RestController
 @RequestMapping("/contact")
 @CrossOrigin("*")
@@ -19,25 +21,18 @@ public class ContactController {
     EmailValidator emailValidator = EmailValidator.getInstance();
 
     @GetMapping("/hello")
-    public String helloWorld(){
+    public String helloWorld() {
         return "Hello World!";
     }
 
-//    @PutMapping("/sendMail/{from}/{subject}/{text}")
-//    public HttpStatus sendMail(@PathVariable String from,@PathVariable String subject,@PathVariable String text) throws Exception {
-//
-//        return emailService.sendMail(from, subject, text);
-//
-//    }
-
     @PutMapping("/sendMail/{from}/{subject}/{text}")
-    public void sendMail1(@PathVariable String from,@PathVariable String subject,@PathVariable String text) throws Exception {
-         emailService.sendMail(from, subject, text);
+    public void sendMail1(@PathVariable String from, @PathVariable String subject, @PathVariable String text) throws Exception {
+        emailService.sendMail(from, subject, new String(Base64.getDecoder().decode(text)));
     }
 
     @PutMapping("/emailVerification/{email}")
-    public HttpStatus emailVerification(@PathVariable String email){
-        if(emailValidator.isValid(email))
+    public HttpStatus emailVerification(@PathVariable String email) {
+        if (emailValidator.isValid(email))
             return HttpStatus.OK;
         else
             return HttpStatus.METHOD_NOT_ALLOWED;

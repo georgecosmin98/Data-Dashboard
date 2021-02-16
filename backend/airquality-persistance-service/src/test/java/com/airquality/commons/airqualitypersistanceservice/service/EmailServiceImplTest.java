@@ -2,6 +2,7 @@ package com.airquality.commons.airqualitypersistanceservice.service;
 
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,6 +20,7 @@ import javax.mail.internet.MimeMessage;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -26,6 +28,9 @@ import static org.junit.Assert.assertTrue;
 @ActiveProfiles("test")
 public class EmailServiceImplTest {
 
+    public static final String FROM = "from@test.com";
+    public static final String SUBJECT = "subject";
+    public static final String MESSAGE = GreenMailUtil.random();
     private static GreenMail emailServer;
 
     @Autowired
@@ -35,6 +40,7 @@ public class EmailServiceImplTest {
     public MockitoRule rule = MockitoJUnit.rule();
 
     @Before
+
     public void setUp() {
 
         //Setup and start smtp test server
@@ -45,14 +51,22 @@ public class EmailServiceImplTest {
 
     @Test
     public void testSendMailMethod() throws MessagingException, IOException {
-        emailService.sendMail("from@test.com", "subject", "bWVzc2FnZQ");
-        assertTrue(emailServer.waitForIncomingEmail(1500, 1));
+
+        //Call sendMail method
+        emailService.sendMail(FROM, SUBJECT, MESSAGE);
+
+        //Wait for incoming email, if we receive 2 email (mail and confirmation mail)
+        //we return true, else if we exceed timeout (max time in ms) and we dont receive
+        //2 email, we return false
+        assertTrue(emailServer.waitForIncomingEmail(1500, 2));
 
         MimeMessage[] messages = emailServer.getReceivedMessages();
         MimeMessage message = messages[0];
-        assertTrue(message.getSubject().equals("subject"));
-        assertTrue(message.getFrom()[0].toString().equals("from@test.com"));
-       // assertTrue(message.getContent().equals("message"));
+
+        //Verify if email was sent succesfully
+        assertEquals(message.getSubject(), SUBJECT);
+        assertEquals(message.getFrom()[0].toString(), FROM);
+        assertEquals(message.getContent(), MESSAGE.concat("\r\n"));
 
     }
 

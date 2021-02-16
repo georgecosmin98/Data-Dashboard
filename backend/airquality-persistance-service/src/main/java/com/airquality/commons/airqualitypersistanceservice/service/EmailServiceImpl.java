@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
         } catch (MailSendException ex) {
             log.error("Failed to send confirmation mail");
         }
-        constructSimpleMailMessage(from, mailTo, subject, new String(Base64.getDecoder().decode(message)));
+        constructSimpleMailMessage(from, mailTo, subject, message);
         try {
             javaMailSender.send(simpleMailMessage);
         } catch (MailSendException ex) {
