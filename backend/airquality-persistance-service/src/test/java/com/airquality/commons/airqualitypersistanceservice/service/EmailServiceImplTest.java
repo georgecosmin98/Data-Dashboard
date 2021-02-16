@@ -4,6 +4,7 @@ import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,13 +42,16 @@ public class EmailServiceImplTest {
     public MockitoRule rule = MockitoJUnit.rule();
 
     @Before
-
     public void setUp() {
-
         //Setup and start smtp test server
         emailServer = new GreenMail(ServerSetupTest.ALL);
         emailServer.withConfiguration(GreenMailConfiguration.aConfig().withDisabledAuthentication());
         emailServer.start();
+    }
+
+    @After
+    public void stopEmailServer() {
+        emailServer.stop();
     }
 
     @Test
