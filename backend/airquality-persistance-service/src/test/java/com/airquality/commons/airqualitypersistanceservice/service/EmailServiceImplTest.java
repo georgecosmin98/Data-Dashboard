@@ -28,9 +28,10 @@ import static org.junit.Assert.assertTrue;
 @ActiveProfiles("test")
 public class EmailServiceImplTest {
 
-    public static final String FROM = "from@test.com";
-    public static final String SUBJECT = "subject";
-    public static final String MESSAGE = GreenMailUtil.random();
+    public static final String EMAIL_FROM_PARAM = GreenMailUtil.random();
+    public static final String EMAIL_SUBJECT_PARAM = GreenMailUtil.random();
+    public static final String EMAIL_MESSAGE_PARAM = GreenMailUtil.random();
+
     private static GreenMail emailServer;
 
     @Autowired
@@ -53,7 +54,7 @@ public class EmailServiceImplTest {
     public void testSendMailMethod() throws MessagingException, IOException {
 
         //Call sendMail method
-        emailService.sendMail(FROM, SUBJECT, MESSAGE);
+        emailService.sendMail(EMAIL_FROM_PARAM, EMAIL_SUBJECT_PARAM, EMAIL_MESSAGE_PARAM);
 
         //Wait for incoming email, if we receive 2 email (mail and confirmation mail)
         //we return true, else if we exceed timeout (max time in ms) and we dont receive
@@ -63,10 +64,10 @@ public class EmailServiceImplTest {
         MimeMessage[] messages = emailServer.getReceivedMessages();
         MimeMessage message = messages[0];
 
-        //Verify if email was sent succesfully
-        assertEquals(message.getSubject(), SUBJECT);
-        assertEquals(message.getFrom()[0].toString(), FROM);
-        assertEquals(message.getContent(), MESSAGE.concat("\r\n"));
+        //Verify if email was sent successfully
+        assertEquals(message.getSubject(), EMAIL_SUBJECT_PARAM);
+        assertEquals(message.getFrom()[0].toString(), EMAIL_FROM_PARAM);
+        assertEquals(message.getContent(), EMAIL_MESSAGE_PARAM.concat("\r\n"));
 
     }
 

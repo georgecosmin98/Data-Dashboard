@@ -9,8 +9,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
-
 @Service
 @Log4j2
 public class EmailServiceImpl implements EmailService {

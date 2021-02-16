@@ -18,12 +18,12 @@ public class BrasovDevController {
     private BrasovDevServiceImpl brasovDevServiceImpl;
 
     @GetMapping("/hello")
-    public String helloWorld(){
+    public String helloWorld() {
         return "Hello world from brasov dev controller";
     }
 
     @GetMapping("/{sensorName}")
-    public List<BrasovDevDto> findBySensorName(@PathVariable String sensorName){
+    public List<BrasovDevDto> findBySensorName(@PathVariable String sensorName) {
         return brasovDevServiceImpl.findBySensor(sensorName);
     }
 }
