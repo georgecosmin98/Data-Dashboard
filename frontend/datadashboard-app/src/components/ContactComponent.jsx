@@ -20,8 +20,8 @@ class ContactComponent extends Component {
     onSubmit(values, { resetForm }) {
         ContactService.verifyEmail(values.email)
             .then(response => {
-                 console.log(response)
-                if (response.data === 'OK'){
+                console.log(response)
+                if (response.data.catchAllCheck === 'true') {
                     ContactService.sendMail(values.email, values.subject, values.message)
                     this.props.history.push('/contact')
                     this.setState({ showFailedMessage: false })
@@ -30,6 +30,8 @@ class ContactComponent extends Component {
                 else {
                     this.setState({ showFailedMessage: true })
                 }
+            }).catch(() => {
+                this.setState({ showFailedMessage: true })
             })
     }
     validate(values) {
@@ -75,7 +77,7 @@ class ContactComponent extends Component {
                                         className="alert alert-warning" />
                                     <ErrorMessage name="showFailedMessage" component="div"
                                         className="alert alert-warning" />
-                                    {this.state.showFailedMessage && <div className="errorSend"> Contact form can't be send! Try again later!</div>}
+                                    {this.state.showFailedMessage && <div className="errorSend"> Please enter a valid email address!</div>}
                                     <fieldset className="form-group">
                                         <label>Subject</label>
                                         <Field className="input" type="text" name="subject" />
