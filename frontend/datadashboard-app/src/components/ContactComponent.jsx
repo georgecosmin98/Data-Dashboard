@@ -21,7 +21,7 @@ class ContactComponent extends Component {
         ContactService.verifyEmail(values.email)
             .then(response => {
                 console.log(response)
-                if (response.data.catchAllCheck === 'true') {
+                if (response.data.formatCheck === 'true' && response.data.smtpCheck === 'true' && response.data.dnsCheck === 'true') {
                     ContactService.sendMail(values.email, values.subject, values.message)
                     this.props.history.push('/contact')
                     this.setState({ showFailedMessage: false })
