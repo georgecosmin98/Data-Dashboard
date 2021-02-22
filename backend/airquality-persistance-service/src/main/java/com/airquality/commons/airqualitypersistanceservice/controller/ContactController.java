@@ -2,7 +2,6 @@ package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceImpl;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,6 @@ public class ContactController {
     @Autowired
     EmailServiceImpl emailService;
 
-    EmailValidator emailValidator = EmailValidator.getInstance();
-
     @GetMapping("/hello")
     public String helloWorld() {
         return "Hello World!";
@@ -32,7 +29,7 @@ public class ContactController {
 
     @PutMapping("/emailVerification/{email}")
     public HttpStatus emailVerification(@PathVariable String email) {
-        if (emailValidator.isValid(email))
+        if (emailService.sendRequestForValidateEmailAddress(email))
             return HttpStatus.OK;
         else
             return HttpStatus.METHOD_NOT_ALLOWED;

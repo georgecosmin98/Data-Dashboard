@@ -15,6 +15,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Value("${spring.mail.username}")
     private String mailTo;
+    @Value("${emailverification.apikey}")
+    private String apiKey;
 
     private SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 
@@ -58,5 +60,42 @@ public class EmailServiceImpl implements EmailService {
         simpleMailMessage.setText(message);
     }
 
+    public boolean sendRequestForValidateEmailAddress(String emailAddress) {
+        String API_URL =
+                "https://emailverification.whoisxmlapi.com/api/v1";
+        String url = API_URL + "?emailAddress=" + emailAddress
+                + "&apiKey=" + apiKey;
+        String responseFromAPI;
+        try (java.util.Scanner s =
+                     new java.util.Scanner(new java.net.URL(url).openStream())) {
+            responseFromAPI = s.useDelimiter("\\A").next();
+            System.out.println(responseFromAPI);
+        } catch (Exception ex) {
+            return false;
+        }
+        return validateEmailAddress(responseFromAPI);
+    }
+
+    public boolean validateEmailAddress(String responseFromAPI) {
+        if (!validateEmailAddressParameter(responseFromAPI, "formatCheck"))
+            return false;
+        if (!validateEmailAddressParameter(responseFromAPI, "smtpCheck"))
+            return false;
+        if (!validateEmailAddressParameter(responseFromAPI, "dnsCheck"))
+            return false;
+
+        return true;
+    }
+
+    public boolean validateEmailAddressParameter(String responseFromAPI, String parameterCheck) {
+        String response = responseFromAPI;
+        int indexParameterCheck = response.indexOf(parameterCheck);
+        int startIndexSubstring = indexParameterCheck + parameterCheck.length() + 3;
+        int endIndexSubstring = indexParameterCheck + parameterCheck.length() + 7;
+        if (response.substring(startIndexSubstring, endIndexSubstring).equals("true"))
+            return true;
+        else
+            return false;
+    }
 
 }

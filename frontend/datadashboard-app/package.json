@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.1",
     "d3": "^6.2.0",
+    "email-verifier": "^0.4.1",
     "formik": "^2.2.6",
     "js-base64": "^3.6.0",
     "react": "^17.0.1",
