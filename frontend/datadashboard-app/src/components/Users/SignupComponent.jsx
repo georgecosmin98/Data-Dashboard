@@ -1,12 +1,10 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { Component } from 'react';
 import fbLogo from '../../img/fb-logo.png';
 import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
 import './Login.css' 
-import { Link} from 'react-router-dom'
-class LoginComponent extends Component {
-
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+class SignupComponent extends Component{
     constructor(props) {
         super(props)
 
@@ -22,14 +20,14 @@ class LoginComponent extends Component {
         return (
             <div className="login">
                 <div className="login-content">
-                    <h1 className="login-title">Login to <span className="text-primary">Harta Poluare Brasov</span></h1>
+                    <h1 className="login-title">Sign up to <span className="text-primary">Harta Poluare Brasov</span></h1>
                     <div className="social-login">
                         <a className="btn-block social-btn google">
-                            <img src={googleLogo} alt="Google" /> Log in with Google</a>
+                            <img src={googleLogo} alt="Google" /> Sign up with Google</a>
                         <a className="btn-block social-btn facebook">
-                            <img src={fbLogo} alt="Facebook" /> Log in with Facebook</a>
+                            <img src={fbLogo} alt="Facebook" /> Sign up with Facebook</a>
                         <a className="btn-block social-btn github">
-                            <img src={githubLogo} alt="Github" /> Log in with Github</a>
+                            <img src={githubLogo} alt="Github" /> Sign up with Github</a>
                     </div>
                     <div className="login-separator">
                         <span className="login-separator-text">OR</span>
@@ -47,19 +45,22 @@ class LoginComponent extends Component {
                                     <Field className="input" type="text" name="email" placeholder="Email Address" />
                                 </fieldset>
                                 <fieldset className="form-group-login">
+                                    <Field className="input" type="text" name="name" placeholder="Name" />
+                                </fieldset>
+                                <fieldset className="form-group-login">
                                     <Field className="input" type="password" name="password" placeholder="Password" />
                                 </fieldset>
                                 <div className="btn-center">
-                                    <button className="btn-login" type="submit">Login</button>
+                                    <button className="btn-login" type="submit">Sign Up</button>
                                 </div>
                             </Form>
                         )
                         }
                     </Formik>
-                    <span className="signup-link">New user? <Link to="/signup">Sign up!</Link></span>
                 </div>
             </div>
         )
     }
 }
-export default LoginComponent
+
+export default SignupComponent

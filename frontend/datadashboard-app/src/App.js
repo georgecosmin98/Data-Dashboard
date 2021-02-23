@@ -9,6 +9,7 @@ import HeaderComponent from './components/Header/HeaderComponent'
 import SidebarComponent from './components/SidebarComponent'
 import ContactComponent from './components/ContactComponent'
 import LoginComponent from './components/Users/LoginComponent'
+import SignupComponent from './components/Users/SignupComponent'
 
 class App extends Component {
 
@@ -28,6 +29,7 @@ class App extends Component {
                 <Route path="/" exact component={DashboardComponent} />
                 <Route path="/contact" exact component={ContactComponent} />
                 <Route path="/login" exact component={LoginComponent}/>
+                <Route path="/signup" exact component={SignupComponent}/>
                 <Route component={ErrorComponent} />
               </Switch>
             </div>

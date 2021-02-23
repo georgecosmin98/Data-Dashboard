@@ -28,8 +28,8 @@ body {
   cursor: pointer;
 }
 
-.btn:hover,
-.btn-login:hover {
+.btn-login:hover,
+.btn-block:hover {
   background: #007bff;
   color: #FFF !important;
 }
