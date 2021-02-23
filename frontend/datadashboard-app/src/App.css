@@ -28,16 +28,38 @@ body {
   cursor: pointer;
 }
 
-.btn:hover {
-  background: blue;
-  color: #FFF;
+.btn:hover,
+.btn-login:hover {
+  background: #007bff;
+  color: #FFF !important;
 }
 
-.btn-center{
-  display:border-box;
+.btn-center {
+  display: border-box;
   text-align: center;
   margin-bottom: 20px;
   padding-top: 5px;
+}
+
+.btn-login {
+  display: inline-block;
+  font-size: 22px;
+  color: #fff;
+  background: #333;
+  padding: 12px 45px;
+  border: none;
+  cursor: pointer;
+  border-radius: .25rem;
+}
+
+.btn-block{
+  display: inline-block;
+  font-size: 22px;
+  color: #fff;
+  background: #333;
+  padding: 10px 30px;
+  border: none;
+  cursor: pointer;
 }
 /* Contact */
 
@@ -50,8 +72,8 @@ body {
   justify-content: center;
 }
 
-.contact .errorSend{
-  margin-left:25px;
+.contact .errorSend {
+  margin-left: 25px;
   color: #856404;
   background-color: #fff3cd;
   border-color: #ffeeba;
@@ -69,7 +91,7 @@ body {
 }
 
 .form-group,
-.form p{
+.form p {
   margin-bottom: 20px;
   margin-left: 25px;
 }
@@ -86,13 +108,13 @@ body {
   border: 1px #ddd solid;
 }
 
-.contact .textarea{
-  height:200px;
+.contact .textarea {
+  height: 200px;
 }
 
 .contact input:focus,
-.contact textarea:focus{
-  outline:none;
+.contact textarea:focus {
+  outline: none;
   border-color: blue;
 }
 
@@ -216,6 +238,7 @@ body {
   margin-right: 15px;
 }
 
+
 /* Utility */
 
 .clr {
@@ -239,7 +262,7 @@ body {
 }
 
 /* Active sidebarrow */
-.sidebar .active .sidebarRow{
+.sidebar .active .sidebarRow {
   background: #eee;
 }
 
@@ -307,3 +330,7 @@ body {
     margin-left: 0;
   }
 }
+
+
+/* Test */
+

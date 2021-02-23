@@ -8,6 +8,7 @@ import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/Header/HeaderComponent'
 import SidebarComponent from './components/SidebarComponent'
 import ContactComponent from './components/ContactComponent'
+import LoginComponent from './components/Users/LoginComponent'
 
 class App extends Component {
 
@@ -26,6 +27,7 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={DashboardComponent} />
                 <Route path="/contact" exact component={ContactComponent} />
+                <Route path="/login" exact component={LoginComponent}/>
                 <Route component={ErrorComponent} />
               </Switch>
             </div>

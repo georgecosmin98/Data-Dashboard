@@ -10,6 +10,7 @@ class SidebarComponent extends Component {
             <div className="sidebar">
                 <NavLink to="/" exact activeClassName="active"><SidebarRowComponent icon={HomeIcon} title="Home"></SidebarRowComponent> </NavLink>
                 <NavLink to="/error" activeClassName="active"><SidebarRowComponent icon={ErrorIcon} title="ErrorPage"></SidebarRowComponent></NavLink>
+                <NavLink to="/login" activeClassName="active"><SidebarRowComponent icon={ErrorIcon} title="LogIn"></SidebarRowComponent></NavLink>
                 <NavLink to="/contact" activeClassName="active"><SidebarRowComponent icon={ContactMailIcon} title="Contact" /></NavLink>
             </div>
         )
