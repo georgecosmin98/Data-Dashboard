@@ -23,4 +23,6 @@ public class BrasovDevServiceImpl implements BrasovDevService {
     public List<BrasovDevDto> findByTimestampIsBetween(int firstDate, int lastDate) {
         return brasovDevRepository.findByTimestampIsBetween(firstDate, lastDate);
     }
+
+
 }

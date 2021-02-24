@@ -23,7 +23,7 @@ body {
   font-size: 22px;
   color: #fff;
   background: #333;
-  padding: 13px 30px;
+  padding: 12px 55px;
   border: none;
   cursor: pointer;
 }
@@ -43,16 +43,17 @@ body {
 
 .btn-login {
   display: inline-block;
-  font-size: 22px;
+  font-size: 1em;
   color: #fff;
   background: #333;
   padding: 12px 45px;
   border: none;
   cursor: pointer;
   border-radius: .25rem;
+  width: 40%;
 }
 
-.btn-block{
+.btn-block {
   display: inline-block;
   font-size: 22px;
   color: #fff;
@@ -61,6 +62,7 @@ body {
   border: none;
   cursor: pointer;
 }
+
 /* Contact */
 
 .contact {
@@ -313,13 +315,11 @@ body {
 /* Mobile Style */
 
 @media (max-width: 768px) {
-
-  /* Sidebar Row */
-
   .sidebarRow {
     display: block;
     text-align: center;
     font-size: 10px;
+    padding:15px;
   }
 
   .sidebarRow-title {
@@ -329,8 +329,24 @@ body {
   .header-logo {
     margin-left: 0;
   }
+
+  .btn-login {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 }
 
+@media (max-width: 480px) {
 
-/* Test */
+  .btn-block{
+    padding: 0px;
+    padding: 10px;
 
+  }
+
+  .btn-login{
+    width:55%;
+    padding: 15px 15px;
+  }
+}
+  /* Test */
