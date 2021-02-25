@@ -1,6 +1,5 @@
 package com.airquality.commons.airqualitypersistanceservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
@@ -22,8 +20,8 @@ public class UserDto {
     @ReadOnlyProperty
     private String id;
 
-    @Field(name = "name")
-    private String name;
+    @Field(name = "username")
+    private String username;
 
     @Field(name = "email")
     private String email;
@@ -33,5 +31,5 @@ public class UserDto {
 
     @Field(name = "password")
     private String password;
-
+    private String role;
 }

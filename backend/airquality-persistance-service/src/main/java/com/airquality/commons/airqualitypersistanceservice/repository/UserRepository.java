@@ -10,5 +10,6 @@ public interface UserRepository extends ElasticsearchRepository<UserDto, String>
 
 
     Optional<UserDto> findByEmailEquals(String email);
+    UserDto findByUsername(String username);
     List<UserDto> findByEmail(String email);
  }
