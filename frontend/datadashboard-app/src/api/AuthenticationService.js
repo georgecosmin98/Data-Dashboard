@@ -1,18 +1,7 @@
 import axios from 'axios'
-import { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom'
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 
-export function useAuth() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    function handleAuthChange(isLoggedIn) {
-      setIsLoggedIn(AuthenticationService.isUserLoggedIn());
-    }
-  });
-
-  return isLoggedIn;
-}
 class AuthenticationService {
 
   authenticateWithGoogle() {
@@ -48,6 +37,7 @@ class AuthenticationService {
 
   logout() {
     sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+    <Link to = "/refresh?url=/login"></Link>
   }
 
   axiosInterceptors(token) {

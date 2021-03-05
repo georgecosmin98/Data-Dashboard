@@ -5,7 +5,7 @@ import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
 import './Login.css' 
 import { Link} from 'react-router-dom'
-import AuthenticationService from "../../api/AuthenticationService"
+import AuthenticationService from '../../api/AuthenticationService';
 
 
 class LoginComponent extends Component {
@@ -36,7 +36,8 @@ class LoginComponent extends Component {
         AuthenticationService.logInWithLocalAccount(values.email,values.password).then(response => {
             console.log(response)
             AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
-            this.props.history.push('/')
+            this.props.history.push('/');    
+            this.props.history.go();
         })
     }
 
@@ -79,7 +80,6 @@ class LoginComponent extends Component {
                         validateOnChange={this.handleChange}
                         validateOnBlur={false}
                         validate={this.validate}
-                        enableReinitialize
                     >
                         {(props) => (
                             <Form>
