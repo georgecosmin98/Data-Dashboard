@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ContactService from './api/contact/ContactService'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import UtilityService from './api/UtilityService';
 
 class ContactComponent extends Component {
 
@@ -18,9 +19,8 @@ class ContactComponent extends Component {
     }
 
     onSubmit(values, { resetForm }) {
-        ContactService.verifyEmail(values.email)
+       UtilityService.verifyEmail(values.email)
             .then(response => {
-                console.log(response)
                 if (response.data === "OK") {
                     ContactService.sendMail(values.email, values.subject, values.message)
                     this.props.history.push('/contact')
@@ -49,6 +49,7 @@ class ContactComponent extends Component {
         if (!values.message) {
             errors.message = "Enter a message"
         }
+
         return errors
     }
 

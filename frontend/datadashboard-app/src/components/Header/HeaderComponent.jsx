@@ -1,11 +1,15 @@
 import { Avatar } from '@material-ui/core';
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState} from 'react';
 import logo from '../../img/logo.png';
 import { Link } from 'react-router-dom';
-class HeaderComponent extends Component {
+import AuthenticationService from "../api/AuthenticationService"
+import {useAuth} from '../api/AuthenticationService'
 
+class HeaderComponent extends Component {
+    
 
     render() {
+        let isLoggedIn = useAuth()
         return (
             <div className="header">
                 <div className="header-left">
@@ -15,10 +19,10 @@ class HeaderComponent extends Component {
                 </div>
 
                 <div className="header-right">
-                    <Avatar
-                        alt="Ilinca George-Cosmin"
-                        src="https://avatars2.githubusercontent.com/u/37107231?s=400&u=58e114524f52c7e73ce81e850339664101e7384a&v=4"
-                    />
+                <ul className="navbar-nav navbar-collapse justify-content-end">
+                        {!isLoggedIn && <li><Link className="nav-link" to="/login">Login</Link></li>}
+                        {isLoggedIn && <li><Link className="nav-link" to="/login" onClick={AuthenticationService.logout}>Logout</Link></li>}
+                    </ul>
                 </div>
             </div>
         )

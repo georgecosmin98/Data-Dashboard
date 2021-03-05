@@ -5,6 +5,8 @@ import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
 import './Login.css' 
 import { Link} from 'react-router-dom'
+import AuthenticationService from '../api/AuthenticationService';
+import {useAuth} from '../api/AuthenticationService;
 class LoginComponent extends Component {
 
     constructor(props) {
@@ -14,8 +16,44 @@ class LoginComponent extends Component {
             email: '',
             password: ''
         }
+        this.onSubmit = this.onSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
+    handleChange(event) {
+        //console.log(this.state);
+        this.setState(
+            {
+                [event.target.name]
+                  :event.target.value
+            }
+        )
+    }
+
+    onSubmit(values, {resetForm}){
+        console.log("something")
+        AuthenticationService.logInWithLocalAccount(values.email,values.password).then(response => {
+            console.log(response)
+            AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
+            this.props.history.push('/')
+        })
+    }
+
+    validate(values){
+        let errors = {}
+
+        if (values.password.length < 5) {
+            errors.password = "Use 5 or more characters for password!"
+        }
+
+        if (!values.email) {
+            errors.email = "Enter a Email address!"
+        }
+        if (!values.password) {
+            errors.password = "Enter a password"
+        }
+        return errors
+    }
 
     render() {
         let { email, password } = this.state
@@ -36,18 +74,25 @@ class LoginComponent extends Component {
                     </div>
                     <Formik
                         initialValues={{ email, password }}
-                        // onSubmit={this.onSubmit}
-                        validateOnChange={false}
+                        onSubmit={this.onSubmit}
+                        validateOnChange={this.handleChange}
                         validateOnBlur={false}
-                        // validate={this.validate}
+                        validate={this.validate}
+                        enableReinitialize
+                        
+                        
                     >
                         {(props) => (
                             <Form>
+                                <ErrorMessage name="email" component="div"
+                                    className="alert alert-warning" />
+                                <ErrorMessage name="password" component="div"
+                                    className="alert alert-warning" />
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="text" name="email" placeholder="Email Address" />
+                                    <Field className="input" type="text" name="email" placeholder="Email Address" onKeyUp ={this.handleChange}/>
                                 </fieldset>
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="password" name="password" placeholder="Password" />
+                                    <Field className="input" type="password" name="password" placeholder="Password"/>
                                 </fieldset>
                                 <div className="btn-center">
                                     <button className="btn-login" type="submit">Login</button>

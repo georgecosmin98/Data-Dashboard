@@ -1,5 +1,17 @@
 /* Login Component */
 
+.errorSendAuthentication {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  height: 45px;
+}
+
 .login {
   text-align: center;
   flex: 0.9;
@@ -54,8 +66,10 @@
 
 .login input {
   width: 100%;
+  height: 45px;
   padding: 10px;
   border: 1px #ddd solid;
+  border-radius: .25rem;
 }
 
 .login .textarea {
@@ -74,6 +88,7 @@
   background: white;
   height: 45px;
   border: 1px solid #e8e8e8;
+  border-radius: .25rem;
   text-align: center;
 }
 

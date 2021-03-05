@@ -2,21 +2,72 @@ import React, { Component } from 'react';
 import fbLogo from '../../img/fb-logo.png';
 import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
-import './Login.css' 
+import './Login.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-class SignupComponent extends Component{
+import AuthenticationService from "../api/AuthenticationService"
+import UtilityService from "../api/UtilityService"
+class SignupComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
             email: '',
-            password: ''
+            name: '',
+            password: '',
+            showFailedMessage: false
         }
+        this.onSubmit = this.onSubmit.bind(this)
     }
 
 
+    onSubmit(values, { resetForm }) {
+        UtilityService.verifyEmail(values.email)
+            .then(response => {
+                console.log(response)
+                if (response.data === "OK") {
+                    AuthenticationService.signUpWithLocalAccount(values.email, values.name, values.password)
+                        .then(response => {
+                            if (response.data === "OK") {
+                                this.props.history.push('/login')
+                                this.setState({ showFailedMessage: false })
+                                resetForm()
+                            }
+                            else {
+                                this.setState({ showFailedMessage: true })
+                            }
+                        }
+                        )
+                }
+                else {
+                    this.setState({ showFailedMessage: true })
+                }
+            })
+            .catch(() => {
+                this.setState({ showFailedMessage: true })
+            })
+    }
+
+    validate(values) {
+        let errors = {}
+
+        if (values.password.length < 5) {
+            errors.password = "Use 5 or more characters for password!"
+        }
+
+        if (!values.email) {
+            errors.email = "Enter a Email address!"
+        }
+        if (!values.name) {
+            errors.name = "Enter a name"
+        }
+        if (!values.password) {
+            errors.password = "Enter a password"
+        }
+        return errors
+    }
+
     render() {
-        let { email, password } = this.state
+        let { email, name, password } = this.state
         return (
             <div className="login">
                 <div className="login-content">
@@ -33,14 +84,21 @@ class SignupComponent extends Component{
                         <span className="login-separator-text">OR</span>
                     </div>
                     <Formik
-                        initialValues={{ email, password }}
-                        // onSubmit={this.onSubmit}
+                        initialValues={{ email, name, password }}
+                        onSubmit={this.onSubmit}
                         validateOnChange={false}
                         validateOnBlur={false}
-                        // validate={this.validate}
+                        validate={this.validate}
                     >
                         {(props) => (
                             <Form>
+                                <ErrorMessage name="email" component="div"
+                                    className="alert alert-warning" />
+                                <ErrorMessage name="name" component="div"
+                                    className="alert alert-warning" />
+                                <ErrorMessage name="password" component="div"
+                                    className="alert alert-warning" />
+                                {this.state.showFailedMessage && <div className="errorSendAuthentication"> Please enter a valid email address!</div>}
                                 <fieldset className="form-group-login">
                                     <Field className="input" type="text" name="email" placeholder="Email Address" />
                                 </fieldset>
