@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ContactService from './api/contact/ContactService'
+import ContactService from '../api/contact/ContactService'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import UtilityService from './api/UtilityService';
+import UtilityService from '../api/UtilityService';
 
 class ContactComponent extends Component {
 

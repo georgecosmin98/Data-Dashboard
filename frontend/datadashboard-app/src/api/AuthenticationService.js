@@ -1,6 +1,18 @@
 import axios from 'axios'
+import { useState, useEffect } from 'react';
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 
+export function useAuth() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    function handleAuthChange(isLoggedIn) {
+      setIsLoggedIn(AuthenticationService.isUserLoggedIn());
+    }
+  });
+
+  return isLoggedIn;
+}
 class AuthenticationService {
 
   authenticateWithGoogle() {

@@ -4,8 +4,8 @@ import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
 import './Login.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import AuthenticationService from "../api/AuthenticationService"
-import UtilityService from "../api/UtilityService"
+import AuthenticationService from "../../api/AuthenticationService"
+import UtilityService from "../../api/UtilityService"
 class SignupComponent extends Component {
     constructor(props) {
         super(props)

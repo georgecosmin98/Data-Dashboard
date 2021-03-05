@@ -5,8 +5,9 @@ import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
 import './Login.css' 
 import { Link} from 'react-router-dom'
-import AuthenticationService from '../api/AuthenticationService';
-import {useAuth} from '../api/AuthenticationService;
+import AuthenticationService from "../../api/AuthenticationService"
+
+
 class LoginComponent extends Component {
 
     constructor(props) {
@@ -79,8 +80,6 @@ class LoginComponent extends Component {
                         validateOnBlur={false}
                         validate={this.validate}
                         enableReinitialize
-                        
-                        
                     >
                         {(props) => (
                             <Form>
