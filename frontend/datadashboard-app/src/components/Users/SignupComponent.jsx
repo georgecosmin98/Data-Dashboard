@@ -16,9 +16,18 @@ class SignupComponent extends Component {
             password: '',
             showFailedMessage: false
         }
-        this.onSubmit = this.onSubmit.bind(this)
+        this.onSubmit = this.onSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
+    handleChange(event) {
+        this.setState(
+            {
+                [event.target.name]
+                  :event.target.value
+            }
+        )
+    }
 
     onSubmit(values, { resetForm }) {
         UtilityService.verifyEmail(values.email)
@@ -86,7 +95,7 @@ class SignupComponent extends Component {
                     <Formik
                         initialValues={{ email, name, password }}
                         onSubmit={this.onSubmit}
-                        validateOnChange={false}
+                        validateOnChange={this.handleChange}
                         validateOnBlur={false}
                         validate={this.validate}
                     >

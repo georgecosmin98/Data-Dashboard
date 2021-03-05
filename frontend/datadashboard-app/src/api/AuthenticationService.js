@@ -37,7 +37,6 @@ class AuthenticationService {
 
   logout() {
     sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
-    <Link to = "/refresh?url=/login"></Link>
   }
 
   axiosInterceptors(token) {
