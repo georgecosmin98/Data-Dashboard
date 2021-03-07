@@ -1,11 +1,10 @@
 import axios from 'axios'
 import { Base64 } from 'js-base64';
+import { BASE_BACKEND_URL } from '../Constants.js'
+class ContactService {
 
-class ContactService{
-
-    sendMail(from,subject,text){
-        return axios.put(`http://185.146.87.75:8080/airquality/contact/sendMail/${from}/${subject}/${Base64.encode(text)}`)
-    //    return axios.put(`http://localhost:8080/contact/sendMail/${from}/${subject}/${Base64.encode(text)}`)
+    sendMail(from, subject, text) {
+        return axios.put(`${BASE_BACKEND_URL}/${from}/${subject}/${Base64.encode(text)}`)
     }
 }
 

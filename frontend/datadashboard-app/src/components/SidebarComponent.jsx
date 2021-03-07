@@ -3,7 +3,7 @@ import SidebarRowComponent from './SidebarRowComponent'
 import HomeIcon from '@material-ui/icons/Home';
 import ErrorIcon from '@material-ui/icons/Error';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 class SidebarComponent extends Component {
     render() {
         return (

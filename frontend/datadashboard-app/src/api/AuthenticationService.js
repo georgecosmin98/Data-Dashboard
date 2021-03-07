@@ -1,22 +1,14 @@
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { BASE_BACKEND_URL } from '../Constants.js'
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
-
 class AuthenticationService {
 
-  authenticateWithGoogle() {
-    console.log("I am in authenticateWithGoogle")
-    return axios.get("https://localhost:8081/google/login")
-    // return axios.put(`http://localhost:8080/contact/emailVerification/${from}`)
-    return
-  }
-
   signUpWithLocalAccount(email, name, password) {
-    return axios.post("http://localhost:8080/user/signup", { email, name, password })
+    return axios.post(`${BASE_BACKEND_URL}/user/signup`, { email, name, password });
   }
 
-  logInWithLocalAccount(email,password){
-    return axios.post("http://localhost:8080/authenticate", {email,password})
+  logInWithLocalAccount(email, password) {
+    return axios.post(`${BASE_BACKEND_URL}/authenticate`, { email, password })
   }
 
   isUserLoggedIn() {

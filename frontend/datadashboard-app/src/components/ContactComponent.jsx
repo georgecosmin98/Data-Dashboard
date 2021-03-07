@@ -19,7 +19,7 @@ class ContactComponent extends Component {
     }
 
     onSubmit(values, { resetForm }) {
-       UtilityService.verifyEmail(values.email)
+        UtilityService.verifyEmail(values.email)
             .then(response => {
                 if (response.data === "OK") {
                     ContactService.sendMail(values.email, values.subject, values.message)

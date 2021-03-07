@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import fbLogo from '../../img/fb-logo.png';
 import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
-import './Login.css' 
-import { Link} from 'react-router-dom'
+import './Login.css'
+import { Link } from 'react-router-dom'
 import AuthenticationService from '../../api/AuthenticationService';
 
 
@@ -25,22 +25,22 @@ class LoginComponent extends Component {
         this.setState(
             {
                 [event.target.name]
-                  :event.target.value
+                    : event.target.value
             }
         )
     }
 
-    onSubmit(values, {resetForm}){
+    onSubmit(values, { resetForm }) {
         console.log("something")
-        AuthenticationService.logInWithLocalAccount(values.email,values.password).then(response => {
+        AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
             console.log(response)
             AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
-            this.props.history.push('/');    
+            this.props.history.push('/');
             this.props.history.go();
         })
     }
 
-    validate(values){
+    validate(values) {
         let errors = {}
 
         if (values.password.length < 5) {
@@ -87,10 +87,10 @@ class LoginComponent extends Component {
                                 <ErrorMessage name="password" component="div"
                                     className="alert alert-warning" />
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="text" name="email" placeholder="Email Address" onKeyUp ={this.handleChange}/>
+                                    <Field className="input" type="text" name="email" placeholder="Email Address" onKeyUp={this.handleChange} />
                                 </fieldset>
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="password" name="password" placeholder="Password"/>
+                                    <Field className="input" type="password" name="password" placeholder="Password" />
                                 </fieldset>
                                 <div className="btn-center">
                                     <button className="btn-login" type="submit">Login</button>

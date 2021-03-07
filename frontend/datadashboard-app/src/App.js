@@ -10,13 +10,11 @@ import SidebarComponent from './components/SidebarComponent'
 import ContactComponent from './components/ContactComponent'
 import LoginComponent from './components/Users/LoginComponent'
 import SignupComponent from './components/Users/SignupComponent'
-
 class App extends Component {
 
   componentWillMount() {
     document.title = 'Harta Poluare Brasov'
   }
-
   render() {
     return (
       <div className="DashboardApp">
@@ -28,8 +26,8 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={DashboardComponent} />
                 <Route path="/contact" exact component={ContactComponent} />
-                <Route path="/login" exact component={LoginComponent}/>
-                <Route path="/signup" exact component={SignupComponent}/>
+                <Route path="/login" exact component={LoginComponent} />
+                <Route path="/signup" exact component={SignupComponent} />
                 <Route component={ErrorComponent} />
               </Switch>
             </div>

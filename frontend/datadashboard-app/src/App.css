@@ -319,7 +319,7 @@ body {
     display: block;
     text-align: center;
     font-size: 10px;
-    padding:15px;
+    padding: 15px;
   }
 
   .sidebarRow-title {
@@ -338,15 +338,16 @@ body {
 
 @media (max-width: 480px) {
 
-  .btn-block{
+  .btn-block {
     padding: 0px;
     padding: 10px;
 
   }
 
-  .btn-login{
-    width:55%;
+  .btn-login {
+    width: 55%;
     padding: 15px 15px;
   }
 }
-  /* Test */
+
+/* Test */
