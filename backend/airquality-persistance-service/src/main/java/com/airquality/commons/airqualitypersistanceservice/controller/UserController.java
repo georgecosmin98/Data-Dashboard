@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -21,14 +22,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/create")
-    public UserDto create(@RequestBody UserDto userDto) {
-        return userServiceImpl.createUser(userDto);
-    }
-
     @PostMapping("/signup")
     public HttpStatus registerUser(@RequestBody UserDto userDto){
-        if(userRepository.findByEmail(userDto.getEmail()).isEmpty()) {
+        if(!userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             // Creating user's account
             UserDto user = new UserDto();
             user.setUsername(userDto.getUsername());
@@ -40,10 +36,5 @@ public class UserController {
             return HttpStatus.OK;
         }
         return HttpStatus.BAD_REQUEST;
-    }
-
-    @GetMapping("/test1")
-    public List<UserDto> test1(){
-        return userRepository.findByEmail("ha@hat.com");
     }
 }
