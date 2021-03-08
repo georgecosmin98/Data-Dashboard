@@ -1,14 +1,15 @@
 package com.airquality.commons.airqualitypersistanceservice.jwt;
 
+import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
+import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,7 +26,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private UserDetailsService jwtInMemoryUserDetailsService;
+    private UserServiceImpl userService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -36,15 +37,13 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         logger.debug("Authentication Request For '{}'", request.getRequestURL());
-
         final String requestTokenHeader = request.getHeader(this.tokenHeader);
-
         String username = null;
         String jwtToken = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                username = jwtTokenUtil.getEmailFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
             } catch (ExpiredJwtException e) {
@@ -57,10 +56,11 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.jwtInMemoryUserDetailsService.loadUserByUsername(username);
+            UserDto userDto = userService.loadUserByUsername(username);
+            JwtUserDetails userDetails = new JwtUserDetails(userDto.getId(), userDto.getUsername(), userDto.getPassword(), userDto.getRole());
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, AuthorityUtils.createAuthorityList("Role_USER"));
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }

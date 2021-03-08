@@ -6,16 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
     @Configuration
@@ -27,25 +23,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         private JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint;
 
         @Autowired
-        private UserDetailsService jwtInMemoryUserDetailsService;
-
-        @Autowired
         private JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter;
 
         @Value("${jwt.get.token.uri}")
         private String authenticationPath;
-
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                    .userDetailsService(jwtInMemoryUserDetailsService)
-                    .passwordEncoder(passwordEncoderBean());
-        }
-
-        @Bean
-        public PasswordEncoder passwordEncoderBean() {
-            return new BCryptPasswordEncoder();
-        }
 
         @Bean
         @Override
@@ -64,11 +45,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
             httpSecurity
                     .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-            httpSecurity
-                    .headers()
-                    .frameOptions().sameOrigin()  //H2 Console Needs this setting
-                    .cacheControl(); //disable caching
         }
 
         @Override
@@ -83,13 +59,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                     .and()
                     .ignoring()
                     .antMatchers(
-                            "/user/*" //Let's all user to request signup and login
+                            "/contact/**" //let all user to request contact
                     )
                     .and()
-                    .ignoring()
-                    .antMatchers(
-                            "/contact/*" //let all user to request contact
-                    );
+                    .ignoring().antMatchers("/user/signup"); //let guest users to signup
         }
     }
 

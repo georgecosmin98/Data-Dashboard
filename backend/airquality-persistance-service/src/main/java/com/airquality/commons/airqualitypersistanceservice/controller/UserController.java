@@ -1,5 +1,6 @@
 package com.airquality.commons.airqualitypersistanceservice.controller;
 
+import com.airquality.commons.airqualitypersistanceservice.jwt.JwtTokenUtil;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.UserRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
@@ -22,19 +23,26 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @PostMapping("/signup")
     public HttpStatus registerUser(@RequestBody UserDto userDto){
-        if(!userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if(!userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             // Creating user's account
             UserDto user = new UserDto();
             user.setUsername(userDto.getUsername());
-            user.setEmail(userDto.getEmail());
+            //user.setEmail(userDto.getEmail());
             user.setPassword(userDto.getPassword());
-            user.setImageUrl("");
-            user.setRole("USER");
+            user.setRole("user");
             userServiceImpl.createUser(user);
             return HttpStatus.OK;
         }
         return HttpStatus.BAD_REQUEST;
+    }
+
+    @GetMapping("/myEmailFromToken/{text}")
+    public String myEmail(@PathVariable String text){
+        return jwtTokenUtil.getEmailFromToken(text);
     }
 }

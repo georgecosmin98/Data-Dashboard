@@ -18,16 +18,13 @@ public class UserDto {
 
     @Id
     @ReadOnlyProperty
-    private String id;
+    private Long id;
 
-    @Field(name = "username")
-    private String username;
+    // @Field(name = "username")
+    //private String username;
 
     @Field(name = "email")
-    private String email;
-
-    @Field(name = "imageUrl")
-    private String imageUrl;
+    private String username;
 
     @Field(name = "password")
     private String password;

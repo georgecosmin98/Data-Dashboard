@@ -8,7 +8,5 @@ import java.util.Optional;
 public interface UserRepository extends ElasticsearchRepository<UserDto, String> {
 
 
-    Optional<UserDto> findByEmailEquals(String email);
-    UserDto findByUsername(String username);
-    Optional<UserDto> findByEmail(String email);
+    Optional<UserDto> findByUsername(String username);
  }
