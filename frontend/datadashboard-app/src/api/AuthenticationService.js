@@ -3,12 +3,12 @@ import { BASE_BACKEND_URL } from '../Constants.js'
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 class AuthenticationService {
 
-  signUpWithLocalAccount(email, name, password) {
-    return axios.post(`${BASE_BACKEND_URL}/users/signup`, { email, name, password });
+  signUpWithLocalAccount(username, name, password) {
+    return axios.post(`${BASE_BACKEND_URL}/users/signup`, { username, name, password });
   }
 
-  logInWithLocalAccount(email, password) {
-    return axios.post(`${BASE_BACKEND_URL}/authenticate`, { email, password })
+  logInWithLocalAccount(username, password) {
+    return axios.post(`${BASE_BACKEND_URL}/authenticate`, { username, password })
   }
 
   isUserLoggedIn() {
