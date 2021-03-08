@@ -7,14 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin("*")
@@ -29,17 +24,12 @@ public class JwtAuthenticationRestController {
     @Autowired
     private UserServiceImpl userService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-
     //In this method we create authentication toekn
     @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
-    public ResponseEntity createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
-            throws AuthenticationException {
-
+    public ResponseEntity createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) {
+        //Load user information from database
         UserDto userDto = userService.loadUserByUsername(authenticationRequest.getUsername());
-
+        //Verify if requested user have correct credentials
         if (userDto.getPassword().equals(authenticationRequest.getPassword())) {
             final String token = jwtTokenUtil.generateToken(userDto);
             return ResponseEntity.ok(new JwtTokenResponse(token));
@@ -60,10 +50,5 @@ public class JwtAuthenticationRestController {
         } else {
             return ResponseEntity.badRequest().body(null);
         }
-    }
-
-    @ExceptionHandler({AuthenticationException.class})
-    public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 }

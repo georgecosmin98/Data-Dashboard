@@ -2,10 +2,8 @@ package com.airquality.commons.airqualitypersistanceservice.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -27,12 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
         @Value("${jwt.get.token.uri}")
         private String authenticationPath;
-
-        @Bean
-        @Override
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-            return super.authenticationManagerBean();
-        }
 
         @Override
         protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -62,7 +54,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                             "/contact/**" //let all user to request contact
                     )
                     .and()
-                    .ignoring().antMatchers("/user/signup"); //let guest users to signup
+                    .ignoring().antMatchers("/users/signup"); //let guest users to signup
         }
     }
 

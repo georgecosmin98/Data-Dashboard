@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Base64 } from 'js-base64';
-import { BASE_BACKEND_URL } from '../Constants.js'
+import { BASE_BACKEND_URL } from '../../Constants'
 class ContactService {
 
     sendMail(from, subject, text) {

@@ -11,11 +11,9 @@ import java.io.IOException;
 @Component
 public class JwtUnAuthorizedResponseAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                "You would need to provide the Jwt Token to Access This resource");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

@@ -7,6 +7,5 @@ import java.util.Optional;
 
 public interface UserRepository extends ElasticsearchRepository<UserDto, String> {
 
-
     Optional<UserDto> findByUsername(String username);
  }

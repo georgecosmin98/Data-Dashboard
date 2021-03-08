@@ -4,7 +4,7 @@ const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 class AuthenticationService {
 
   signUpWithLocalAccount(email, name, password) {
-    return axios.post(`${BASE_BACKEND_URL}/user/signup`, { email, name, password });
+    return axios.post(`${BASE_BACKEND_URL}/users/signup`, { email, name, password });
   }
 
   logInWithLocalAccount(email, password) {

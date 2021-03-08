@@ -96,7 +96,7 @@ class SignupComponent extends Component {
                         initialValues={{ email, name, password }}
                         onSubmit={this.onSubmit}
                         validateOnChange={this.handleChange}
-                        validateOnBlur={false}
+                        validateOnBlur={this.validate}
                         validate={this.validate}
                     >
                         {(props) => (

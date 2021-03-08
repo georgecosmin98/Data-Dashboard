@@ -27,6 +27,6 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));
         }
 
-        return new UserDto(userDto.get().getId(),userDto.get().getUsername(), userDto.get().getPassword(),userDto.get().getRole());
+        return new UserDto(userDto.get().getId(),userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword());
     }
 }
