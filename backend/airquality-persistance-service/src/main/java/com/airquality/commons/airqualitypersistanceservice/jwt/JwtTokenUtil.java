@@ -2,12 +2,16 @@ package com.airquality.commons.airqualitypersistanceservice.jwt;
 
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -83,7 +87,17 @@ public class JwtTokenUtil {
     public Boolean validateToken(String token, UserDetails userDetails) {
         UserDetails user = userDetails;
         final String email = getEmailFromToken(token);
-        return (email.equals(user.getUsername()) && !isTokenExpired(token));
+        try{
+            Algorithm algorithm = Algorithm.HMAC512(new Base64(true).decodeBase64(secret));
+            JWTVerifier verifier = JWT.require(algorithm)
+                    .withSubject(email)
+                    .build();
+            DecodedJWT jwt = verifier.verify(token);
+        }catch(JWTVerificationException exception){
+            //log
+            return false;
+        }
+        return (!isTokenExpired(token));
     }
 
     private Date calculateExpirationDate(Date createdDate) {

@@ -45,15 +45,15 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             try {
                 username = jwtTokenUtil.getEmailFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
+                logger.error("JWT token can not get username", e);
             } catch (ExpiredJwtException e) {
-                logger.warn("JWT_TOKEN_EXPIRED", e);
+                logger.warn("JWT token is expired", e);
             }
         } else {
-            logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
+            logger.warn("JWT token does not start with bearer string");
         }
 
-        logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+        logger.debug("Username from JWT token'{}'", username);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDto userDto = userService.loadUserByUsername(username);
