@@ -10,6 +10,10 @@ import SidebarComponent from './components/SidebarComponent'
 import ContactComponent from './components/ContactComponent'
 import LoginComponent from './components/Users/LoginComponent'
 import SignupComponent from './components/Users/SignupComponent'
+import ResetPasswordComponent from './components/Users/ResetPasswordComponent'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ForgotPasswordComponent from './components/Users/ForgotPasswordComponent'
 class App extends Component {
 
   componentWillMount() {
@@ -17,24 +21,40 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="DashboardApp">
-        <Router>
-          <>
-            <HeaderComponent />
-            <div className="app-page">
-              <SidebarComponent />
-              <Switch>
-                <Route path="/" exact component={DashboardComponent} />
-                <Route path="/contact" exact component={ContactComponent} />
-                <Route path="/login" exact component={LoginComponent} />
-                <Route path="/signup" exact component={SignupComponent} />
-                <Route component={ErrorComponent} />
-              </Switch>
-            </div>
-            <FooterComponent />
-          </>
-        </Router>
-      </div>
+      <>
+        <div className="DashboardApp">
+          <Router>
+            <>
+              <HeaderComponent />
+              <div className="app-page">
+                <SidebarComponent />
+                <Switch>
+                  <Route path="/" exact component={DashboardComponent} />
+                  <Route path="/contact" exact component={ContactComponent} />
+                  <Route path="/login" exact component={LoginComponent} />
+                  <Route path="/login/:id" exact component={LoginComponent} />
+                  <Route path="/forgotpassword" exact component={ForgotPasswordComponent} />
+                  <Route path="/resetpassword/:token" exact component={ResetPasswordComponent} />
+                  <Route path="/signup" exact component={SignupComponent} />
+                  <Route component={ErrorComponent} />
+                </Switch>
+              </div>
+              <FooterComponent />
+            </>
+          </Router>
+        </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </>
     );
   }
 }
