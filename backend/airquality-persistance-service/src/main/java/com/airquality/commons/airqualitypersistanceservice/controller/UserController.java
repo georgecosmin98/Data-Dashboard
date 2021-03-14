@@ -58,6 +58,18 @@ public class UserController {
         }
         return HttpStatus.BAD_REQUEST;
     }
+
+    @PostMapping("/resetpassword")
+    public HttpStatus resetPassword(@RequestBody PasswordRecoveryDto passwordRecoveryDto){
+        Optional<UserDto> userDto = userRepository.findByResetToken(passwordRecoveryDto.getToken());
+        if(userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("")){
+            userDto.get().setPassword(passwordRecoveryDto.getPassword());
+            userDto.get().setResetToken("");
+            userRepository.save(userDto.get());
+            return HttpStatus.OK;
+        }
+        return HttpStatus.NOT_FOUND;
+    }
     
     @GetMapping("/myEmailFromToken/{text}")
     public String myEmail(@PathVariable String text){

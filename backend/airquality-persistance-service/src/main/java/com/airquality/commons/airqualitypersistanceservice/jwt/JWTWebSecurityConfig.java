@@ -54,7 +54,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                             "/contact/**" //let all user to request contact
                     )
                     .and()
-                    .ignoring().antMatchers("/users/signup"); //let guest users to signup
+                    .ignoring().antMatchers("/users/signup") //let guest users to signup
+                    .and()
+                    .ignoring().antMatchers("/users/forgotpassword","/users/resetpassword"); //let user change password without JWT Token
+
         }
     }
 
