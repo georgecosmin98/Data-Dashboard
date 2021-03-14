@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { BASE_BACKEND_URL } from '../Constants.js'
+
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 class AuthenticationService {
 
@@ -29,6 +30,7 @@ class AuthenticationService {
 
   logout() {
     sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+
   }
 
   axiosInterceptors(token) {

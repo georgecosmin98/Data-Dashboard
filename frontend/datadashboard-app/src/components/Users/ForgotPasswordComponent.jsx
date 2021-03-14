@@ -15,7 +15,6 @@ class ForgotPasswordComponent extends Component {
     }
 
     onSubmit(values, { resetForm }) {
-        console.log("I am on reset password component and i want to send a reset email");
         AuthenticationService.forgotPassword(values.email).then(response => {
             console.log(response)
             if (response.data === "OK") {

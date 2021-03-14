@@ -4,8 +4,26 @@ import logo from '../../img/logo.png';
 import { Link } from 'react-router-dom';
 import AuthenticationService from "../../api/AuthenticationService"
 import { BrowserRouter } from 'react-router-dom'
-class HeaderComponent extends Component {
+import { toast } from 'react-toastify';
 
+class HeaderComponent extends Component {
+    constructor(props) {
+        super(props)
+
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+    onSubmit(){
+        AuthenticationService.logout();
+        toast.success('You have been logged out!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+      
+        })
+    }
 
     render() {
         const isLoggedIn = AuthenticationService.isUserLoggedIn();
@@ -19,8 +37,8 @@ class HeaderComponent extends Component {
 
                 <div className="header-right">
                     <ul className="navbar-nav navbar-collapse justify-content-end">
-                        {!isLoggedIn && <li><BrowserRouter forceRefresh={true}><Link className="nav-link" to="/login">Login</Link></BrowserRouter></li>}
-                        {isLoggedIn && <li><BrowserRouter forceRefresh={true}><Link className="nav-link" to="/login" onClick={AuthenticationService.logout}>Logout</Link></BrowserRouter></li>}
+                        {!isLoggedIn && <li><Link className="nav-link" to="/login">Login</Link></li>}
+                        {isLoggedIn && <li><Link className="nav-link" to="/login" onClick={this.onSubmit}>Logout</Link></li>}
                     </ul>
                 </div>
             </div>

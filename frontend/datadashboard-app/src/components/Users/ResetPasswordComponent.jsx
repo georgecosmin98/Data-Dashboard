@@ -48,6 +48,9 @@ class ResetPasswordComponent extends Component {
     validate(values) {
         let errors = {}
 
+        if (values.password.length < 5) {
+            errors.password = "Use 5 or more characters for password!"
+        }
         if (!values.password) {
             errors.password = "Enter a password!"
         }

@@ -52,7 +52,7 @@ public class UserController {
             String randomToken = RandomStringUtils.randomAlphanumeric(16);
             userDto.get().setResetToken(randomToken);
             userRepository.save(userDto.get());
-            emailService.sendForgotPasswordMail(email, randomToken, "http://localhost:3000");
+            emailService.sendForgotPasswordMail(email, randomToken, "http://hartapoluarebrasov.ro");
             return HttpStatus.OK;
         }
         return HttpStatus.BAD_REQUEST;

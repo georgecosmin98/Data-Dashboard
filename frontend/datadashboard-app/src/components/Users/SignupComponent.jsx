@@ -6,6 +6,8 @@ import './Login.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import AuthenticationService from "../../api/AuthenticationService"
 import UtilityService from "../../api/UtilityService"
+import { toast } from 'react-toastify';
+
 class SignupComponent extends Component {
     constructor(props) {
         super(props)
@@ -29,7 +31,7 @@ class SignupComponent extends Component {
         )
     }
 
-    onSubmit(values, { resetForm }) {
+    onSubmit(values) {
         UtilityService.verifyEmail(values.email)
             .then(response => {
                 console.log(response)
@@ -39,7 +41,14 @@ class SignupComponent extends Component {
                             if (response.data === "OK") {
                                 this.props.history.push('/login')
                                 this.setState({ showFailedMessage: false })
-                                resetForm()
+                                toast.success('You have signed up successfully!', {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                })
                             }
                             else {
                                 this.setState({ showFailedMessage: true })
@@ -67,7 +76,7 @@ class SignupComponent extends Component {
             errors.email = "Enter a Email address!"
         }
         if (!values.name) {
-            errors.name = "Enter a name"
+            errors.name = "Enter your name"
         }
         if (!values.password) {
             errors.password = "Enter a password"
