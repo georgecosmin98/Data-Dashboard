@@ -62,8 +62,8 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void constructForgotPasswordMail(String to, String token, String url) {
         String subject = "Harta Poluare Brasov Reset Password";
-        String message = "Hello " + to + "\n Please visit the following link to enter your new password:\n"
-                + url + "/resetPassword/" + token + "\n If you need any assistance, please contact us!";
+        String message = "Hello " + to + "\n\nPlease visit the following link to enter your new password:\n\n"
+                + url + "/resetPassword/" + token + "\n\nIf you need any assistance, please contact us!";
         constructSimpleMailMessage(mailTo,to,subject,message);
     }
 
@@ -85,6 +85,9 @@ public class EmailServiceImpl implements EmailService {
         String url = API_URL + "?emailAddress=" + emailAddress
                 + "&apiKey=" + apiKey;
         String responseFromAPI;
+
+        //Try to send a request from backend to WhoIsXmlAPI
+        //to verify if email address is valid
         try (java.util.Scanner s =
                      new java.util.Scanner(new java.net.URL(url).openStream())) {
             responseFromAPI = s.useDelimiter("\\A").next();
