@@ -52,8 +52,7 @@ public class UserController {
             String randomToken = RandomStringUtils.randomAlphanumeric(16);
             userDto.get().setResetToken(randomToken);
             userRepository.save(userDto.get());
-            String url = "<a href='https://something'> Reset your password </a>";
-            emailService.sendForgotPasswordMail(email, randomToken, "http://localhost:8081");
+            emailService.sendForgotPasswordMail(email, randomToken, "http://localhost:3000");
             return HttpStatus.OK;
         }
         return HttpStatus.BAD_REQUEST;
@@ -70,7 +69,7 @@ public class UserController {
         }
         return HttpStatus.NOT_FOUND;
     }
-    
+
     @GetMapping("/myEmailFromToken/{text}")
     public String myEmail(@PathVariable String text){
         return jwtTokenUtil.getEmailFromToken(text);
