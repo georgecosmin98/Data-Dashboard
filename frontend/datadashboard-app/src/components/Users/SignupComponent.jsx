@@ -15,8 +15,7 @@ class SignupComponent extends Component {
         this.state = {
             email: '',
             name: '',
-            password: '',
-            showFailedMessage: false
+            password: ''
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -50,18 +49,19 @@ class SignupComponent extends Component {
                                     progress: undefined,
                                 })
                             }
-                            else {
-                                this.setState({ showFailedMessage: true })
-                            }
                         }
                         )
                 }
                 else {
-                    this.setState({ showFailedMessage: true })
+                    toast.error('Please enter a valid email address!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        draggable: true,
+                        progress: undefined,
+                    })
                 }
-            })
-            .catch(() => {
-                this.setState({ showFailedMessage: true })
             })
     }
 
@@ -116,9 +116,8 @@ class SignupComponent extends Component {
                                     className="alert alert-warning" />
                                 <ErrorMessage name="password" component="div"
                                     className="alert alert-warning" />
-                                {this.state.showFailedMessage && <div className="errorSendAuthentication"> Please enter a valid email address!</div>}
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="text" name="email" placeholder="Email Address" />
+                                    <Field className="input" type="email" name="email" placeholder="Email Address" />
                                 </fieldset>
                                 <fieldset className="form-group-login">
                                     <Field className="input" type="text" name="name" placeholder="Name" />
