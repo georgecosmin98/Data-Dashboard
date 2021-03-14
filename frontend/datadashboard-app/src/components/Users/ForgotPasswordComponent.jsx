@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Login.css'
 import AuthenticationService from '../../api/AuthenticationService';
 import { toast } from 'react-toastify';
+
 class ForgotPasswordComponent extends Component {
     constructor(props) {
         super(props)

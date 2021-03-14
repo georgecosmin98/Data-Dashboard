@@ -6,6 +6,7 @@ import googleLogo from '../../img/google-logo.png';
 import './Login.css'
 import { Link } from 'react-router-dom'
 import AuthenticationService from '../../api/AuthenticationService';
+import { toast } from 'react-toastify';
 
 class LoginComponent extends Component {
 
@@ -37,9 +38,31 @@ class LoginComponent extends Component {
         console.log("something")
         AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
             console.log(response)
-            AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
-            this.props.history.push('/');
-        })
+            if (response.status === 200) {
+                AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
+                toast.success('You have successfully logged in!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.props.history.push('/');
+            }
+        }).catch(response => {
+            console.log(response)
+            toast.error('Wrong email or password', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+            }
+            )
+        }
+        )
     }
 
     validate(values) {
