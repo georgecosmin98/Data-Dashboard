@@ -22,9 +22,6 @@ public class UserController {
     private UserServiceImpl userServiceImpl;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
@@ -32,7 +29,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public HttpStatus registerUser(@RequestBody UserDto userDto){
-        if(!userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+        if(!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
             // Creating user's account
             UserDto user = new UserDto();
             user.setId(System.currentTimeMillis());
@@ -47,11 +44,11 @@ public class UserController {
 
     @PostMapping("/forgotpassword")
     public HttpStatus forgotPassword(@RequestBody String email) {
-        Optional<UserDto> userDto = userRepository.findByUsername(email);
+        Optional<UserDto> userDto = userServiceImpl.findUserByUsername(email);
         if (userDto.isPresent()) {
             String randomToken = RandomStringUtils.randomAlphanumeric(16);
             userDto.get().setResetToken(randomToken);
-            userRepository.save(userDto.get());
+            userServiceImpl.createUser(userDto.get());
             emailService.sendForgotPasswordMail(email, randomToken, "http://hartapoluarebrasov.ro");
             return HttpStatus.OK;
         }
@@ -60,11 +57,11 @@ public class UserController {
 
     @PostMapping("/resetpassword")
     public HttpStatus resetPassword(@RequestBody PasswordRecoveryDto passwordRecoveryDto){
-        Optional<UserDto> userDto = userRepository.findByResetToken(passwordRecoveryDto.getToken());
+        Optional<UserDto> userDto = userServiceImpl.findUserByResetToken(passwordRecoveryDto.getToken());
         if(userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("")){
             userDto.get().setPassword(passwordRecoveryDto.getPassword());
             userDto.get().setResetToken("");
-            userRepository.save(userDto.get());
+            userServiceImpl.createUser(userDto.get());
             return HttpStatus.OK;
         }
         return HttpStatus.NOT_FOUND;

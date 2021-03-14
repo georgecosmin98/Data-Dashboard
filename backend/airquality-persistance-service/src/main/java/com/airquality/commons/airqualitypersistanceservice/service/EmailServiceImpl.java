@@ -78,6 +78,7 @@ public class EmailServiceImpl implements EmailService {
         simpleMailMessage.setText(message);
     }
 
+    @Override
     public boolean sendRequestForValidateEmailAddress(String emailAddress) {
         String API_URL =
                 "https://emailverification.whoisxmlapi.com/api/v1";
@@ -94,6 +95,7 @@ public class EmailServiceImpl implements EmailService {
         return validateEmailAddress(responseFromAPI);
     }
 
+    @Override
     public boolean validateEmailAddress(String responseFromAPI) {
         if (!validateEmailAddressParameter(responseFromAPI, "formatCheck"))
             return false;
@@ -105,6 +107,7 @@ public class EmailServiceImpl implements EmailService {
         return true;
     }
 
+    @Override
     public boolean validateEmailAddressParameter(String responseFromAPI, String parameterCheck) {
         String response = responseFromAPI;
         int indexParameterCheck = response.indexOf(parameterCheck);

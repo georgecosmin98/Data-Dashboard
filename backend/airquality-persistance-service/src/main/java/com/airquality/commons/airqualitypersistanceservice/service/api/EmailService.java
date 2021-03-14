@@ -11,4 +11,10 @@ public interface EmailService {
     void sendForgotPasswordMail(String to, String token, String url);
 
     void constructForgotPasswordMail(String to, String token, String url);
+
+    boolean sendRequestForValidateEmailAddress(String emailAddress);
+
+    boolean validateEmailAddress(String responseFromAPI);
+
+    boolean validateEmailAddressParameter(String responseFromAPI, String parameterCheck);
 }
