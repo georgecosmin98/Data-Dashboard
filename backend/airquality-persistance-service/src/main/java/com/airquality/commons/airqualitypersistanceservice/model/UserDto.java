@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
-@Document(indexName = "test-user1")
+@Document(indexName = "test-user12")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
@@ -28,4 +28,7 @@ public class UserDto {
 
     @Field(name = "password")
     private String password;
+
+    @Field(name = "reset_token")
+    private String resetToken;
 }

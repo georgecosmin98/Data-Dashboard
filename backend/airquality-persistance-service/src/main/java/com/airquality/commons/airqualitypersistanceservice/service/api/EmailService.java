@@ -7,4 +7,8 @@ public interface EmailService {
     void constructConfirmationMail(String to);
 
     void constructSimpleMailMessage(String from, String mailTo, String subject, String message);
+
+    void sendForgotPasswordMail(String to, String token, String url);
+
+    void constructForgotPasswordMail(String to, String token, String url);
 }

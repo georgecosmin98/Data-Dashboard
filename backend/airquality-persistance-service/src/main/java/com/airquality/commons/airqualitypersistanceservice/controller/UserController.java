@@ -1,12 +1,17 @@
 package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.jwt.JwtTokenUtil;
+import com.airquality.commons.airqualitypersistanceservice.model.PasswordRecoveryDto;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.UserRepository;
+import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceImpl;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -21,6 +26,9 @@ public class UserController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private EmailServiceImpl emailService;
 
     @PostMapping("/signup")
     public HttpStatus registerUser(@RequestBody UserDto userDto){
@@ -37,6 +45,20 @@ public class UserController {
         return HttpStatus.BAD_REQUEST;
     }
 
+    @PostMapping("/forgotpassword")
+    public HttpStatus forgotPassword(@RequestBody String email) {
+        Optional<UserDto> userDto = userRepository.findByUsername(email);
+        if (userDto.isPresent()) {
+            String randomToken = RandomStringUtils.randomAlphanumeric(16);
+            userDto.get().setResetToken(randomToken);
+            userRepository.save(userDto.get());
+            String url = "<a href='https://something'> Reset your password </a>";
+            emailService.sendForgotPasswordMail(email, randomToken, "http://localhost:8081");
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
+    }
+    
     @GetMapping("/myEmailFromToken/{text}")
     public String myEmail(@PathVariable String text){
         return jwtTokenUtil.getEmailFromToken(text);

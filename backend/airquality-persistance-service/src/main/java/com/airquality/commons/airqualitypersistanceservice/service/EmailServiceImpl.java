@@ -41,12 +41,30 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    public void sendForgotPasswordMail(String to, String token, String url){
+        constructForgotPasswordMail(to,token, url);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        } catch (MailSendException ex) {
+            log.error("Failed to send forgot password mail");
+        }
+    }
+
+    @Override
     public void constructConfirmationMail(String to) {
         String subject = "Harta Poluare Brasov Confirmation Mail";
         String message = "Hello " + to + "\n We received succesfully your message"
                 + "\n\n Thank you," + "\n Harta Poluare Brasov Team";
 
         constructSimpleMailMessage(mailTo, to, subject, message);
+    }
+
+    @Override
+    public void constructForgotPasswordMail(String to, String token, String url) {
+        String subject = "Harta Poluare Brasov Reset Password";
+        String message = "Hello " + to + "\n Please visit the following link to enter your new password:\n"
+                + url + "/resetPassword/" + token + "\n If you need any assistance, please contact us!";
+        constructSimpleMailMessage(mailTo,to,subject,message);
     }
 
     @Override
