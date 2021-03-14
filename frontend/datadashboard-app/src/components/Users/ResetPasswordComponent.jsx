@@ -17,7 +17,32 @@ class ResetPasswordComponent extends Component {
     }
 
     onSubmit(values, { resetForm }) {
-       console.log(values)
+        console.log(values)
+        AuthenticationService.resetPassword(this.props.match.params.token, values.password).then(response => {
+            console.log(response)
+            if (response.data === "OK") {
+                toast.success('Your password has been reset successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.props.history.push('/login');
+                resetForm();
+            }
+            else
+                toast.error('An error occured. Please try again.', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+                )
+        })
     }
 
     validate(values) {
@@ -41,7 +66,7 @@ class ResetPasswordComponent extends Component {
                     <p> Enter your new account password twice below to recover your account!.
                     </p>
                     <Formik
-                        initialValues={{ password,confirmPassword }}
+                        initialValues={{ password, confirmPassword }}
                         onSubmit={this.onSubmit}
                         validateOnChange={this.handleChange}
                         validateOnBlur={false}

@@ -1,5 +1,25 @@
 /* Login Component */
 
+/* Button */
+.btn-reset-password {
+  display: inline-block;
+  font-size: 0.98em;
+  color: #fff;
+  background: #333;
+  padding: 12px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: .25rem;
+  width: 67.5%;
+}
+
+.btn-reset-password:hover,
+.btn-block:hover {
+  background: #007bff;
+  color: #FFF !important;
+}
+
+
 .errorSendAuthentication {
   color: #856404;
   background-color: #fff3cd;
@@ -12,7 +32,45 @@
   height: 45px;
 }
 
-.login, .forgot-password{
+
+/* Forgot password and Reset password Style */
+
+.forgot-password-content p {
+  padding-bottom: 10px;
+}
+
+.forgot-link {
+  margin-block-end: 0;
+  font-size: 16px;
+}
+
+.forgot-password-content {
+  display: inline-block;
+  width: 500px;
+  background: #fff;
+  box-shadow: 0px 1px 12px 0px #464646;
+  border-radius: 5px;
+  vertical-align: middle;
+  position: relative;
+  margin-top: 125px;
+  padding: 50px 80px;
+}
+
+/* Form */
+
+.form-group .textfield {
+  width: 100%;
+}
+
+.form-group-login {
+  margin-bottom: 25px;
+  padding: 0;
+}
+
+/* Login */
+
+.login,
+.forgot-password {
   text-align: center;
   flex: 0.9;
   display: border-box;
@@ -22,7 +80,7 @@
   justify-content: center;
 }
 
-.login-content{
+.login-content {
   display: inline-block;
   width: 500px;
   background: #fff;
@@ -32,18 +90,6 @@
   position: relative;
   margin-top: 20px;
   padding: 30px;
-}
-
-.forgot-password-content{
-  display: inline-block;
-  width: 500px;
-  background: #fff;
-  box-shadow: 0px 1px 12px 0px #464646;
-  border-radius: 5px;
-  vertical-align: middle;
-  position: relative;
-  margin-top: 150px;
-  padding: 50px 80px;
 }
 
 .login-title {
@@ -76,7 +122,8 @@
   color: rgba(0, 0, 0, .45);
 }
 
-.login input, .forgot-password-content input{
+.login input,
+.forgot-password-content input {
   width: 100%;
   height: 45px;
   padding: 10px;
@@ -131,37 +178,6 @@
   font-size: 14px;
 }
 
-.form-group .textfield {
-  width: 100%;
-}
-
-.form-group-login {
-  margin-bottom: 25px;
-  padding: 0;
-}
-
-.btn-reset-password{
-  display: inline-block;
-  font-size: 0.98em;
-  color: #fff;
-  background: #333;
-  padding: 12px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: .25rem;
-  width: 67.5%;
-}
-
-.btn-reset-password:hover,
-.btn-block:hover {
-  background: #007bff;
-  color: #FFF !important;
-}
-
-.forgot-password-content p{
-  padding-bottom: 10px;
-}
-
 .Toastify__toast-container {
   margin-top: 29px;
 }
@@ -169,6 +185,11 @@
 /* Mobile Style */
 
 @media (max-width: 768px) {
+  .forgot-password-content {
+    width: 75%;
+    padding: 45px;
+  }
+
   .login-content {
     width: 85%;
     padding: 15px;
@@ -187,5 +208,19 @@
     padding: 10px;
     border: 1px #ddd solid;
   }
+}
 
+@media (max-width: 480px) {
+
+  .forgot-password-content {
+    width: 85%;
+    padding: 25px;
+    margin-top: 100px;
+  }
+
+  .btn-reset-password {
+    font-size: 0.95em;
+    padding: 12px 5px;
+    width: 85%;
+  }
 }

@@ -41,5 +41,15 @@ class AuthenticationService {
       }
     )
   }
+
+  // Recover Password
+  forgotPassword(email) {
+    return axios.post(`${BASE_BACKEND_URL}/users/forgotpassword`, email, { headers: { "Content-Type": "text/plain" } })
+  }
+
+  resetPassword(token, password) {
+    return axios.post(`${BASE_BACKEND_URL}/users/resetpassword`, { token, password });
+  }
+
 }
 export default new AuthenticationService()

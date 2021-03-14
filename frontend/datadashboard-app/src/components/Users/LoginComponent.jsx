@@ -7,7 +7,6 @@ import './Login.css'
 import { Link } from 'react-router-dom'
 import AuthenticationService from '../../api/AuthenticationService';
 
-
 class LoginComponent extends Component {
 
     constructor(props) {
@@ -30,13 +29,16 @@ class LoginComponent extends Component {
         )
     }
 
+    componentDidMount() {
+        console.log(this.props.match.params);
+    }
+
     onSubmit(values, { resetForm }) {
         console.log("something")
         AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
             console.log(response)
             AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
             this.props.history.push('/');
-            this.props.history.go();
         })
     }
 
@@ -99,7 +101,8 @@ class LoginComponent extends Component {
                         )
                         }
                     </Formik>
-                    <span className="signup-link">New user? <Link to="/signup">Sign up!</Link></span>
+                    <p className="signup-link">New user? <Link to="/signup">Sign up!</Link></p>
+                    <p className="forgot-link"><Link to="/forgotpassword">Forgot password?</Link></p>
                 </div>
             </div>
         )
