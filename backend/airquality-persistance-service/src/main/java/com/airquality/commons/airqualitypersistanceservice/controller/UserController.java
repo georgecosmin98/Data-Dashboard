@@ -1,14 +1,18 @@
 package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.jwt.JwtTokenUtil;
+import com.airquality.commons.airqualitypersistanceservice.jwt.resource.JwtTokenResponse;
 import com.airquality.commons.airqualitypersistanceservice.model.PasswordRecoveryDto;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.UserRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceImpl;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
+import lombok.NonNull;
+import net.jcip.annotations.NotThreadSafe;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -65,6 +69,30 @@ public class UserController {
             return HttpStatus.OK;
         }
         return HttpStatus.NOT_FOUND;
+    }
+
+    @PostMapping("/socialSignup")
+    public ResponseEntity socialSignup(@RequestBody @NonNull UserDto userDto){
+        if(!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
+            // Creating user's account
+            UserDto user = new UserDto();
+            user.setId(System.currentTimeMillis());
+            user.setUsername(userDto.getUsername());
+            user.setName(userDto.getName());
+            user.setPassword(userDto.getPassword());
+            userServiceImpl.createUser(user);
+            //Generate JWT Token
+            final String token = jwtTokenUtil.generateToken(userDto);
+            return ResponseEntity.ok(new JwtTokenResponse(token));
+        }
+        else{
+            UserDto user = userServiceImpl.loadUserByUsername(userDto.getUsername());
+            user.setName(userDto.getName());
+            userServiceImpl.createUser(user);
+            //Generate JWT Token
+            final String token = jwtTokenUtil.generateToken(userDto);
+            return ResponseEntity.ok(new JwtTokenResponse(token));
+        }
     }
 
     @GetMapping("/myEmailFromToken/{text}")
