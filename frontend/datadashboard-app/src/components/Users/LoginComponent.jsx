@@ -44,17 +44,18 @@ class LoginComponent extends Component {
                 })
                 this.props.history.push('/');
             }
-        }).catch(
-            toast.error('Wrong email or password', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                draggable: true,
-                progress: undefined,
+            else {
+                toast.error('Wrong email or password', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                }
+                )
             }
-            )
-        )
+        })
     }
 
     validate(values) {
@@ -101,6 +102,7 @@ class LoginComponent extends Component {
     }
 
     handleSocialLoginFailure = (user) => {
+        console.log(user)
         toast.error('An error occured. Please try again!', {
             position: "top-right",
             autoClose: 3000,
