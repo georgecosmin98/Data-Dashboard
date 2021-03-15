@@ -71,7 +71,7 @@ public class UserController {
         return HttpStatus.NOT_FOUND;
     }
 
-    @PostMapping("/socialSignup")
+    @PostMapping("/socialsignup")
     public ResponseEntity socialSignup(@RequestBody @NonNull UserDto userDto){
         if(!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
             // Creating user's account

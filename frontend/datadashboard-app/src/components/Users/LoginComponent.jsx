@@ -31,9 +31,7 @@ class LoginComponent extends Component {
     }
 
     onSubmit(values) {
-        console.log("something")
         AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
-            console.log(response)
             if (response.status === 200) {
                 AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
                 toast.success('You have successfully logged in!', {
@@ -47,7 +45,6 @@ class LoginComponent extends Component {
                 this.props.history.push('/');
             }
         }).catch(response => {
-            console.log(response)
             toast.error('Wrong email or password', {
                 position: "top-right",
                 autoClose: 3000,
@@ -78,15 +75,29 @@ class LoginComponent extends Component {
     }
 
     handleSocialLoginSuccess = (user) => {
-        console.log(user._profile)
-        console.log(user);
-        toast.success('You have signed up successfully!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
+        AuthenticationService.authenticateWithSocialAccount(user._profile.email, user._profile.name).then(response => {
+            if (response.status === 200) {
+                AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.token);
+                toast.success('You have signed up successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.props.history.push('/');
+            }
+            else {
+                toast.error('An error occured. Please try again!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            }
         })
     }
 

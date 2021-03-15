@@ -85,17 +85,32 @@ class SignupComponent extends Component {
     }
 
     handleSocialLoginSuccess = (user) => {
-        console.log(user._profile)
-        console.log(user);
-        toast.success('You have signed up successfully!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
+        AuthenticationService.authenticateWithSocialAccount(user._profile.email, user._profile.name).then(response => {
+            if (response.status === 200) {
+                AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.token);
+                toast.success('You have signed up successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.props.history.push('/');
+            }
+            else {
+                toast.error('An error occured. Please try again!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            }
         })
     }
+
 
     handleSocialLoginFailure = (user) => {
         toast.error('An error occured. Please try again!', {
