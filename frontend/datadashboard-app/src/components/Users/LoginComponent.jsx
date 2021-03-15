@@ -44,7 +44,7 @@ class LoginComponent extends Component {
                 })
                 this.props.history.push('/');
             }
-        }).catch(response => {
+        }).catch(
             toast.error('Wrong email or password', {
                 position: "top-right",
                 autoClose: 3000,
@@ -54,7 +54,6 @@ class LoginComponent extends Component {
                 progress: undefined,
             }
             )
-        }
         )
     }
 
@@ -126,7 +125,7 @@ class LoginComponent extends Component {
                             onLoginSuccess={this.handleSocialLoginSuccess}
                             onLoginFailure={this.handleSocialLoginFailure}
                         >
-                            <img src={googleLogo} alt="Google" /> Sign up with Google
+                            <img src={googleLogo} alt="Google" /> Login with Google
                             </SocialButton>
 
                         <SocialButton
@@ -136,7 +135,7 @@ class LoginComponent extends Component {
                             onLoginSuccess={this.handleSocialLoginSuccess}
                             onLoginFailure={this.handleSocialLoginFailure}
                         >
-                            <img src={fbLogo} alt="Facebook" /> Sign up with Facebook
+                            <img src={fbLogo} alt="Facebook" /> Login with Facebook
                             </SocialButton>
                     </div>
                     <div className="login-separator">

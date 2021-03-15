@@ -1,19 +1,18 @@
 import axios from 'axios'
-import { BASE_BACKEND_URL } from '../Constants.js'
 
 const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 class AuthenticationService {
 
   signUpWithLocalAccount(username, name, password) {
-    return axios.post(`${BASE_BACKEND_URL}/users/signup`, { username, name, password });
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/signup`, { username, name, password });
   }
 
   logInWithLocalAccount(username, password) {
-    return axios.post(`${BASE_BACKEND_URL}/authenticate`, { username, password })
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/authenticate`, { username, password })
   }
 
   authenticateWithSocialAccount(username, name) {
-    return axios.post(`${BASE_BACKEND_URL}/users/socialsignup`, { username, name})
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/socialsignup`, { username, name })
   }
 
   isUserLoggedIn() {
@@ -25,7 +24,6 @@ class AuthenticationService {
   registerSuccesfulLoginWithJwt(name, token) {
     sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, name)
     this.axiosInterceptors(this.createJWTToken(token))
-    console.log(name)
   }
 
   createJWTToken(token) {
@@ -50,11 +48,11 @@ class AuthenticationService {
 
   // Recover Password
   forgotPassword(email) {
-    return axios.post(`${BASE_BACKEND_URL}/users/forgotpassword`, email, { headers: { "Content-Type": "text/plain" } })
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/forgotpassword`, email, { headers: { "Content-Type": "text/plain" } })
   }
 
   resetPassword(token, password) {
-    return axios.post(`${BASE_BACKEND_URL}/users/resetpassword`, { token, password });
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/resetpassword`, { token, password });
   }
 
 }
