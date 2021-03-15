@@ -32,7 +32,6 @@ class App extends Component {
                   <Route path="/" exact component={DashboardComponent} />
                   <Route path="/contact" exact component={ContactComponent} />
                   <Route path="/login" exact component={LoginComponent} />
-                  <Route path="/login/:id" exact component={LoginComponent} />
                   <Route path="/forgotpassword" exact component={ForgotPasswordComponent} />
                   <Route path="/resetpassword/:token" exact component={ResetPasswordComponent} />
                   <Route path="/signup" exact component={SignupComponent} />

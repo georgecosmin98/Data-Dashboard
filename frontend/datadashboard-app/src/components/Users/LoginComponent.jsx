@@ -1,12 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React, { Component } from 'react';
 import fbLogo from '../../img/fb-logo.png';
-import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
 import './Login.css'
 import { Link } from 'react-router-dom'
 import AuthenticationService from '../../api/AuthenticationService';
 import { toast } from 'react-toastify';
+import SocialButton from './SocialButton'
 
 class LoginComponent extends Component {
 
@@ -30,11 +30,7 @@ class LoginComponent extends Component {
         )
     }
 
-    componentDidMount() {
-        console.log(this.props.match.params);
-    }
-
-    onSubmit(values, { resetForm }) {
+    onSubmit(values) {
         console.log("something")
         AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
             console.log(response)
@@ -81,6 +77,30 @@ class LoginComponent extends Component {
         return errors
     }
 
+    handleSocialLoginSuccess = (user) => {
+        console.log(user._profile)
+        console.log(user);
+        toast.success('You have signed up successfully!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+        })
+    }
+
+    handleSocialLoginFailure = (user) => {
+        toast.error('An error occured. Please try again!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+        })
+    }
+
     render() {
         let { email, password } = this.state
         return (
@@ -88,12 +108,25 @@ class LoginComponent extends Component {
                 <div className="login-content">
                     <h1 className="login-title">Login to <span className="text-primary">Harta Poluare Brasov</span></h1>
                     <div className="social-login">
-                        <a className="btn-block social-btn google">
-                            <img src={googleLogo} alt="Google" /> Log in with Google</a>
-                        <a className="btn-block social-btn facebook">
-                            <img src={fbLogo} alt="Facebook" /> Log in with Facebook</a>
-                        <a className="btn-block social-btn github">
-                            <img src={githubLogo} alt="Github" /> Log in with Github</a>
+                        <SocialButton
+                            className="btn-block social-btn google"
+                            provider='google'
+                            appId={process.env.REACT_APP_GOOGLE_CLIENTID}
+                            onLoginSuccess={this.handleSocialLoginSuccess}
+                            onLoginFailure={this.handleSocialLoginFailure}
+                        >
+                            <img src={googleLogo} alt="Google" /> Sign up with Google
+                            </SocialButton>
+
+                        <SocialButton
+                            className="btn-block social-btn facebook"
+                            provider='facebook'
+                            appId={process.env.REACT_APP_FACEBOOK_CLIENTID}
+                            onLoginSuccess={this.handleSocialLoginSuccess}
+                            onLoginFailure={this.handleSocialLoginFailure}
+                        >
+                            <img src={fbLogo} alt="Facebook" /> Sign up with Facebook
+                            </SocialButton>
                     </div>
                     <div className="login-separator">
                         <span className="login-separator-text">OR</span>

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import logo from '../../img/logo.png';
 import { Link } from 'react-router-dom';
 import AuthenticationService from "../../api/AuthenticationService"
-import { BrowserRouter } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
 class HeaderComponent extends Component {

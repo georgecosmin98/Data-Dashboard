@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import fbLogo from '../../img/fb-logo.png';
-import githubLogo from '../../img/github-logo.png';
 import googleLogo from '../../img/google-logo.png';
 import './Login.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import AuthenticationService from "../../api/AuthenticationService"
 import UtilityService from "../../api/UtilityService"
 import { toast } from 'react-toastify';
+import SocialButton from './SocialButton'
 
 class SignupComponent extends Component {
     constructor(props) {
@@ -84,6 +84,30 @@ class SignupComponent extends Component {
         return errors
     }
 
+    handleSocialLoginSuccess = (user) => {
+        console.log(user._profile)
+        console.log(user);
+        toast.success('You have signed up successfully!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+        })
+    }
+
+    handleSocialLoginFailure = (user) => {
+        toast.error('An error occured. Please try again!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+        })
+    }
+
     render() {
         let { email, name, password } = this.state
         return (
@@ -91,12 +115,25 @@ class SignupComponent extends Component {
                 <div className="login-content">
                     <h1 className="login-title">Sign up to <span className="text-primary">Harta Poluare Brasov</span></h1>
                     <div className="social-login">
-                        <a className="btn-block social-btn google">
-                            <img src={googleLogo} alt="Google" /> Sign up with Google</a>
-                        <a className="btn-block social-btn facebook">
-                            <img src={fbLogo} alt="Facebook" /> Sign up with Facebook</a>
-                        <a className="btn-block social-btn github">
-                            <img src={githubLogo} alt="Github" /> Sign up with Github</a>
+                        <SocialButton
+                            className="btn-block social-btn google"
+                            provider='google'
+                            appId={process.env.REACT_APP_GOOGLE_CLIENTID}
+                            onLoginSuccess={this.handleSocialLoginSuccess}
+                            onLoginFailure={this.handleSocialLoginFailure}
+                        >
+                            <img src={googleLogo} alt="Google" /> Sign up with Google
+                            </SocialButton>
+
+                        <SocialButton
+                            className="btn-block social-btn facebook"
+                            provider='facebook'
+                            appId={process.env.REACT_APP_FACEBOOK_CLIENTID}
+                            onLoginSuccess={this.handleSocialLoginSuccess}
+                            onLoginFailure={this.handleSocialLoginFailure}
+                        >
+                            <img src={fbLogo} alt="Facebook" /> Sign up with Facebook
+                            </SocialButton>
                     </div>
                     <div className="login-separator">
                         <span className="login-separator-text">OR</span>
