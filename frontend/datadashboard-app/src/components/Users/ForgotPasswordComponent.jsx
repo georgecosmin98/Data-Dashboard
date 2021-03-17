@@ -9,12 +9,15 @@ class ForgotPasswordComponent extends Component {
         super(props)
 
         this.state = {
-            email: ''
+            email: '',
+            isEnable: true
         }
         this.onSubmit = this.onSubmit.bind(this);
+        this.validate = this.validate.bind(this);
     }
 
     onSubmit(values, { resetForm }) {
+        this.setState({ isEnable: false })
         AuthenticationService.forgotPassword(values.email).then(response => {
             console.log(response)
             if (response.data === "OK") {
@@ -26,9 +29,10 @@ class ForgotPasswordComponent extends Component {
                     draggable: true,
                     progress: undefined,
                 })
+                this.setState({ isEnable: true })
                 resetForm();
             }
-            else
+            else {
                 toast.error('An error occured. Please try again.', {
                     position: "top-right",
                     autoClose: 3000,
@@ -38,7 +42,18 @@ class ForgotPasswordComponent extends Component {
                     progress: undefined,
                 }
                 )
+                this.setState({ isEnable: true })
+            }
         })
+    }
+
+    validate(values) {
+        let errors = {}
+
+        if (!values.email) {
+            errors.email = "Enter a Email address!"
+        }
+        return errors
     }
 
     render() {
@@ -56,16 +71,17 @@ class ForgotPasswordComponent extends Component {
                         validateOnChange={this.handleChange}
                         validateOnBlur={false}
                         validate={this.validate}
+                        setSubmitting={false}
                     >
                         {(props) => (
                             <Form>
                                 <ErrorMessage name="email" component="div"
                                     className="alert alert-warning" />
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="text" name="email" placeholder="Email Address" onKeyUp={this.handleChange} />
+                                    <Field className="input" type="email" name="email" placeholder="Email Address"/>
                                 </fieldset>
                                 <div className="btn-center">
-                                    <button className="btn-reset-password" type="submit">Request Password Reset</button>
+                                    {this.state.isEnable && <button className="btn-reset-password" type="submit">Request Password Reset</button>}
                                 </div>
                             </Form>
                         )
