@@ -16,6 +16,25 @@ class ResetPasswordComponent extends Component {
         this.validate = this.validate.bind(this);
     }
 
+    componentDidMount() {
+        console.log(this.props.match.params.token)
+        AuthenticationService.isTokenExpired(this.props.match.params.token).then(
+            response => {
+                console.log(response.data);
+                if (response.data === "BAD_REQUEST")
+                    toast.error('Your reset attempt expired! Please try again!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        draggable: true,
+                        progress: undefined,
+                    }
+                    )
+            }
+        )
+    }
+
     onSubmit(values, { resetForm }) {
         console.log(values)
         if (values.password === values.confirmPassword) {

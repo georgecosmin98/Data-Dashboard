@@ -55,5 +55,8 @@ class AuthenticationService {
     return axios.post(`${process.env.REACT_APP_BASE_URL}/users/resetpassword`, { token, password });
   }
 
+  isTokenExpired(token){
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/isTokenExpired`, token);
+  }
 }
 export default new AuthenticationService()
