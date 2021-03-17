@@ -32,6 +32,7 @@ class LoginComponent extends Component {
 
     onSubmit(values) {
         AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
+            console.log(response)
             if (response.status === 200) {
                 AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
                 toast.success('You have successfully logged in!', {
@@ -55,6 +56,16 @@ class LoginComponent extends Component {
                 }
                 )
             }
+        }).catch(response => {
+            toast.error('Wrong email or password', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+            }
+            )
         })
     }
 
@@ -76,6 +87,7 @@ class LoginComponent extends Component {
 
     handleSocialLoginSuccess = (user) => {
         AuthenticationService.authenticateWithSocialAccount(user._profile.email, user._profile.name).then(response => {
+            console.log(response)
             if (response.status === 200) {
                 AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.token);
                 toast.success('You have signed up successfully!', {
