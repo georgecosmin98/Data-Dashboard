@@ -310,8 +310,9 @@ body {
   font-weight: bold;
 }
 
-
-
+.Toastify__toast-container {
+  margin-top: 29px;
+}
 /* Mobile Style */
 
 @media (max-width: 768px) {
@@ -347,6 +348,12 @@ body {
   .btn-login {
     width: 55%;
     padding: 15px 15px;
+  }
+
+  .Toastify__toast {
+    width: 65%;
+    margin-left: 31%;
+    margin-top: 50px;
   }
 }
 
