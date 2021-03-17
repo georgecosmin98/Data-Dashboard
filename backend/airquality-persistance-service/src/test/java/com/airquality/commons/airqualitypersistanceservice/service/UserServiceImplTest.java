@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -31,8 +32,8 @@ public class UserServiceImplTest {
 
     @Before
     public void setUp() {
-        firstUser = new UserDto(1L, "First User Name", "First User Username", "First User Password", "First User Reset Token");
-        secondUser = new UserDto(2L, "Second User Name", "Second User Username", "Second User Password", "Second User Reset Token");
+        firstUser = new UserDto(1L, "First User Name", "First User Username", "First User Password", "First User Reset Token", new Date());
+        secondUser = new UserDto(2L, "Second User Name", "Second User Username", "Second User Password", "Second User Reset Token",new Date());
     }
 
     @Test

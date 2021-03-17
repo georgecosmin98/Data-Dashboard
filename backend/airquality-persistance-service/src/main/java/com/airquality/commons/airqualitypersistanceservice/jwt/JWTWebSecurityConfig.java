@@ -56,7 +56,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                     .and()
                     .ignoring().antMatchers("/users/signup","/users/socialsignup") //let guest users to signup
                     .and()
-                    .ignoring().antMatchers("/users/forgotpassword","/users/resetpassword"); //let user change password without JWT Token
+                    .ignoring().antMatchers("/users/forgotpassword","/users/resetpassword","/users/isTokenExpired"); //let user change password without JWT Token
 
         }
     }

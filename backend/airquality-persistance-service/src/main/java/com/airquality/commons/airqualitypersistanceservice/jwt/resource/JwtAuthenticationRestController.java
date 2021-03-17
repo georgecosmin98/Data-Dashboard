@@ -5,11 +5,11 @@ import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -28,13 +28,13 @@ public class JwtAuthenticationRestController {
     @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
     public ResponseEntity createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) {
         //Load user information from database
-        UserDto userDto = userService.loadUserByUsername(authenticationRequest.getUsername());
+        Optional<UserDto> userDto = userService.findUserByUsername(authenticationRequest.getUsername());
         //Verify if requested user have correct credentials
-        if (userDto.getPassword().equals(authenticationRequest.getPassword())) {
-            final String token = jwtTokenUtil.generateToken(userDto);
+        if (userDto.isPresent()&&userDto.get().getPassword().equals(authenticationRequest.getPassword())) {
+            final String token = jwtTokenUtil.generateToken(userDto.get());
             return ResponseEntity.ok(new JwtTokenResponse(token));
         } else
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().build();
     }
 
     @RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)

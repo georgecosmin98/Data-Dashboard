@@ -8,6 +8,8 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 
+import java.util.Date;
+
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
@@ -31,4 +33,7 @@ public class UserDto {
 
     @Field(name = "reset_token")
     private String resetToken;
+
+    @Field(name = "expiration_date")
+    private Date expirationDate;
 }

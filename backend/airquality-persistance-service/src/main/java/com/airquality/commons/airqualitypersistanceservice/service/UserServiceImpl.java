@@ -3,14 +3,19 @@ package com.airquality.commons.airqualitypersistanceservice.service;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.UserRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.api.UserService;
+import io.jsonwebtoken.Clock;
+import io.jsonwebtoken.impl.DefaultClock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private Clock clock = DefaultClock.INSTANCE;
 
     @Autowired
     private UserRepository userRepository;
@@ -28,7 +33,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(String.format("User not found '%s'.", username));
         }
 
-        return new UserDto(userDto.get().getId(), userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword(), userDto.get().getResetToken());
+        return new UserDto(userDto.get().getId(), userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword(), userDto.get().getResetToken(), userDto.get().getExpirationDate());
     }
 
     @Override
@@ -38,7 +43,7 @@ public class UserServiceImpl implements UserService {
         if (userDto == null) {
             throw new UsernameNotFoundException(String.format("Token not found '%s'.", resetToken));
         }
-        return new UserDto(userDto.get().getId(), userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword(), userDto.get().getResetToken());
+        return new UserDto(userDto.get().getId(), userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword(), userDto.get().getResetToken(), userDto.get().getExpirationDate());
     }
 
     @Override
@@ -51,5 +56,9 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDto> findUserByResetToken(String resetToken) {
         Optional<UserDto> userDto = userRepository.findByResetToken(resetToken);
         return userDto;
+    }
+
+    public Boolean isTokenExpired(Date expirationDate) {
+        return expirationDate.before(clock.now());
     }
 }
