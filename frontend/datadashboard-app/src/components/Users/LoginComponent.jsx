@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import AuthenticationService from '../../api/AuthenticationService';
 import { toast } from 'react-toastify';
 import SocialButton from './SocialButton'
+import Loader from "react-loader-spinner";
 
 class LoginComponent extends Component {
 
@@ -15,7 +16,8 @@ class LoginComponent extends Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            isEnable: true
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -31,6 +33,7 @@ class LoginComponent extends Component {
     }
 
     onSubmit(values) {
+        this.setState({ isEnable: false })
         AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
             console.log(response)
             if (response.status === 200) {
@@ -43,6 +46,7 @@ class LoginComponent extends Component {
                     draggable: true,
                     progress: undefined,
                 })
+                this.setState({ isEnable: true })
                 this.props.history.push('/');
             }
             else {
@@ -55,9 +59,10 @@ class LoginComponent extends Component {
                     progress: undefined,
                 }
                 )
+                this.setState({ isEnable: true })
             }
         }).catch(response => {
-            toast.error('Wrong email or password', {
+            toast.error('An error occured. Please try again.', {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -66,6 +71,7 @@ class LoginComponent extends Component {
                 progress: undefined,
             }
             )
+            this.setState({ isEnable: true })
         })
     }
 
@@ -175,7 +181,13 @@ class LoginComponent extends Component {
                                     <Field className="input" type="password" name="password" placeholder="Password" />
                                 </fieldset>
                                 <div className="btn-center">
-                                    <button className="btn-login" type="submit">Login</button>
+                                    {this.state.isEnable && <button className="btn-login" type="submit">Login</button>}
+                                    {!this.state.isEnable && <Loader
+                                        type="Puff"
+                                        color="#00BFFF"
+                                        height={50}
+                                        width={50}
+                                    />}
                                 </div>
                             </Form>
                         )

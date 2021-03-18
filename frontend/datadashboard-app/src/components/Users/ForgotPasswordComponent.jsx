@@ -20,7 +20,6 @@ class ForgotPasswordComponent extends Component {
     onSubmit(values, { resetForm }) {
         this.setState({ isEnable: false })
         AuthenticationService.forgotPassword(values.email).then(response => {
-            console.log(response)
             if (response.data === "OK") {
                 toast.success('An email with account recovery instructions has been sent to your email address', {
                     position: "top-right",
@@ -100,7 +99,6 @@ class ForgotPasswordComponent extends Component {
                                         color="#00BFFF"
                                         height={50}
                                         width={50}
-                                    // timeout={3000} //3 secs
                                     />}
                                 </div>
                             </Form>
