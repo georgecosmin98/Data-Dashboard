@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Login.css'
 import AuthenticationService from '../../api/AuthenticationService';
 import { toast } from 'react-toastify';
+import Loader from "react-loader-spinner";
 
 class ForgotPasswordComponent extends Component {
     constructor(props) {
@@ -44,7 +45,19 @@ class ForgotPasswordComponent extends Component {
                 )
                 this.setState({ isEnable: true })
             }
-        })
+        }).catch(
+            (error) => {
+                toast.error('An error occured. Please try again.', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.setState({ isEnable: true })
+            })
+
     }
 
     validate(values) {
@@ -78,10 +91,17 @@ class ForgotPasswordComponent extends Component {
                                 <ErrorMessage name="email" component="div"
                                     className="alert alert-warning" />
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="email" name="email" placeholder="Email Address"/>
+                                    <Field className="input" type="email" name="email" placeholder="Email Address" />
                                 </fieldset>
                                 <div className="btn-center">
                                     {this.state.isEnable && <button className="btn-reset-password" type="submit">Request Password Reset</button>}
+                                    {!this.state.isEnable && <Loader
+                                        type="Puff"
+                                        color="#00BFFF"
+                                        height={50}
+                                        width={50}
+                                    // timeout={3000} //3 secs
+                                    />}
                                 </div>
                             </Form>
                         )
