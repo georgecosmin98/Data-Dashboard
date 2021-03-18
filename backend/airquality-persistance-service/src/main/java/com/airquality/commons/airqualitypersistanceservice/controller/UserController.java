@@ -6,8 +6,6 @@ import com.airquality.commons.airqualitypersistanceservice.model.PasswordRecover
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceImpl;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
-import io.jsonwebtoken.Clock;
-import io.jsonwebtoken.impl.DefaultClock;
 import lombok.NonNull;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin("*")
 public class UserController {
-
-    private Clock clock = DefaultClock.INSTANCE;
 
     @Autowired
     private UserServiceImpl userServiceImpl;
@@ -56,7 +51,7 @@ public class UserController {
             String randomToken = RandomStringUtils.randomAlphanumeric(16);
             userDto.get().setResetToken(randomToken);
             //Add 1 hour valability for reset token
-            userDto.get().setExpirationDate(new Date(clock.now().getTime() + 3600 * 1000));
+            userDto.get().setExpirationDate(userServiceImpl.generateExpirationDateForToken());
             userServiceImpl.createUser(userDto.get());
             emailService.sendForgotPasswordMail(email, randomToken, "http://hartapoluarebrasov.ro");
             return HttpStatus.OK;

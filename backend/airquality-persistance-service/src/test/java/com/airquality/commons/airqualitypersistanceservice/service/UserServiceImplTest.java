@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceImplTest {
 
-    private UserDto firstUser, secondUser;
+    private UserDto firstUser;
 
     @Mock
     UserRepository userRepository;
@@ -33,8 +33,7 @@ public class UserServiceImplTest {
     @Before
     public void setUp() {
         firstUser = new UserDto(1L, "First User Name", "First User Username", "First User Password", "First User Reset Token", new Date());
-        secondUser = new UserDto(2L, "Second User Name", "Second User Username", "Second User Password", "Second User Reset Token",new Date());
-    }
+     }
 
     @Test
     public void shouldReturnCorrectCreatedUser(){

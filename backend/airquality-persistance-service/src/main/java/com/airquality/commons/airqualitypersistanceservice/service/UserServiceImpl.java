@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private Clock clock = DefaultClock.INSTANCE;
-
+    private static final int expirationTimeInSeconds = 3600;
     @Autowired
     private UserRepository userRepository;
 
@@ -58,6 +58,12 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    @Override
+    public Date generateExpirationDateForToken(){
+        return new Date(clock.now().getTime() + expirationTimeInSeconds * 1000);
+    }
+
+    @Override
     public Boolean isTokenExpired(Date expirationDate) {
         return expirationDate.before(clock.now());
     }

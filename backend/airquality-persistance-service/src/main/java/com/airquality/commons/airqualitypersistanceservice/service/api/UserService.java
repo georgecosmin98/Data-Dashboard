@@ -2,6 +2,7 @@ package com.airquality.commons.airqualitypersistanceservice.service.api;
 
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 
+import java.util.Date;
 import java.util.Optional;
 
 public interface UserService {
@@ -15,4 +16,8 @@ public interface UserService {
     Optional<UserDto> findUserByUsername(String username);
 
     Optional<UserDto> findUserByResetToken(String resetToken);
+
+    Date generateExpirationDateForToken();
+
+    Boolean isTokenExpired(Date expirationDate);
 }
