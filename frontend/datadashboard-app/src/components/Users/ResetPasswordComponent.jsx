@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Login.css'
 import AuthenticationService from '../../api/AuthenticationService';
 import { toast } from 'react-toastify';
+import Loader from "react-loader-spinner";
 
 class ResetPasswordComponent extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class ResetPasswordComponent extends Component {
 
         this.state = {
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            isEnable: true
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.validate = this.validate.bind(this);
@@ -20,8 +22,7 @@ class ResetPasswordComponent extends Component {
         console.log(this.props.match.params.token)
         AuthenticationService.isTokenExpired(this.props.match.params.token).then(
             response => {
-                console.log(response.data);
-                if (response.data === "BAD_REQUEST")
+                if (response.data === "BAD_REQUEST") {
                     toast.error('Your reset attempt expired! Please try again!', {
                         position: "top-right",
                         autoClose: 3000,
@@ -31,12 +32,14 @@ class ResetPasswordComponent extends Component {
                         progress: undefined,
                     }
                     )
+                    this.props.history.push('/forgotpassword');
+                }
             }
         )
     }
 
     onSubmit(values, { resetForm }) {
-        console.log(values)
+        this.setState({ isEnable: false })
         if (values.password === values.confirmPassword) {
             AuthenticationService.resetPassword(this.props.match.params.token, values.password).then(response => {
                 console.log(response)
@@ -49,10 +52,11 @@ class ResetPasswordComponent extends Component {
                         draggable: true,
                         progress: undefined,
                     })
+                    this.setState({ isEnable: true })
                     this.props.history.push('/login');
                     resetForm();
                 }
-                else
+                else {
                     toast.error('An error occured. Please try again.', {
                         position: "top-right",
                         autoClose: 3000,
@@ -60,11 +64,12 @@ class ResetPasswordComponent extends Component {
                         closeOnClick: true,
                         draggable: true,
                         progress: undefined,
-                    }
-                    )
+                    })
+                    this.setState({ isEnable: true })
+                }
             })
         }
-        else
+        else {
             toast.error('Password and Confirm Password do not match', {
                 position: "top-right",
                 autoClose: 3000,
@@ -73,6 +78,9 @@ class ResetPasswordComponent extends Component {
                 draggable: true,
                 progress: undefined,
             })
+            this.setState({ isEnable: true })
+            resetForm();
+        }
     }
 
     validate(values) {
@@ -118,7 +126,13 @@ class ResetPasswordComponent extends Component {
                                     <Field className="input" type="text" name="confirmPassword" placeholder="Confirm Password" onKeyUp={this.handleChange} />
                                 </fieldset>
                                 <div className="btn-center">
-                                    <button className="btn-reset-password" type="submit">Reset Password</button>
+                                    {this.state.isEnable && <button className="btn-reset-password" type="submit">Reset Password</button>}
+                                    {!this.state.isEnable && <Loader
+                                        type="Puff"
+                                        color="#00BFFF"
+                                        height={50}
+                                        width={50}
+                                    />}
                                 </div>
                             </Form>
                         )

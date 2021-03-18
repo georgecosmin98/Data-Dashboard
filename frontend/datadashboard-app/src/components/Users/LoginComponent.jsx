@@ -93,7 +93,6 @@ class LoginComponent extends Component {
 
     handleSocialLoginSuccess = (user) => {
         AuthenticationService.authenticateWithSocialAccount(user._profile.email, user._profile.name).then(response => {
-            console.log(response)
             if (response.status === 200) {
                 AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.token);
                 toast.success('You have signed up successfully!', {
@@ -120,7 +119,6 @@ class LoginComponent extends Component {
     }
 
     handleSocialLoginFailure = (user) => {
-        console.log(user)
         toast.error('An error occured. Please try again!', {
             position: "top-right",
             autoClose: 3000,

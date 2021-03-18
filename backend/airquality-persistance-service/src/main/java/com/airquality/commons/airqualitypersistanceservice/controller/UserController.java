@@ -67,7 +67,7 @@ public class UserController {
     @PostMapping("/resetpassword")
     public HttpStatus resetPassword(@RequestBody PasswordRecoveryDto passwordRecoveryDto) {
         Optional<UserDto> userDto = userServiceImpl.findUserByResetToken(passwordRecoveryDto.getToken());
-        if (userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("") && userServiceImpl.isTokenExpired(userDto.get().getExpirationDate())) {
+        if (userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("") && !userServiceImpl.isTokenExpired(userDto.get().getExpirationDate())) {
             userDto.get().setPassword(passwordRecoveryDto.getPassword());
             userDto.get().setResetToken("");
             userServiceImpl.createUser(userDto.get());
