@@ -7,6 +7,7 @@ import AuthenticationService from "../../api/AuthenticationService"
 import UtilityService from "../../api/UtilityService"
 import { toast } from 'react-toastify';
 import SocialButton from './SocialButton'
+import Loader from "react-loader-spinner";
 
 class SignupComponent extends Component {
     constructor(props) {
@@ -15,7 +16,8 @@ class SignupComponent extends Component {
         this.state = {
             email: '',
             name: '',
-            password: ''
+            password: '',
+            isEnable: true
         }
         this.onSubmit = this.onSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -31,6 +33,7 @@ class SignupComponent extends Component {
     }
 
     onSubmit(values) {
+        this.setState({ isEnable: false })
         UtilityService.verifyEmail(values.email)
             .then(response => {
                 console.log(response)
@@ -48,6 +51,19 @@ class SignupComponent extends Component {
                                     draggable: true,
                                     progress: undefined,
                                 })
+                                this.setState({ isEnable: true })
+                            }
+                            else {
+                                toast.error('Email already in use. Reset your password or login!', {
+                                    position: "top-right",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                })
+                                this.setState({ isEnable: true })
+                                this.props.history.push('/login')
                             }
                         }
                         )
@@ -61,6 +77,7 @@ class SignupComponent extends Component {
                         draggable: true,
                         progress: undefined,
                     })
+                    this.setState({ isEnable: true })
                 }
             })
     }
@@ -178,7 +195,13 @@ class SignupComponent extends Component {
                                     <Field className="input" type="password" name="password" placeholder="Password" />
                                 </fieldset>
                                 <div className="btn-center">
-                                    <button className="btn-login" type="submit">Sign Up</button>
+                                    {this.state.isEnable && <button className="btn-login" type="submit">Sign Up</button>}
+                                    {!this.state.isEnable && <Loader
+                                        type="Puff"
+                                        color="#00BFFF"
+                                        height={50}
+                                        width={50}
+                                    />}
                                 </div>
                             </Form>
                         )
