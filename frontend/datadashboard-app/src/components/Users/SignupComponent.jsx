@@ -36,7 +36,6 @@ class SignupComponent extends Component {
         this.setState({ isEnable: false })
         UtilityService.verifyEmail(values.email)
             .then(response => {
-                console.log(response)
                 if (response.data === "OK") {
                     AuthenticationService.signUpWithLocalAccount(values.email, values.name, values.password)
                         .then(response => {

@@ -5,6 +5,7 @@ import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class JwtAuthenticationRestController {
             final String token = jwtTokenUtil.generateToken(userDto.get());
             return ResponseEntity.ok(new JwtTokenResponse(token));
         } else
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)
@@ -48,7 +49,7 @@ public class JwtAuthenticationRestController {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
             return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
         } else {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.noContent().build();
         }
     }
 }
