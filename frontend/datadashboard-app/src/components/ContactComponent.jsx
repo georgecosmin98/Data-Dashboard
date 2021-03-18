@@ -3,6 +3,7 @@ import ContactService from '../api/contact/ContactService'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import UtilityService from '../api/UtilityService';
 import { toast } from 'react-toastify';
+import Loader from "react-loader-spinner";
 
 class ContactComponent extends Component {
 
@@ -13,12 +14,14 @@ class ContactComponent extends Component {
             subject: '',
             email: '',
             message: '',
+            isEnable: true
         }
         this.onSubmit = this.onSubmit.bind(this)
         this.validate = this.validate.bind(this)
     }
 
     onSubmit(values, { resetForm }) {
+        this.setState({ isEnable: false })
         UtilityService.verifyEmail(values.email)
             .then(response => {
                 if (response.data === "OK") {
@@ -32,6 +35,7 @@ class ContactComponent extends Component {
                         progress: undefined,
                     })
                     resetForm();
+                    this.setState({ isEnable: true })
                 }
                 else {
                     toast.error('Please enter a valid email address!', {
@@ -42,6 +46,7 @@ class ContactComponent extends Component {
                         draggable: true,
                         progress: undefined,
                     })
+                    this.setState({ isEnable: true })
                 }
             })
     }
@@ -102,7 +107,13 @@ class ContactComponent extends Component {
                                         <Field className="textarea" component="textarea" type="text" name="message" />
                                     </fieldset>
                                     <div className="btn-center">
-                                        <button className="btn" type="submit">Submit</button>
+                                        {this.state.isEnable && <button className="btn" type="submit">Submit</button>}
+                                        {!this.state.isEnable && <Loader
+                                            type="Puff"
+                                            color="#00BFFF"
+                                            height={50}
+                                            width={50}
+                                        />}
                                     </div>
                                 </Form>
                             )
