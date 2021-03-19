@@ -5,8 +5,9 @@ import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,19 +24,26 @@ public class JwtAuthenticationRestController {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     private UserServiceImpl userService;
 
     //In this method we create authentication toekn
     @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
-    public ResponseEntity createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) {
+    public ResponseEntity createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) throws Exception {
+        //Verify if requested user have correct credentials
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername()
+                    , authenticationRequest.getPassword()));
+        } catch (Exception e) {
+            //throw new Exception("USER_DISABLED", e);
+            return ResponseEntity.noContent().build();
+        }
         //Load user information from database
         Optional<UserDto> userDto = userService.findUserByUsername(authenticationRequest.getUsername());
-        //Verify if requested user have correct credentials
-        if (userDto.isPresent()&&userDto.get().getPassword().equals(authenticationRequest.getPassword())) {
-            final String token = jwtTokenUtil.generateToken(userDto.get());
-            return ResponseEntity.ok(new JwtTokenResponse(token));
-        } else
-            return ResponseEntity.noContent().build();
+        final String token = jwtTokenUtil.generateToken(userDto.get());
+        return ResponseEntity.ok(new JwtTokenResponse(token));
     }
 
     @RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)

@@ -33,15 +33,15 @@ public class UserServiceImplTest {
     @Before
     public void setUp() {
         firstUser = new UserDto(1L, "First User Name", "First User Username", "First User Password", "First User Reset Token", new Date());
-     }
+    }
 
     @Test
-    public void shouldReturnCorrectCreatedUser(){
+    public void shouldReturnCorrectCreatedUser() {
         //Call method we want to test
         userService.createUser(firstUser);
 
         //Verify number of invocations method
-        verify(userRepository,times(1)).save(firstUser);
+        verify(userRepository, times(1)).save(firstUser);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class UserServiceImplTest {
 
         //Call method loadUserByResetToken we want to test
         //and store properties into UserDto object
-        Optional <UserDto> userToTest = userService.findUserByResetToken(firstUser.getResetToken());
+        Optional<UserDto> userToTest = userService.findUserByResetToken(firstUser.getResetToken());
 
         //Verify if the method was called
         verify(userRepository).findByResetToken(firstUser.getResetToken());

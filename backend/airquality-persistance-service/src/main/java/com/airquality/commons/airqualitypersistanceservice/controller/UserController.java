@@ -11,6 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -29,15 +30,22 @@ public class UserController {
     @Autowired
     private EmailServiceImpl emailService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/signup")
     public HttpStatus registerUser(@RequestBody UserDto userDto) {
+        //Verify if password is too short
+        if(userDto.getPassword().length()<5)
+            return HttpStatus.BAD_REQUEST;
+
         if (!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
             // Creating user's account
             UserDto user = new UserDto();
             user.setId(System.currentTimeMillis());
             user.setUsername(userDto.getUsername());
             user.setName(userDto.getName());
-            user.setPassword(userDto.getPassword());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userServiceImpl.createUser(user);
             return HttpStatus.OK;
         }
@@ -61,9 +69,12 @@ public class UserController {
 
     @PostMapping("/resetpassword")
     public HttpStatus resetPassword(@RequestBody PasswordRecoveryDto passwordRecoveryDto) {
+        //Verify if password is too short
+        if(passwordRecoveryDto.getPassword().length()<5)
+            return HttpStatus.BAD_REQUEST;
         Optional<UserDto> userDto = userServiceImpl.findUserByResetToken(passwordRecoveryDto.getToken());
         if (userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("") && !userServiceImpl.isTokenExpired(userDto.get().getExpirationDate())) {
-            userDto.get().setPassword(passwordRecoveryDto.getPassword());
+            userDto.get().setPassword(passwordEncoder.encode(passwordRecoveryDto.getPassword()));
             userDto.get().setResetToken("");
             userServiceImpl.createUser(userDto.get());
             return HttpStatus.OK;
