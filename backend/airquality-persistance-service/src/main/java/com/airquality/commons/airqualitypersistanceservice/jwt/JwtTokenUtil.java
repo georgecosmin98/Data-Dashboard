@@ -11,6 +11,7 @@ import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClock;
+import lombok.extern.log4j.Log4j2;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Log4j2
 public class JwtTokenUtil {
 
     private Clock clock = DefaultClock.INSTANCE;
@@ -77,10 +79,12 @@ public class JwtTokenUtil {
         final Date createdDate = clock.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
 
+        //Get all claims from token and update issued date and expiration date
         final Claims claims = getAllClaimsFromToken(token);
         claims.setIssuedAt(createdDate);
         claims.setExpiration(expirationDate);
 
+        //Return refreshed token
         return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
@@ -94,7 +98,7 @@ public class JwtTokenUtil {
                     .build();
             DecodedJWT jwt = verifier.verify(token);
         }catch(JWTVerificationException exception){
-            //log
+            log.error("Invalid JWT token provided");
             return false;
         }
         return (!isTokenExpired(token));

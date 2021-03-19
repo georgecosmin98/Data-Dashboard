@@ -3,6 +3,7 @@ package com.airquality.commons.airqualitypersistanceservice.jwt.resource;
 import com.airquality.commons.airqualitypersistanceservice.jwt.JwtTokenUtil;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
+@Log4j2
 public class JwtAuthenticationRestController {
 
     @Value("${jwt.http.request.header}")
@@ -37,7 +39,7 @@ public class JwtAuthenticationRestController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername()
                     , authenticationRequest.getPassword()));
         } catch (Exception e) {
-            //throw new Exception("USER_DISABLED", e);
+            log.info("User with invalid credentials trying to login ", e);
             return ResponseEntity.noContent().build();
         }
         //Load user information from database

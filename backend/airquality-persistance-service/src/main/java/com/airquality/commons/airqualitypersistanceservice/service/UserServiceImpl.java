@@ -5,6 +5,7 @@ import com.airquality.commons.airqualitypersistanceservice.repository.UserReposi
 import com.airquality.commons.airqualitypersistanceservice.service.api.UserService;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.impl.DefaultClock;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class UserServiceImpl implements UserService {
 
     private Clock clock = DefaultClock.INSTANCE;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserDto> userDto = userRepository.findByUsername(username);
 
         if (userDto == null) {
+            log.info("User not found: " + username);
             throw new UsernameNotFoundException(String.format("User not found '%s'.", username));
         }
 
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserDto> userDto = userRepository.findByResetToken(resetToken);
 
         if (userDto == null) {
+            log.info("Token not found: " + resetToken);
             throw new UsernameNotFoundException(String.format("Token not found '%s'.", resetToken));
         }
         return new UserDto(userDto.get().getId(), userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword(), userDto.get().getResetToken(), userDto.get().getExpirationDate());
