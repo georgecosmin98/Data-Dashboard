@@ -42,7 +42,6 @@ public class UserController {
         if (!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
             // Creating user's account
             UserDto user = new UserDto();
-            user.setId(System.currentTimeMillis());
             user.setUsername(userDto.getUsername());
             user.setName(userDto.getName());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -87,7 +86,6 @@ public class UserController {
         if (!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
             // Creating user's account
             UserDto user = new UserDto();
-            user.setId(System.currentTimeMillis());
             user.setUsername(userDto.getUsername());
             user.setName(userDto.getName());
             user.setPassword(userDto.getPassword());

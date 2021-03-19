@@ -13,14 +13,14 @@ import java.util.Date;
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
-@Document(indexName = "test-user123")
+@Document(indexName = "test-user1234")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
 
     @Id
     @ReadOnlyProperty
-    private Long id;
+    private String id;
 
     @Field(name = "name")
     private String name;
