@@ -36,39 +36,37 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(String.format("User not found '%s'.", username));
         }
 
-        return new UserDto(userDto.get().getId(), userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword(), userDto.get().getResetToken(), userDto.get().getExpirationDate());
+        return userDto.get();
     }
 
     @Override
-    public UserDto loadUserByResetToken(String resetToken) {
-        Optional<UserDto> userDto = userRepository.findByResetToken(resetToken);
-
-        if (userDto == null) {
-            log.info("Token not found: " + resetToken);
-            throw new UsernameNotFoundException(String.format("Token not found '%s'.", resetToken));
-        }
-        return new UserDto(userDto.get().getId(), userDto.get().getName(), userDto.get().getUsername(), userDto.get().getPassword(), userDto.get().getResetToken(), userDto.get().getExpirationDate());
-    }
-
-    @Override
+    //Method findByUsername is similar with loadByUsername
+    //but this return an Optional object instead of an UserDto object
     public Optional<UserDto> findUserByUsername(String username) {
         Optional<UserDto> userDto = userRepository.findByUsername(username);
         return userDto;
     }
 
     @Override
+    //Find user by reset token
     public Optional<UserDto> findUserByResetToken(String resetToken) {
         Optional<UserDto> userDto = userRepository.findByResetToken(resetToken);
+        if (userDto == null) {
+            log.info("Token not found: " + resetToken);
+            throw new UsernameNotFoundException(String.format("Token not found '%s'.", resetToken));
+        }
         return userDto;
     }
 
     @Override
-    public Date generateExpirationDateForToken(){
+    //Generate expiration date in unix epoch (seconds)
+    public Date generateExpirationDateForToken() {
         return new Date(clock.now().getTime() + expirationTimeInSeconds * 1000);
     }
 
     @Override
-    public Boolean isTokenExpired(Date expirationDate) {
+    //Verify if reset token is expired
+    public Boolean isResetTokenExpired(Date expirationDate) {
         return expirationDate.before(clock.now());
     }
 }

@@ -32,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
         } catch (MailSendException ex) {
             log.error("Failed to send confirmation mail");
         }
+
         constructSimpleMailMessage(from, mailTo, subject, message);
         try {
             javaMailSender.send(simpleMailMessage);
@@ -93,6 +94,7 @@ public class EmailServiceImpl implements EmailService {
             responseFromAPI = s.useDelimiter("\\A").next();
             System.out.println(responseFromAPI);
         } catch (Exception ex) {
+            log.error("Sending request from backend to WhoIsXmlAPI failed: ", ex);
             return false;
         }
         return validateEmailAddress(responseFromAPI);

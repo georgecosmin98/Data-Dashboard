@@ -8,6 +8,4 @@ public interface BrasovDevService {
 
     List<BrasovDevDto> findBySensor(String sensorName);
 
-    List<BrasovDevDto> findByTimestampIsBetween(int firstDate, int lastDate);
-
 }

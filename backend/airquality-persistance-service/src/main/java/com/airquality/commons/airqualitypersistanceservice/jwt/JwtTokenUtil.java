@@ -31,13 +31,15 @@ public class JwtTokenUtil {
     private String secret;
 
     @Value("${jwt.token.expiration.in.seconds}")
-    private Long expiration;
+    private Long expirationTime;
 
+    //Decode JWT Token to get email
     public String getEmailFromToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
         return jwt.getSubject();
     }
 
+    //Decode JWT Token to get expiration date from token
     public Date getExpirationDateFromToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
         return jwt.getExpiresAt();
@@ -70,11 +72,13 @@ public class JwtTokenUtil {
                 .setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
+    //Verify if a token can be refreshed
     public Boolean canTokenBeRefreshed(String token) {
         //If token is expired, token can't be refreshed!
         return (!isTokenExpired(token));
     }
 
+    //Refresh JWT Token
     public String refreshToken(String token) {
         final Date createdDate = clock.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
@@ -90,14 +94,16 @@ public class JwtTokenUtil {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         UserDetails user = userDetails;
+        //Extract email from given token
         final String email = getEmailFromToken(token);
-        try{
+        //Verify if JWT Token is valid
+        try {
             Algorithm algorithm = Algorithm.HMAC512(new Base64(true).decodeBase64(secret));
             JWTVerifier verifier = JWT.require(algorithm)
                     .withSubject(email)
                     .build();
             DecodedJWT jwt = verifier.verify(token);
-        }catch(JWTVerificationException exception){
+        } catch (JWTVerificationException exception) {
             log.error("Invalid JWT token provided");
             return false;
         }
@@ -105,6 +111,7 @@ public class JwtTokenUtil {
     }
 
     private Date calculateExpirationDate(Date createdDate) {
-        return new Date(createdDate.getTime() + expiration * 1000);
+        //Return expiration date in UNIX EPOCH (seconds)
+        return new Date(createdDate.getTime() + expirationTime * 1000);
     }
 }

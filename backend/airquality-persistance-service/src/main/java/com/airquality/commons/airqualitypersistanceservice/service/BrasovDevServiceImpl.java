@@ -19,10 +19,4 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         return brasovDevRepository.findBySensor(sensorName);
     }
 
-    @Override
-    public List<BrasovDevDto> findByTimestampIsBetween(int firstDate, int lastDate) {
-        return brasovDevRepository.findByTimestampIsBetween(firstDate, lastDate);
-    }
-
-
 }

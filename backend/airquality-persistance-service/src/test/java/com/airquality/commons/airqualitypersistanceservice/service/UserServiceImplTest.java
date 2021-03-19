@@ -91,20 +91,4 @@ public class UserServiceImplTest {
         //Verify if the method return correct user
         Assert.assertEquals(firstUser, userToTest.get());
     }
-
-    @Test
-    public void shouldReturnCorrectLoadedUserByResetToken() {
-        //Return all mocked result set on find
-        when(userRepository.findByResetToken(firstUser.getResetToken())).thenReturn(Optional.of(firstUser));
-
-        //Call method loadUserByResetToken we want to test
-        //and store properties into UserDto object
-        UserDto userToTest = userService.loadUserByResetToken(firstUser.getResetToken());
-
-        //Verify if the method was called
-        verify(userRepository).findByResetToken(firstUser.getResetToken());
-
-        //Verify if the method return correct user
-        Assert.assertEquals(firstUser, userToTest);
-    }
 }

@@ -11,13 +11,11 @@ public interface UserService {
 
     UserDto loadUserByUsername(String username);
 
-    UserDto loadUserByResetToken(String resetToken);
-
     Optional<UserDto> findUserByUsername(String username);
 
     Optional<UserDto> findUserByResetToken(String resetToken);
 
     Date generateExpirationDateForToken();
 
-    Boolean isTokenExpired(Date expirationDate);
+    Boolean isResetTokenExpired(Date expirationDate);
 }

@@ -73,7 +73,7 @@ public class UserController {
         if(passwordRecoveryDto.getPassword().length()<5)
             return HttpStatus.BAD_REQUEST;
         Optional<UserDto> userDto = userServiceImpl.findUserByResetToken(passwordRecoveryDto.getToken());
-        if (userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("") && !userServiceImpl.isTokenExpired(userDto.get().getExpirationDate())) {
+        if (userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("") && !userServiceImpl.isResetTokenExpired(userDto.get().getExpirationDate())) {
             userDto.get().setPassword(passwordEncoder.encode(passwordRecoveryDto.getPassword()));
             userDto.get().setResetToken("");
             userServiceImpl.createUser(userDto.get());
@@ -109,7 +109,7 @@ public class UserController {
     public HttpStatus isTokenExpired(@RequestBody @NonNull String token) {
         Optional<UserDto> userDto = userServiceImpl.findUserByResetToken(token);
         if(userDto.isPresent()){
-            if(!userServiceImpl.isTokenExpired(userDto.get().getExpirationDate()))
+            if(!userServiceImpl.isResetTokenExpired(userDto.get().getExpirationDate()))
                 return HttpStatus.OK;
             else
                 return HttpStatus.BAD_REQUEST;
