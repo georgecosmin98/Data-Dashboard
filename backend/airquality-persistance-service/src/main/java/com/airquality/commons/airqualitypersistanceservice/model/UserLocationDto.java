@@ -27,10 +27,10 @@ public class UserLocationDto {
     private String username;
 
     @Field(name = "latitude")
-    private String latitude;
+    private double latitude;
 
     @Field(name = "longitude")
-    private String longitude;
+    private double longitude;
 
     @Field(name = "timestamp", format = DateFormat.epoch_millis)
     private Date timestamp;
