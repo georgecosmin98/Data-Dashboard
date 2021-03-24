@@ -74,8 +74,9 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .ignoring().antMatchers("/users/signup", "/users/socialsignup") //let guest users to signup with local and social accounts
                 .and()
-                .ignoring().antMatchers("/users/forgotpassword", "/users/resetpassword","/users/isTokenExpired"); //let user change password without JWT Token
-
+                .ignoring().antMatchers("/users/forgotpassword", "/users/resetpassword","/users/isTokenExpired") //let user change password without JWT Token
+                .and()
+                .ignoring().antMatchers("/usersLocations/save");
     }
 
     @Bean
