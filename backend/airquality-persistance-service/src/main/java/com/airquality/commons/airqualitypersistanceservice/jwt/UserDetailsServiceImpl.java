@@ -18,6 +18,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserServiceImpl userService;
 
     @Override
+    //Is called by UsernamePasswordAuthenticationToken to load username from database
+    //and authenticate it
     public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserDto> userDto = userService.findUserByUsername(username);
         if(userDto == null){
