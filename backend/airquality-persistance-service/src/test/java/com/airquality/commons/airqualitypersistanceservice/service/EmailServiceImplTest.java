@@ -32,7 +32,7 @@ public class EmailServiceImplTest {
     public static final String EMAIL_FROM_PARAM = GreenMailUtil.random();
     public static final String EMAIL_SUBJECT_PARAM = GreenMailUtil.random();
     public static final String EMAIL_MESSAGE_PARAM = GreenMailUtil.random();
-    public static final String FRONTEND_URL_ADDRESS = "http://hartapoluarebrasov.ro";
+    public static final String FRONTEND_URL_ADDRESS = GreenMailUtil.random();
     public static final String RESET_PASSWORD_TOKEN = GreenMailUtil.random();
     public static final String RESET_PASSWORD_MAIL_SUBJECT = "Harta Poluare Brasov Reset Password";
 
