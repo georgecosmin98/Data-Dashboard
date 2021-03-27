@@ -23,7 +23,12 @@ public class UserLocationController {
     }
 
     @GetMapping("/findAllAfter/{date}")
-    public List<UserLocationDto> findByTimeInterval(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date data) {
+    public List<UserLocationDto> findByTimeInterval(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd, HH:mm") Date data) {
+        return userLocationService.findUserLocationDtoByTimestampAfter(data);
+    }
+
+    @GetMapping("/findAllAfter")
+    public List<UserLocationDto> findByTimeInterval1(@RequestBody @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date data) {
         return userLocationService.findUserLocationDtoByTimestampAfter(data);
     }
 

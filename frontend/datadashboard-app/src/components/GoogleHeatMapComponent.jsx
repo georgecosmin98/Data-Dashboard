@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import GoogleMapReact from 'google-map-react';
 import UserLocationService from '../api/UserLocationService'
-import { RangeDatePicker } from '@y0c/react-datepicker';
+import DatePicker from 'react-datepicker'
+import Moment from 'moment';
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class GoogleHeatMapComponent extends Component {
 
@@ -20,14 +23,25 @@ class GoogleHeatMapComponent extends Component {
             heatmapPoints: [
                 { lat: '', lng: '' }
             ],
+            value: ''
         }
+        this.onChange = this.onChange.bind(this)
+        this.updateUserLocationsHeatmapValues = this.updateUserLocationsHeatmapValues.bind(this)
     }
 
-    onChange(date){
+    onChange(date) {
         console.log(date)
+        this.setState({ value: date })
+        this.updateUserLocationsHeatmapValues(Moment(date).format('YYYY-MM-DD, HH:mm'))
     }
+
     componentDidMount() {
-        UserLocationService.retriveUserLocationAfter("2021-03-25")
+        this.updateUserLocationsHeatmapValues("2021-01-01, 00:00")
+    }
+
+    updateUserLocationsHeatmapValues(afterDate) {
+        console.log("I am up")
+        UserLocationService.retriveUserLocationAfter(afterDate)
             .then(
                 response => {
                     console.log(response);
@@ -67,11 +81,19 @@ class GoogleHeatMapComponent extends Component {
             }
         }
 
-        console.log(this.state)
-
         return (
-            <div style={{ height: '90vh', width: '96%' }}>
-                <RangeDatePicker onChange={this.onChange}/>
+            <div style={{ height: '90vh', width: '96%', marginBottom: "70px"}}>
+                <DatePicker
+                    selected={this.state.value}
+                    onChange={this.onChange}
+                    on
+                    placeholderText="Start Date"
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={15}
+                    timeCaption="time"
+                    dateFormat="yyyy MM dd h:mm aa"
+                />
                 <GoogleMapReact
                     ref={(el) => this._googleMap = el}
                     bootstrapURLKeys={apiKey}

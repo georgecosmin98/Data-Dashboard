@@ -35,9 +35,6 @@ class DashboardComponent extends Component {
                 {!isLoggedIn && <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque alias, earum quam consequuntur unde veniam modi quibusdam perferendis? Quas, enim eaque quibusdam debitis eius sint ducimus id, iusto sit voluptatum quae officiis corporis quis vitae sunt! Nam ut cupiditate, vero dolore maiores voluptas laboriosam consequatur explicabo atque laudantium, illo sed.</p>}
                 {isLoggedIn && <p>Welcome {sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)}</p>}
                 <GoogleHeatMapComponent></GoogleHeatMapComponent>
-                <div className="btn-center">
-                    <button className="btn" type="submit" onClick={this.retriveUserLocationAfterDate}>Submit</button>
-                </div>
             </div>
         )
     }
