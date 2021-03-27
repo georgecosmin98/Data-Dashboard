@@ -1,8 +1,6 @@
 package com.airquality.commons.airqualitypersistanceservice.controller;
 
-import com.airquality.commons.airqualitypersistanceservice.model.Ascr2Dto;
 import com.airquality.commons.airqualitypersistanceservice.model.UserLocationDto;
-import com.airquality.commons.airqualitypersistanceservice.repository.UserLocationRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.UserLocationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,7 +22,7 @@ public class UserLocationController {
         userLocationService.save(userLocationDto);
     }
 
-    @GetMapping("/findAll/{date}")
+    @GetMapping("/findAllAfter/{date}")
     public List<UserLocationDto> findByTimeInterval(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date data) {
         return userLocationService.findUserLocationDtoByTimestampAfter(data);
     }

@@ -94,7 +94,8 @@ class LoginComponent extends Component {
     handleSocialLoginSuccess = (user) => {
         AuthenticationService.authenticateWithSocialAccount(user._profile.email, user._profile.name).then(response => {
             if (response.status === 200) {
-                AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.token);
+                console.log(response)
+                AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.data.token);
                 toast.success('You have signed up successfully!', {
                     position: "top-right",
                     autoClose: 5000,
