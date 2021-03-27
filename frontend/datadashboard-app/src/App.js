@@ -11,6 +11,7 @@ import ContactComponent from './components/ContactComponent'
 import LoginComponent from './components/Users/LoginComponent'
 import SignupComponent from './components/Users/SignupComponent'
 import ResetPasswordComponent from './components/Users/ResetPasswordComponent'
+import AuthenticationService from './api/AuthenticationService'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ForgotPasswordComponent from './components/Users/ForgotPasswordComponent'
@@ -18,6 +19,7 @@ class App extends Component {
 
   componentWillMount() {
     document.title = 'Harta Poluare Brasov'
+    AuthenticationService.axiosInterceptors();
   }
   render() {
     return (
