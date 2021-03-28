@@ -15,6 +15,9 @@ import AuthenticationService from './api/AuthenticationService'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ForgotPasswordComponent from './components/Users/ForgotPasswordComponent'
+import AuthenticatedRoute from './components/AuthenticatedRoute'
+import SettingsComponent from './components/SettingsComponent'
+
 class App extends Component {
 
   componentWillMount() {
@@ -37,6 +40,7 @@ class App extends Component {
                   <Route path="/forgotpassword" exact component={ForgotPasswordComponent} />
                   <Route path="/resetpassword/:token" exact component={ResetPasswordComponent} />
                   <Route path="/signup" exact component={SignupComponent} />
+                  <AuthenticatedRoute path="/settings" component={SettingsComponent}></AuthenticatedRoute>
                   <Route component={ErrorComponent} />
                 </Switch>
               </div>

@@ -32,7 +32,7 @@ public class UserLocationController {
                                                                @PathVariable String username) {
         return userLocationService.findUserLocationDtoByTimestampAfterAndUsername(data,username);
     }
-    
+
     @GetMapping("/findBetween/{fromDate}/to/{toDate}")
     public List<UserLocationDto> findBetweenTimeInterval(@PathVariable("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
                                                          @PathVariable("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate) {

@@ -211,7 +211,7 @@ body {
   /* aliniem icon-urile in centrul headerului */
   justify-content: space-between;
   /* adaugam spatii intre div-uri */
-  padding: 5px 20px;
+  padding: 5px 5px;
   /* header-ul va ramane, indiferent de cat scroll facem */
   position: sticky;
   top: 0;
@@ -358,3 +358,110 @@ body {
 }
 
 /* Test */
+
+/* Settings */
+.settings {
+  text-align: center;
+  flex: 0.9;
+  display: border-box;
+  flex-wrap: wrap;
+  background: #f9f9f9;
+  padding-bottom: 0;
+  justify-content: center;
+}
+
+.settings-content {
+  display: inline-block;
+  width: 90%;
+  background: #fff;
+  box-shadow: 0px 1px 12px 0px #464646;
+  border-radius: 5px;
+  vertical-align: middle;
+  position: relative;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 30px;
+}
+
+.settings-title {
+  color: black;
+  font-size: 1.6em;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.form-group-settings{
+  width: 50%;
+  margin-bottom: 25px;
+  margin-left: 10%;
+  padding: 0;
+  text-align: start;
+}
+
+.settings input {
+  width: 90%;
+  height: 45px;
+  padding: 10px;
+  border: 1px #ddd solid;
+  border-radius: .25rem;
+}
+
+.settings .textarea {
+  height: 200px;
+}
+
+.settings input:focus {
+  outline: none;
+  border-color: blue;
+}
+
+.settings form{
+  margin-top: 40px;
+}
+
+.settings h1{
+  margin-top: 15px;
+}
+
+.settings .btn{
+  margin-top: 25px;
+}
+
+.datepicker-userslocations{
+  position: absolute;
+	top: 5px;
+	left: 0px;
+	z-index: 1;
+}
+
+.react-datepicker{
+  margin-top: 17px;
+  margin-left: 1px;
+}
+
+.react-datepicker__triangle{
+  display: none;
+}
+
+.react-datepicker__header{
+  background-color: #2A87D0!important;
+  color:white;
+}
+
+.settings-header{
+  text-align: start;
+  margin-left: 5%;
+  margin-top: 40px;
+
+}
+
+.settings .btn{
+  padding: 12px 23px;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__current-month,
+.react-datepicker-time__header{
+  color: white!important;
+}

@@ -34,10 +34,13 @@ class HeaderComponent extends Component {
                 </div>
 
                 <div className="header-right">
-                    <ul className="navbar-nav navbar-collapse justify-content-end">
+                    {!isLoggedIn && <Link className="nav-link" to="/login">Login</Link>}
+                    {isLoggedIn && <Link className="nav-link" to="/settings">Settings</Link>}
+                    {isLoggedIn && <Link className="nav-link" to="/login" onClick={this.onSubmit}>Logout</Link>}
+                    {/* <ul className="navbar-nav navbar-collapse justify-content-end">
                         {!isLoggedIn && <li><Link className="nav-link" to="/login">Login</Link></li>}
                         {isLoggedIn && <li><Link className="nav-link" to="/login" onClick={this.onSubmit}>Logout</Link></li>}
-                    </ul>
+                    </ul> */}
                 </div>
             </div>
         )
