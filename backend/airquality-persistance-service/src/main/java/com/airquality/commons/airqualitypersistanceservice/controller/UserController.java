@@ -2,6 +2,7 @@ package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.jwt.JwtTokenUtil;
 import com.airquality.commons.airqualitypersistanceservice.jwt.resource.JwtTokenResponse;
+import com.airquality.commons.airqualitypersistanceservice.model.ChangePasswordDto;
 import com.airquality.commons.airqualitypersistanceservice.model.PasswordRecoveryDto;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceImpl;
@@ -36,7 +37,7 @@ public class UserController {
     @PostMapping("/signup")
     public HttpStatus registerUser(@RequestBody UserDto userDto) {
         //Verify if password is too short
-        if(userDto.getPassword().length()<5)
+        if (userDto.getPassword().length() < 5)
             return HttpStatus.BAD_REQUEST;
 
         if (!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
@@ -69,12 +70,26 @@ public class UserController {
     @PostMapping("/resetpassword")
     public HttpStatus resetPassword(@RequestBody PasswordRecoveryDto passwordRecoveryDto) {
         //Verify if password is too short
-        if(passwordRecoveryDto.getPassword().length()<5)
+        if (passwordRecoveryDto.getPassword().length() < 5)
             return HttpStatus.BAD_REQUEST;
         Optional<UserDto> userDto = userServiceImpl.findUserByResetToken(passwordRecoveryDto.getToken());
         if (userDto.isPresent() && !passwordRecoveryDto.getPassword().equals("") && !userServiceImpl.isResetTokenExpired(userDto.get().getExpirationDate())) {
             userDto.get().setPassword(passwordEncoder.encode(passwordRecoveryDto.getPassword()));
             userDto.get().setResetToken("");
+            userServiceImpl.createUser(userDto.get());
+            return HttpStatus.OK;
+        }
+        return HttpStatus.NOT_FOUND;
+    }
+
+    @PostMapping("/changepassword")
+    public HttpStatus changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
+        //Verify if password is too short
+        if (changePasswordDto.getPassword().length() < 5)
+            return HttpStatus.BAD_REQUEST;
+        Optional<UserDto> userDto = userServiceImpl.findUserByUsername(changePasswordDto.getUsername());
+        if (userDto.isPresent()) {
+            userDto.get().setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
             userServiceImpl.createUser(userDto.get());
             return HttpStatus.OK;
         }
@@ -106,14 +121,15 @@ public class UserController {
     @PostMapping("/isTokenExpired")
     public HttpStatus isTokenExpired(@RequestBody @NonNull String token) {
         Optional<UserDto> userDto = userServiceImpl.findUserByResetToken(token);
-        if(userDto.isPresent()){
-            if(!userServiceImpl.isResetTokenExpired(userDto.get().getExpirationDate()))
+        if (userDto.isPresent()) {
+            if (!userServiceImpl.isResetTokenExpired(userDto.get().getExpirationDate()))
                 return HttpStatus.OK;
             else
                 return HttpStatus.BAD_REQUEST;
         }
         return HttpStatus.BAD_REQUEST;
     }
+
     @GetMapping("/myEmailFromToken/{text}")
     public String myEmail(@PathVariable String text) {
         return jwtTokenUtil.getEmailFromToken(text);
