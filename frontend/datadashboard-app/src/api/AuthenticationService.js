@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {USER_NAME_SESSION_ATTRIBUTE_NAME, USER_TOKEN_SESSION_ATTRIBUTE_NAME} from '../Constants'
+import { USER_NAME_SESSION_ATTRIBUTE_NAME, USER_TOKEN_SESSION_ATTRIBUTE_NAME } from '../Constants'
 
 class AuthenticationService {
 
@@ -58,8 +58,14 @@ class AuthenticationService {
     return axios.post(`${process.env.REACT_APP_BASE_URL}/users/resetpassword`, { token, password });
   }
 
-  isTokenExpired(token){
+  isTokenExpired(token) {
     return axios.post(`${process.env.REACT_APP_BASE_URL}/users/isTokenExpired`, token);
+  }
+
+  // Change Password
+  changePassword(password) {
+    var username = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/changepassword`, { username, password });
   }
 }
 export default new AuthenticationService()
