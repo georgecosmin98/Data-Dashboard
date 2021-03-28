@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import UserLocationService from '../api/UserLocationService'
 import DatePicker from 'react-datepicker'
 import Moment from 'moment';
-
+import { USER_NAME_SESSION_ATTRIBUTE_NAME } from '../Constants'
 import "react-datepicker/dist/react-datepicker.css";
 
 class GoogleHeatMapComponent extends Component {
@@ -40,7 +40,6 @@ class GoogleHeatMapComponent extends Component {
     }
 
     updateUserLocationsHeatmapValues(afterDate) {
-        console.log("I am up")
         UserLocationService.retriveUserLocationAfter(afterDate)
             .then(
                 response => {
@@ -70,6 +69,16 @@ class GoogleHeatMapComponent extends Component {
         })
     }
 
+    adaptPointRadius() {
+        console.log("Zoom")
+        console.log(this._googleMap.map_.zoom)
+        console.log(this._googleMap.heatmap)
+        // if (this._googleMap.map_.zoom <= 13)
+        //     this._googleMap.heatmap.radius = ((2 / 3) * (this._googleMap.map_.zoom)) / 2
+        // else
+        //     this._googleMap.heatmap.radius = ((4 / 3) * (this._googleMap.map_.zoom))/ 2
+        console.log(this._googleMap.heatmap)
+    }
     render() {
 
         const apiKey = { key: 'AIzaSyBYFUuJFiyJr4jNuxdPNo1Su4Qp_UL19KI' }
@@ -77,13 +86,14 @@ class GoogleHeatMapComponent extends Component {
             positions: this.state.heatmapPoints,
             options: {
                 radius: 7,
-                opacity: 0.5
+                opacity: 0.4
             }
         }
 
         return (
-            <div style={{ height: '90vh', width: '96%', marginBottom: "70px"}}>
-                <DatePicker
+            <div style={{ height: '90vh', width: '94%', marginBottom: "70px" }}>
+                <DatePicker popperClassName="datepicker-userslocations"
+                    className="datepicker-userslocations"
                     selected={this.state.value}
                     onChange={this.onChange}
                     on
@@ -101,6 +111,7 @@ class GoogleHeatMapComponent extends Component {
                     defaultZoom={this.props.zoom}
                     heatmapLibrary={true}
                     heatmap={userLocationsData}
+                    onZoomAnimationStart={this.adaptPointRadius.bind(this)}
                 >
                 </GoogleMapReact>
                 <button className="toggleButton" onClick={this.toggleHeatMap.bind(this)}>Toggle heatmap</button>

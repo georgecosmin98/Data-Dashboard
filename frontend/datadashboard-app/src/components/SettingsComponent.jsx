@@ -35,8 +35,7 @@ class SettingsComponent extends Component {
     changePassword(values, { resetForm }) {
         this.setState({ isEnable: false })
         var username = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-        if (values.newPassword === values.confirmPassword) {
-            AuthenticationService.logInWithLocalAccount(username,values.oldPassword).then(response => {
+            AuthenticationService.logInWithLocalAccount(username, values.oldPassword).then(response => {
                 console.log(response)
                 if (response.status === 200) {
                     AuthenticationService.changePassword(values.newPassword).then(response => {
@@ -77,22 +76,28 @@ class SettingsComponent extends Component {
                     this.setState({ isEnable: true })
                 }
             })
-
-        }
-        else {
-            toast.error('New password and Confirm password do not match!', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                draggable: true,
-                progress: undefined,
-            })
-            this.setState({ isEnable: true })
-            this.setState({ isEnable: true })
-            resetForm();
-        }
         console.log(values)
+    }
+
+    validate(values) {
+        let errors = {}
+
+        if (values.newPassword.length < 5) {
+            errors.newPassword = "Use 5 or more characters for password!"
+        }
+
+        if (!values.newPassword) {
+            errors.newPassword = "Enter a password!"
+        }
+
+        if (!values.confirmPassword) {
+            errors.confirmPassword = "Enter confirm password!"
+        }
+
+        if (values.confirmPassword !== values.newPassword) {
+            errors.newPassword = "Password and confirm password not match!"
+        }
+        return errors
     }
 
     render() {
@@ -112,14 +117,6 @@ class SettingsComponent extends Component {
                         {
                             (props) => (
                                 <Form>
-                                    <ErrorMessage name="name" component="div"
-                                        className="alert alert-warning" />
-                                    <ErrorMessage name="address" component="div"
-                                        className="alert alert-warning" />
-                                    <ErrorMessage name="newPassword" component="div"
-                                        className="alert alert-warning" />
-                                    <ErrorMessage name="confirmPassword" component="div"
-                                        className="alert alert-warning" />
                                     <fieldset className="form-group-settings">
                                         <label>Your Name</label>
                                         <Field className="input" type="text" name="name" value={this.state.name} />
@@ -139,6 +136,7 @@ class SettingsComponent extends Component {
                         onSubmit={this.changePassword.bind(this)}
                         validateOnChange={false}
                         validateOnBlur={false}
+                        validate={this.validate}
                     >
                         {
                             (props) => (
