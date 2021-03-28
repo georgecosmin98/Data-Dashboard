@@ -27,14 +27,15 @@ public class UserLocationController {
         return userLocationService.findUserLocationDtoByTimestampAfter(data);
     }
 
-    @GetMapping("/findAllAfter")
-    public List<UserLocationDto> findByTimeInterval1(@RequestBody @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date data) {
-        return userLocationService.findUserLocationDtoByTimestampAfter(data);
+    @GetMapping("/findAllAfter/{date}/{username}")
+    public List<UserLocationDto> findByTimeIntervalAndUsername(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd, HH:mm") Date data,
+                                                               @PathVariable String username) {
+        return userLocationService.findUserLocationDtoByTimestampAfterAndUsername(data,username);
     }
-
+    
     @GetMapping("/findBetween/{fromDate}/to/{toDate}")
     public List<UserLocationDto> findBetweenTimeInterval(@PathVariable("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
                                                          @PathVariable("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate) {
-        return userLocationService.findUserLocationDtoByTimestampBetween(fromDate,toDate);
+        return userLocationService.findUserLocationDtoByTimestampBetween(fromDate, toDate);
     }
 }

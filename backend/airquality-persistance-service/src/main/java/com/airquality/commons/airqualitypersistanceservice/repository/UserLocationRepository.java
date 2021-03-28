@@ -10,5 +10,8 @@ import java.util.List;
 public interface UserLocationRepository extends ElasticsearchRepository<UserLocationDto, String> {
 
     List<UserLocationDto> findUserLocationDtoByTimestampAfter(Long timestamp);
+
+    List<UserLocationDto> findUserLocationDtoByTimestampAfterAndUsername(Long timestamp, String username);
+
     List<UserLocationDto> findUserLocationDtoByTimestampBetween(Long fromTimestamp, Long toTimestamp);
 }

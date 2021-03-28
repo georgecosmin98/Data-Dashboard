@@ -4,6 +4,7 @@ import com.airquality.commons.airqualitypersistanceservice.model.UserLocationDto
 import com.airquality.commons.airqualitypersistanceservice.repository.UserLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;
@@ -25,5 +26,9 @@ public class UserLocationServiceImpl {
 
     public List<UserLocationDto> findUserLocationDtoByTimestampBetween(Date fromDate, Date toDate) {
         return userLocationRepository.findUserLocationDtoByTimestampBetween(fromDate.getTime(), toDate.getTime());
+    }
+
+    public List<UserLocationDto> findUserLocationDtoByTimestampAfterAndUsername(Date data, String username){
+        return userLocationRepository.findUserLocationDtoByTimestampAfterAndUsername(data.getTime(),username);
     }
 }
