@@ -2,6 +2,7 @@ package com.airquality.commons.airqualitypersistanceservice.jwt;
 
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,8 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
                 log.error("Username can not be extract from JWT", e);
             } catch (ExpiredJwtException e) {
                 log.warn("JWT is expired", e);
+            } catch (JWTDecodeException e){
+                log.error("Bad jwt token",e);
             }
         } else {
             log.warn("JWT does not start with bearer string");
