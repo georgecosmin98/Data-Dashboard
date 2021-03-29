@@ -16,15 +16,27 @@ class SettingsComponent extends Component {
             oldPassword: '',
             newPassword: '',
             confirmPassword: '',
-            isEnable: true
+            isEnable: true,
+            generalInformation: true
         }
 
         this.componentDidMount = this.componentDidMount.bind(this)
     }
 
     componentDidMount() {
-        console.log(sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME).toString())
+        if (this.props.match.params.category === "generalInfo")
+            this.setState({ generalInformation: true })
+        else
+            this.setState({ generalInformation: false })
+
         this.setState({ name: sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME) })
+    }
+
+    componentDidUpdate() {
+        if (this.props.match.params.category === "generalInfo" && !this.state.generalInformation)
+            this.setState({ generalInformation: true })
+        else if (this.props.match.params.category !== "generalInfo" && this.state.generalInformation){
+            this.setState({ generalInformation: false })}
     }
 
     changeGeneralInformations(values) {
@@ -35,47 +47,47 @@ class SettingsComponent extends Component {
     changePassword(values, { resetForm }) {
         this.setState({ isEnable: false })
         var username = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-            AuthenticationService.logInWithLocalAccount(username, values.oldPassword).then(response => {
-                console.log(response)
-                if (response.status === 200) {
-                    AuthenticationService.changePassword(values.newPassword).then(response => {
-                        console.log(response)
-                        if (response.data === "OK") {
-                            toast.success('Your password has been reset successfully!', {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                draggable: true,
-                                progress: undefined,
-                            })
-                            this.setState({ isEnable: true })
-                            resetForm();
-                        } else {
-                            toast.error('An error occured. Please try again.', {
-                                position: "top-right",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                draggable: true,
-                                progress: undefined,
-                            })
-                            this.setState({ isEnable: true })
-                        }
-                    })
-                }
-                else {
-                    toast.error('Old password is invalid!', {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        draggable: true,
-                        progress: undefined,
-                    })
-                    this.setState({ isEnable: true })
-                }
-            })
+        AuthenticationService.logInWithLocalAccount(username, values.oldPassword).then(response => {
+            console.log(response)
+            if (response.status === 200) {
+                AuthenticationService.changePassword(values.newPassword).then(response => {
+                    console.log(response)
+                    if (response.data === "OK") {
+                        toast.success('Your password has been reset successfully!', {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            draggable: true,
+                            progress: undefined,
+                        })
+                        this.setState({ isEnable: true })
+                        resetForm();
+                    } else {
+                        toast.error('An error occured. Please try again.', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            draggable: true,
+                            progress: undefined,
+                        })
+                        this.setState({ isEnable: true })
+                    }
+                })
+            }
+            else {
+                toast.error('Old password is invalid!', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.setState({ isEnable: true })
+            }
+        })
         console.log(values)
     }
 
@@ -100,14 +112,19 @@ class SettingsComponent extends Component {
         return errors
     }
 
+    changeContext() {
+        console.log(this.state.generalInformation)
+        this.setState({ generalInformation: !this.state.generalInformation })
+        this.props.history.push('/settings');
+    }
+
     render() {
         let { name, address, oldPassword, newPassword, confirmPassword } = this.state
         return (
             <div className="settings">
                 <div className="settings-content">
                     <h1 className="l-heading"><span className="text-primary">Your </span>Account</h1>
-                    <h2 className="settings-header">General Informations</h2>
-                    <Formik
+                    {this.state.generalInformation && <Formik
                         initialValues={{ name, address }}
                         onSubmit={this.changeGeneralInformations.bind(this)}
                         validateOnChange={false}
@@ -117,6 +134,7 @@ class SettingsComponent extends Component {
                         {
                             (props) => (
                                 <Form>
+                                    <h2 className="settings-header">General Informations</h2>
                                     <fieldset className="form-group-settings">
                                         <label>Your Name</label>
                                         <Field className="input" type="text" name="name" value={this.state.name} />
@@ -130,8 +148,8 @@ class SettingsComponent extends Component {
                                 </Form>
                             )
                         }
-                    </Formik>
-                    <Formik
+                    </Formik>}
+                    {!this.state.generalInformation && <Formik
                         initialValues={{ oldPassword, newPassword, confirmPassword }}
                         onSubmit={this.changePassword.bind(this)}
                         validateOnChange={false}
@@ -141,7 +159,7 @@ class SettingsComponent extends Component {
                         {
                             (props) => (
                                 <Form>
-                                    <h2 className="settings-header-changepassword">Change password</h2>
+                                    <h2 className="settings-header">Change password</h2>
                                     <ErrorMessage name="newPassword" component="div"
                                         className="alert alert-warning" />
                                     <ErrorMessage name="confirmPassword" component="div"
@@ -170,7 +188,10 @@ class SettingsComponent extends Component {
                                 </Form>
                             )
                         }
-                    </Formik>
+                    </Formik>}
+                    {/* <div className="btn-center">
+                        <button className="btn" type="submit" onClick={this.changeContext.bind(this)}>Change context</button>
+                    </div> */}
                 </div>
             </div>
         )

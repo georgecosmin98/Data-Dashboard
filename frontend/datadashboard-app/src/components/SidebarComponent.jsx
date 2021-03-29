@@ -4,13 +4,44 @@ import HomeIcon from '@material-ui/icons/Home';
 import ErrorIcon from '@material-ui/icons/Error';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 import { NavLink } from 'react-router-dom'
+import SettingsIcon from '@material-ui/icons/Settings';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AuthenticationService from "../api/AuthenticationService"
+import SecurityIcon from '@material-ui/icons/Security';
+import {GENERAL_INFO_LINK_URL, CHANGE_PASSWORD_LINK_URL} from '../Constants'
+
 class SidebarComponent extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            settingsMenu: false
+        }
+    }
+
+    componentDidUpdate() {
+        console.log(window.location.href)
+        if (window.location.pathname !== GENERAL_INFO_LINK_URL && window.location.pathname !== CHANGE_PASSWORD_LINK_URL && this.state.settingsMenu) {
+            this.setState({ settingsMenu: false })
+        }
+    }
+
+    onClick() {
+        this.setState({ settingsMenu: true });
+        console.log("test")
+    }
+
     render() {
+        const isLoggedIn = AuthenticationService.isUserLoggedIn();
         return (
             <div className="sidebar">
-                <NavLink to="/" exact activeClassName="active"><SidebarRowComponent icon={HomeIcon} title="Home"></SidebarRowComponent> </NavLink>
-                <NavLink to="/error" activeClassName="active"><SidebarRowComponent icon={ErrorIcon} title="ErrorPage"></SidebarRowComponent></NavLink>
-                <NavLink to="/contact" activeClassName="active"><SidebarRowComponent icon={ContactMailIcon} title="Contact" /></NavLink>
+                {!this.state.settingsMenu && <NavLink to="/" exact activeClassName="active"><SidebarRowComponent icon={HomeIcon} title="Home"></SidebarRowComponent> </NavLink>}
+                {!this.state.settingsMenu && <NavLink to="/error" activeClassName="active"><SidebarRowComponent icon={ErrorIcon} title="ErrorPage"></SidebarRowComponent></NavLink>}
+                {isLoggedIn && !this.state.settingsMenu && <NavLink to={GENERAL_INFO_LINK_URL} activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={SettingsIcon} title="Settings" /></NavLink>}
+                {!this.state.settingsMenu && <NavLink to="/contact" activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={ContactMailIcon} title="Contact" /></NavLink>}
+
+                {this.state.settingsMenu && <NavLink to={GENERAL_INFO_LINK_URL} activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={AccountCircleIcon} title="General" /></NavLink>}
+                {this.state.settingsMenu && <NavLink to={CHANGE_PASSWORD_LINK_URL} activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={SecurityIcon} title="Security" /></NavLink>}
             </div>
         )
     }
