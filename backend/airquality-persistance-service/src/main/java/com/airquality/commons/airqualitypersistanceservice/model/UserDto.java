@@ -25,6 +25,9 @@ public class UserDto {
     @Field(name = "name")
     private String name;
 
+    @Field(name = "address")
+    private String address;
+
     @Field(name = "email")
     private String username;
 

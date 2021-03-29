@@ -5,6 +5,7 @@ import com.airquality.commons.airqualitypersistanceservice.jwt.resource.JwtToken
 import com.airquality.commons.airqualitypersistanceservice.model.ChangePasswordDto;
 import com.airquality.commons.airqualitypersistanceservice.model.PasswordRecoveryDto;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
+import com.airquality.commons.airqualitypersistanceservice.model.UserGeneralInfoDto;
 import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceImpl;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
 import lombok.NonNull;
@@ -128,6 +129,15 @@ public class UserController {
                 return HttpStatus.BAD_REQUEST;
         }
         return HttpStatus.BAD_REQUEST;
+    }
+
+    @GetMapping("/retrieveUserDetails")
+    private UserGeneralInfoDto retriveUserDetails(@RequestBody String email){
+        UserGeneralInfoDto userGeneralInfoDto = new UserGeneralInfoDto();
+        Optional <UserDto> userDto = userServiceImpl.findUserByUsername(email);
+        userGeneralInfoDto.setAddress(userDto.get().getAddress());
+        userGeneralInfoDto.setName(userDto.get().getName());
+        return userGeneralInfoDto;
     }
 
     @GetMapping("/myEmailFromToken/{text}")

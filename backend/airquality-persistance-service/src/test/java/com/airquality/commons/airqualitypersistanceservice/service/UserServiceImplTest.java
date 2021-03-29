@@ -32,7 +32,7 @@ public class UserServiceImplTest {
 
     @Before
     public void setUp() {
-        firstUser = new UserDto("1234", "First User Name", "First User Username", "First User Password", "First User Reset Token", new Date());
+        firstUser = new UserDto("1234", "First User Name", "My Address", "First User Username", "First User Password", "First User Reset Token", new Date());
     }
 
     @Test
