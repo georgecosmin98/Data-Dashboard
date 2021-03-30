@@ -19,7 +19,7 @@ class SettingsComponent extends Component {
             isEnable: true,
             generalInformation: true
         }
-
+        this.retrieveGeneralInformations = this.retrieveGeneralInformations.bind(this)
         this.componentDidMount = this.componentDidMount.bind(this)
     }
 
@@ -29,14 +29,21 @@ class SettingsComponent extends Component {
         else
             this.setState({ generalInformation: false })
 
-        this.setState({ name: sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME) })
+        AuthenticationService.retrieveUserGeneralInfo().then(response => {
+            console.log(response.data)
+            this.setState({name: response.data.name, address: response.data.address})
+        })
     }
 
     componentDidUpdate() {
         if (this.props.match.params.category === "generalInfo" && !this.state.generalInformation)
             this.setState({ generalInformation: true })
-        else if (this.props.match.params.category !== "generalInfo" && this.state.generalInformation){
-            this.setState({ generalInformation: false })}
+        else if (this.props.match.params.category !== "generalInfo" && this.state.generalInformation) {
+            this.setState({ generalInformation: false })
+        }
+    }
+
+    retrieveGeneralInformations() {
     }
 
     changeGeneralInformations(values) {
@@ -137,11 +144,11 @@ class SettingsComponent extends Component {
                                     <h2 className="settings-header">General Informations</h2>
                                     <fieldset className="form-group-settings">
                                         <label>Your Name</label>
-                                        <Field className="input" type="text" name="name" value={this.state.name} />
+                                        <Field className="input" type="text" name="name" placeholder={this.state.name} />
                                     </fieldset>
                                     <fieldset className="form-group-settings">
                                         <label>Address</label>
-                                        <Field className="input" type="text" name="address" placeholder="Address" />
+                                        <Field className="input" type="text" name="address" placeholder={this.state.address} />
                                     </fieldset>
 
                                     {this.state.isEnable && <button className="btn" type="submit">Save changes</button>}
