@@ -30,30 +30,13 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Value("${jwt.http.request.header}")
-    private String tokenHeader;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        log.debug("Authentication Request For '{}'", request.getRequestURL());
-        final String requestTokenHeader = request.getHeader(this.tokenHeader);
+        String jwtToken = jwtTokenUtil.parseJWTTokenFromRequestHeader(request);
         String username = null;
-        String jwtToken = null;
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = jwtTokenUtil.getEmailFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                log.error("Username can not be extract from JWT", e);
-            } catch (ExpiredJwtException e) {
-                log.warn("JWT is expired", e);
-            } catch (JWTDecodeException e){
-                log.error("Bad jwt token",e);
-            }
-        } else {
-            log.warn("JWT does not start with bearer string");
+        if(jwtToken != null){
+            username = jwtTokenUtil.getUsernameFromRequestTokenHeader(jwtToken);
         }
-
         log.debug("Username from JWT token'{}'", username);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

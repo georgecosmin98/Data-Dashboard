@@ -4,12 +4,10 @@ import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Clock;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import lombok.extern.log4j.Log4j2;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +31,9 @@ public class JwtTokenUtil {
 
     @Value("${jwt.token.expiration.in.seconds}")
     private Long expirationTime;
+
+    @Value("${jwt.http.request.header}")
+    private String tokenHeader;
 
     //Decode JWT Token to get email
     public String getEmailFromToken(String token) {
@@ -113,5 +115,30 @@ public class JwtTokenUtil {
     private Date calculateExpirationDate(Date createdDate) {
         //Return expiration date in UNIX EPOCH (seconds)
         return new Date(createdDate.getTime() + expirationTime * 1000);
+    }
+
+    public String parseJWTTokenFromRequestHeader(HttpServletRequest request) {
+        final String requestTokenHeader = request.getHeader(this.tokenHeader);
+        String jwtToken = null;
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
+        } else {
+            log.warn("JWT does not start with bearer string");
+        }
+        return jwtToken;
+    }
+
+    public String getUsernameFromRequestTokenHeader(String jwtToken) {
+        String username = null;
+        try {
+            username = getEmailFromToken(jwtToken);
+        } catch (IllegalArgumentException e) {
+            log.error("Username can not be extract from JWT", e);
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT is expired", e);
+        } catch (JWTDecodeException e) {
+            log.error("Bad jwt token", e);
+        }
+        return username;
     }
 }
