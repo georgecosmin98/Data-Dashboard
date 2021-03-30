@@ -67,10 +67,5 @@ class AuthenticationService {
     var username = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
     return axios.post(`${process.env.REACT_APP_BASE_URL}/users/changepassword`, { username, password });
   }
-
-  //Retrieve user informations
-  retrieveUserGeneralInfo(){
-    return axios.get(`${process.env.REACT_APP_BASE_URL}/users/retrieveUserDetails`);
-  }
 }
 export default new AuthenticationService()
