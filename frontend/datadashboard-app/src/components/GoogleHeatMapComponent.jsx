@@ -6,6 +6,7 @@ import Moment from 'moment';
 import { USER_NAME_SESSION_ATTRIBUTE_NAME } from '../Constants'
 import "react-datepicker/dist/react-datepicker.css";
 
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 class GoogleHeatMapComponent extends Component {
 
     static defaultProps = {
@@ -22,6 +23,9 @@ class GoogleHeatMapComponent extends Component {
             showHeatMap: true,
             heatmapPoints: [
                 { lat: '', lng: '' }
+            ],
+            userLocations:[
+                {lat: '', lng: '', timestamp: ''}
             ],
             value: ''
         }
@@ -90,6 +94,7 @@ class GoogleHeatMapComponent extends Component {
             }
         }
 
+
         return (
             <div style={{ height: '90vh', width: '94%', marginBottom: "70px" }}>
                 <DatePicker popperClassName="datepicker-userslocations"
@@ -113,6 +118,14 @@ class GoogleHeatMapComponent extends Component {
                     heatmap={userLocationsData}
                     onZoomAnimationStart={this.adaptPointRadius.bind(this)}
                 >
+                    {/* {userLocationsData.positions.map((mark) => (    
+                        <AnyReactComponent 
+                        lat={mark.lat}
+                        lng={mark.lng}
+                        text="My Marker"
+                        />
+                    ))} */}
+
                 </GoogleMapReact>
                 <button className="toggleButton" onClick={this.toggleHeatMap.bind(this)}>Toggle heatmap</button>
             </div>
