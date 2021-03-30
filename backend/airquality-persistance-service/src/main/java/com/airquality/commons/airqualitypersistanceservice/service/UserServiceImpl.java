@@ -1,15 +1,20 @@
 package com.airquality.commons.airqualitypersistanceservice.service;
 
+import com.airquality.commons.airqualitypersistanceservice.jwt.JwtTokenUtil;
 import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.UserRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.api.UserService;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import io.jsonwebtoken.Clock;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.impl.DefaultClock;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Optional;
 
@@ -19,8 +24,15 @@ public class UserServiceImpl implements UserService {
 
     private Clock clock = DefaultClock.INSTANCE;
     private static final int expirationTimeInSeconds = 3600;
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Value("${jwt.http.request.header}")
+    private String tokenHeader;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -68,5 +80,15 @@ public class UserServiceImpl implements UserService {
     //Verify if reset token is expired
     public Boolean isResetTokenExpired(Date expirationDate) {
         return expirationDate.before(clock.now());
+    }
+
+
+    public String getUsernameFromRequestHeader(HttpServletRequest request) {
+        String jwtToken = jwtTokenUtil.parseJWTTokenFromRequestHeader(request);
+        String username = null;
+        if (jwtToken != null) {
+            username = jwtTokenUtil.getUsernameFromRequestTokenHeader(jwtToken);
+        }
+        return username;
     }
 }

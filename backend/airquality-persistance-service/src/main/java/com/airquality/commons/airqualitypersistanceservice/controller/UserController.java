@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RestController
@@ -132,12 +133,24 @@ public class UserController {
     }
 
     @GetMapping("/retrieveUserDetails")
-    private UserGeneralInfoDto retriveUserDetails(@RequestBody String email){
+    private UserGeneralInfoDto retriveUserDetails(HttpServletRequest request) {
         UserGeneralInfoDto userGeneralInfoDto = new UserGeneralInfoDto();
-        Optional <UserDto> userDto = userServiceImpl.findUserByUsername(email);
+        Optional<UserDto> userDto = userServiceImpl.findUserByUsername(userServiceImpl.getUsernameFromRequestHeader(request));
         userGeneralInfoDto.setAddress(userDto.get().getAddress());
         userGeneralInfoDto.setName(userDto.get().getName());
         return userGeneralInfoDto;
+    }
+
+    @PostMapping("/changeUserDetails")
+    private HttpStatus userGeneralInfoDto(HttpServletRequest request, @RequestBody UserGeneralInfoDto userGeneralInfoDto) {
+        Optional<UserDto> userDto = userServiceImpl.findUserByUsername(userServiceImpl.getUsernameFromRequestHeader(request));
+        if (userDto.isPresent()) {
+            userDto.get().setName(userGeneralInfoDto.getName());
+            userDto.get().setAddress(userGeneralInfoDto.getAddress());
+            userServiceImpl.createUser(userDto.get());
+            return HttpStatus.OK;
+        } else
+            return HttpStatus.BAD_REQUEST;
     }
 
     @GetMapping("/myEmailFromToken/{text}")
