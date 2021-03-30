@@ -3,7 +3,6 @@ import GoogleMapReact from 'google-map-react';
 import UserLocationService from '../api/UserLocationService'
 import DatePicker from 'react-datepicker'
 import Moment from 'moment';
-import { USER_NAME_SESSION_ATTRIBUTE_NAME } from '../Constants'
 import "react-datepicker/dist/react-datepicker.css";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;

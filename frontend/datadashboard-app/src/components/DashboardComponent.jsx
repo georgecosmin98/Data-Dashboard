@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AuthenticationService from '../api/AuthenticationService'
 import GoogleHeatMapComponent from './GoogleHeatMapComponent';
-import {USER_NAME_SESSION_ATTRIBUTE_NAME} from '../Constants'
+
 class DashboardComponent extends Component {
 
     constructor(props) {

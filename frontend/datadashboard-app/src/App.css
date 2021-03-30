@@ -205,6 +205,11 @@ body {
 
 /* Header Component */
 
+.nav-link{
+  font-size: 1rem!important;
+  font-weight: 600;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -279,12 +284,17 @@ body {
 .sidebarRow-icon {
   color: #606060;
   font-size: large !important;
+  margin-right: 20px;
+  width: 18px;
 }
 
 .sidebarRow-title {
   flex: 1;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 650;
+  height: 18px;
+  margin: 0;
+  text-align: start;
 }
 
 .sidebarRow:hover {
@@ -325,6 +335,10 @@ body {
 
   .sidebarRow-title {
     display: none;
+  }
+
+  .sidebarRow-icon {
+    margin-right: 0px;
   }
 
   .header-logo {

@@ -22,7 +22,7 @@ class SettingsComponent extends Component {
         }
         this.componentDidMount = this.componentDidMount.bind(this)
     }
-    
+
 
     componentDidMount() {
         if (this.props.match.params.category === "generalInfo")
@@ -34,26 +34,47 @@ class SettingsComponent extends Component {
     }
 
     componentDidUpdate() {
-        if (this.props.match.params.category === "generalInfo" && !this.state.generalInformation){
+        if (this.props.match.params.category === "generalInfo" && !this.state.generalInformation) {
             this.setState({ generalInformation: true })
-            }
+        }
         else if (this.props.match.params.category !== "generalInfo" && this.state.generalInformation) {
             this.retrieveUserGeneralInfo();
             this.setState({ generalInformation: false })
         }
     }
 
-    retrieveUserGeneralInfo(){
+    retrieveUserGeneralInfo() {
         console.log("i am here")
         UserService.retrieveUserGeneralInfo().then(response => {
             console.log(response.data)
-            this.setState({name: response.data.name, address: response.data.address})
+            this.setState({ name: response.data.name, address: response.data.address })
         })
     }
 
     changeGeneralInformations(values) {
-        UserService.changeUserGeneralInfo(values.name,values.address).then(response =>{
-            console.log(response)
+        this.setState({ isEnable: false })
+        UserService.changeUserGeneralInfo(values.name, values.address).then(response => {
+            if (response.status === 200) {
+                toast.success('Your password has been reset successfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.setState({ isEnable: true })
+            } else {
+                toast.error('An error occured. Please try again.', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+                this.setState({ isEnable: true })
+            }
         })
     }
 
@@ -143,9 +164,9 @@ class SettingsComponent extends Component {
                     <h1 className="l-heading"><span className="text-primary">Your </span>Account</h1>
                     {this.state.generalInformation && <Formik
                         initialValues={{ name, address }}
-                        enableReinitialize= {true}
+                        enableReinitialize={true}
                         onSubmit={this.changeGeneralInformations.bind(this)}
-                        validateOnChange={this.handleChange.bind(this)}
+                       // validateOnChange={this.handleChange.bind(this)}
                         validateOnBlur={false}
                     //  validate={this.validate}
                     >
@@ -155,11 +176,11 @@ class SettingsComponent extends Component {
                                     <h2 className="settings-header">General Informations</h2>
                                     <fieldset className="form-group-settings">
                                         <label>Your Name</label>
-                                        <Field className="input" type="text" name="name" placeholder="Enter your name"/>
+                                        <Field className="input" type="text" name="name" placeholder="Enter your name" />
                                     </fieldset>
                                     <fieldset className="form-group-settings">
                                         <label>Address</label>
-                                        <Field className="input" type="text" name="address" placeholder="Enter your address"/>
+                                        <Field className="input" type="text" name="address" placeholder="Enter your address" />
                                     </fieldset>
 
                                     {this.state.isEnable && <div className="general-info"><button className="btn" type="submit">Save changes</button></div>}
