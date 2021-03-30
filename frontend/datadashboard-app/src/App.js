@@ -40,7 +40,7 @@ class App extends Component {
                   <Route path="/forgotpassword" exact component={ForgotPasswordComponent} />
                   <Route path="/resetpassword/:token" exact component={ResetPasswordComponent} />
                   <Route path="/signup" exact component={SignupComponent} />
-                  <AuthenticatedRoute path="/settings" component={SettingsComponent}></AuthenticatedRoute>
+                  <AuthenticatedRoute path="/settings/:category" component={SettingsComponent}></AuthenticatedRoute>
                   <Route component={ErrorComponent} />
                 </Switch>
               </div>

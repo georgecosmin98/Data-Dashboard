@@ -8,7 +8,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AuthenticationService from "../api/AuthenticationService"
 import SecurityIcon from '@material-ui/icons/Security';
-import {GENERAL_INFO_LINK_URL, CHANGE_PASSWORD_LINK_URL} from '../Constants'
+import { GENERAL_INFO_LINK_URL, CHANGE_PASSWORD_LINK_URL } from '../Constants'
 
 class SidebarComponent extends Component {
 
@@ -19,16 +19,27 @@ class SidebarComponent extends Component {
         }
     }
 
+    componentDidMount() {
+        this.updateStateOfSidebar();
+    }
+
     componentDidUpdate() {
-        console.log(window.location.href)
-        if (window.location.pathname !== GENERAL_INFO_LINK_URL && window.location.pathname !== CHANGE_PASSWORD_LINK_URL && this.state.settingsMenu) {
+        this.updateStateOfSidebar();
+    }
+
+    updateStateOfSidebar() {
+        if (window.location.pathname !== GENERAL_INFO_LINK_URL && window.location.pathname !== CHANGE_PASSWORD_LINK_URL
+            && this.state.settingsMenu) {
             this.setState({ settingsMenu: false })
+        }
+        else if ((window.location.pathname === GENERAL_INFO_LINK_URL && !this.state.settingsMenu)
+            || (window.location.pathname === CHANGE_PASSWORD_LINK_URL && !this.state.settingsMenu)) {
+            this.setState({ settingsMenu: true });
         }
     }
 
     onClick() {
         this.setState({ settingsMenu: true });
-        console.log("test")
     }
 
     render() {

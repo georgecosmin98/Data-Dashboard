@@ -4,6 +4,7 @@ import Loader from "react-loader-spinner";
 import { USER_NAME_SESSION_ATTRIBUTE_NAME } from '../Constants';
 import AuthenticationService from '../api/AuthenticationService'
 import { toast } from 'react-toastify';
+import UserService from '../api/UserService';
 
 class SettingsComponent extends Component {
 
@@ -19,9 +20,9 @@ class SettingsComponent extends Component {
             isEnable: true,
             generalInformation: true
         }
-        this.retrieveGeneralInformations = this.retrieveGeneralInformations.bind(this)
         this.componentDidMount = this.componentDidMount.bind(this)
     }
+    
 
     componentDidMount() {
         if (this.props.match.params.category === "generalInfo")
@@ -29,26 +30,31 @@ class SettingsComponent extends Component {
         else
             this.setState({ generalInformation: false })
 
-        AuthenticationService.retrieveUserGeneralInfo().then(response => {
+        this.retrieveUserGeneralInfo();
+    }
+
+    componentDidUpdate() {
+        if (this.props.match.params.category === "generalInfo" && !this.state.generalInformation){
+            this.setState({ generalInformation: true })
+            }
+        else if (this.props.match.params.category !== "generalInfo" && this.state.generalInformation) {
+            this.retrieveUserGeneralInfo();
+            this.setState({ generalInformation: false })
+        }
+    }
+
+    retrieveUserGeneralInfo(){
+        console.log("i am here")
+        UserService.retrieveUserGeneralInfo().then(response => {
             console.log(response.data)
             this.setState({name: response.data.name, address: response.data.address})
         })
     }
 
-    componentDidUpdate() {
-        if (this.props.match.params.category === "generalInfo" && !this.state.generalInformation)
-            this.setState({ generalInformation: true })
-        else if (this.props.match.params.category !== "generalInfo" && this.state.generalInformation) {
-            this.setState({ generalInformation: false })
-        }
-    }
-
-    retrieveGeneralInformations() {
-    }
-
     changeGeneralInformations(values) {
-        console.log(values)
-        console.log(values.address)
+        UserService.changeUserGeneralInfo(values.name,values.address).then(response =>{
+            console.log(response)
+        })
     }
 
     changePassword(values, { resetForm }) {
@@ -119,10 +125,14 @@ class SettingsComponent extends Component {
         return errors
     }
 
-    changeContext() {
-        console.log(this.state.generalInformation)
-        this.setState({ generalInformation: !this.state.generalInformation })
-        this.props.history.push('/settings');
+
+    handleChange(event) {
+        this.setState(
+            {
+                [event.target.name]
+                    : event.target.value
+            }
+        )
     }
 
     render() {
@@ -133,8 +143,9 @@ class SettingsComponent extends Component {
                     <h1 className="l-heading"><span className="text-primary">Your </span>Account</h1>
                     {this.state.generalInformation && <Formik
                         initialValues={{ name, address }}
+                        enableReinitialize= {true}
                         onSubmit={this.changeGeneralInformations.bind(this)}
-                        validateOnChange={false}
+                        validateOnChange={this.handleChange.bind(this)}
                         validateOnBlur={false}
                     //  validate={this.validate}
                     >
@@ -144,14 +155,14 @@ class SettingsComponent extends Component {
                                     <h2 className="settings-header">General Informations</h2>
                                     <fieldset className="form-group-settings">
                                         <label>Your Name</label>
-                                        <Field className="input" type="text" name="name" placeholder={this.state.name} />
+                                        <Field className="input" type="text" name="name" placeholder="Enter your name"/>
                                     </fieldset>
                                     <fieldset className="form-group-settings">
                                         <label>Address</label>
-                                        <Field className="input" type="text" name="address" placeholder={this.state.address} />
+                                        <Field className="input" type="text" name="address" placeholder="Enter your address"/>
                                     </fieldset>
 
-                                    {this.state.isEnable && <button className="btn" type="submit">Save changes</button>}
+                                    {this.state.isEnable && <div className="general-info"><button className="btn" type="submit">Save changes</button></div>}
                                 </Form>
                             )
                         }
@@ -184,7 +195,7 @@ class SettingsComponent extends Component {
                                         <Field className="input" type="password" name="confirmPassword" placeholder="Confirm password" />
                                     </fieldset>
                                     <div className="btn-center">
-                                        {this.state.isEnable && <button className="btn" type="submit">Change password</button>}
+                                        {this.state.isEnable && <div className="change-password"><button className="btn" type="submit">Change password</button></div>}
                                         {!this.state.isEnable && <Loader
                                             type="Puff"
                                             color="#00BFFF"
