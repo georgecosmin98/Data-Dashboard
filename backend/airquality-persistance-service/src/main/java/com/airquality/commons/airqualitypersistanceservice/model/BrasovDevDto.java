@@ -2,16 +2,22 @@ package com.airquality.commons.airqualitypersistanceservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
 @Document(indexName = "brasov-dev")
 @AllArgsConstructor
+@NoArgsConstructor
 public class BrasovDevDto {
     @Id
     @ReadOnlyProperty
@@ -26,8 +32,8 @@ public class BrasovDevDto {
     private double locationLat;
     @Field(name = "LocationLong")
     private double locationLong;
-    @Field(name = "TimeStamp")
-    private int timestamp;
+    @Field(name = "TimeStamp", format = DateFormat.epoch_millis)
+    private Date timestamp;
     @Field(name = "Measurement")
     private String measurement;
 

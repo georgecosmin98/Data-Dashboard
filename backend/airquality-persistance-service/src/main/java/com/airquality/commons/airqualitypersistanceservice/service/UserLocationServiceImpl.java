@@ -4,7 +4,6 @@ import com.airquality.commons.airqualitypersistanceservice.model.UserLocationDto
 import com.airquality.commons.airqualitypersistanceservice.repository.UserLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 import java.util.List;

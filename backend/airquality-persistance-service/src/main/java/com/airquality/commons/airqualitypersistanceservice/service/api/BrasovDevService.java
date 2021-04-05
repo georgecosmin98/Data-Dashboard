@@ -7,5 +7,4 @@ import java.util.List;
 public interface BrasovDevService {
 
     List<BrasovDevDto> findBySensor(String sensorName);
-
 }
