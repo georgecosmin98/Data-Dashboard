@@ -29,7 +29,7 @@ body {
 }
 
 .btn-login:hover,
-.btn-block:hover {
+.btn:hover {
   background: #007bff;
   color: #FFF !important;
 }
@@ -376,8 +376,6 @@ body {
   
 }
 
-/* Test */
-
 /* Settings */
 .settings {
   text-align: center;
@@ -510,4 +508,45 @@ body {
 .react-datepicker__current-month,
 .react-datepicker-time__header{
   color: white!important;
+}
+
+/* Test */
+
+.dashboard .app{
+  display: flex;
+  flex: 0.9;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.dashboard .row{
+  flex:1;
+  width: auto;
+  justify-content: center;
+}
+
+.dashboard .chart{
+  margin-top: 75px;
+  width:75%;
+}
+
+.dashboard .heatMap{
+  width:100%;
+  height: 90vh;
+  margin-bottom: "70px";
+}
+
+@media (max-width: 768px) {
+  .dashboard .chart{
+    width:100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard .chart{
+    width:100%;
+  }
 }
