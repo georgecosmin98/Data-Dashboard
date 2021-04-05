@@ -152,6 +152,11 @@
   color: black;
 }
 
+.social-btn:hover{
+  background: #eee;
+  color: #000 !important;
+}
+
 .social-btn img {
   height: 32px;
   float: left;

@@ -54,8 +54,9 @@ class SettingsComponent extends Component {
     changeGeneralInformations(values) {
         this.setState({ isEnable: false })
         UserService.changeUserGeneralInfo(values.name, values.address).then(response => {
+            console.log(response)
             if (response.status === 200) {
-                toast.success('Your password has been reset successfully!', {
+                toast.success('Your general information have been update!', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -184,6 +185,12 @@ class SettingsComponent extends Component {
                                     </fieldset>
 
                                     {this.state.isEnable && <div className="general-info"><button className="btn" type="submit">Save changes</button></div>}
+                                    {!this.state.isEnable && <Loader
+                                            type="Puff"
+                                            color="#00BFFF"
+                                            height={50}
+                                            width={50}
+                                        />}
                                 </Form>
                             )
                         }
@@ -228,9 +235,6 @@ class SettingsComponent extends Component {
                             )
                         }
                     </Formik>}
-                    {/* <div className="btn-center">
-                        <button className="btn" type="submit" onClick={this.changeContext.bind(this)}>Change context</button>
-                    </div> */}
                 </div>
             </div>
         )

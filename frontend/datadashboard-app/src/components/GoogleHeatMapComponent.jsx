@@ -5,7 +5,6 @@ import DatePicker from 'react-datepicker'
 import Moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
 class GoogleHeatMapComponent extends Component {
 
     static defaultProps = {
@@ -95,7 +94,7 @@ class GoogleHeatMapComponent extends Component {
 
 
         return (
-            <div style={{ height: '90vh', width: '94%', marginBottom: "70px" }}>
+            <div className="heatMap">
                 <DatePicker popperClassName="datepicker-userslocations"
                     className="datepicker-userslocations"
                     selected={this.state.value}
