@@ -15,10 +15,7 @@ import java.util.Map;
 @Service
 public class Ascr2Service {
 
-
     private RestHighLevelClient client;
-
-
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -29,12 +26,9 @@ public class Ascr2Service {
 
 
     public Ascr2Dto findById(String id) throws Exception {
-
         GetRequest getRequest = new GetRequest("ascr.2", "_doc", id);
-
         GetResponse getResponse = client.get(getRequest, RequestOptions.DEFAULT);
         Map<String,Object> resultMap =getResponse.getSource();
-
         return convertMapToAscr2Dto(resultMap);
     }
 
