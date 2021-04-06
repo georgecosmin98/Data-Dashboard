@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Chart from "react-apexcharts";
-import UserLocationService from '../api/UserLocationService'
+import UserLocationService from '../../api/UserLocationService'
 import Moment from 'moment';
 
 class LineChartComponent extends Component {
@@ -8,23 +8,23 @@ class LineChartComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: [1,1]
+            data: [1, 1]
         }
         this.updateUserValues = this.updateUserValues.bind(this)
     }
 
     async componentDidMount() {
-       await this.updateUserValues("2021-04-01")
+        await this.updateUserValues("2021-04-01")
     }
 
     async updateUserValues(afterDate) {
         await UserLocationService.retrievePollutionValues(afterDate)
             .then(
                 response => {
-                   // console.log(response);
+                    // console.log(response);
                     var data = []
                     for (var i = 0; i < response.data.length; i++) {
-                        data.push([Date.parse(response.data[i].timestamp),response.data[i].value ])
+                        data.push([Date.parse(response.data[i].timestamp), response.data[i].value])
                     }
                     this.setState({ data: data })
 
@@ -40,7 +40,7 @@ class LineChartComponent extends Component {
                 data: this.state.data
             }],
             chart: {
-                height: 380,
+                height: 300,
                 type: 'line',
             },
             stroke: {
@@ -49,10 +49,10 @@ class LineChartComponent extends Component {
             },
             xaxis: {
                 type: 'datetime',
-                tickAmount: 10,
+                tickAmount: 12,
                 labels: {
                     formatter: function (value, timestamp, opts) {
-                        return opts.dateFormatter(new Date(timestamp), 'dd MMM yyyy HH:mm')
+                        return opts.dateFormatter(new Date(timestamp), 'dd MMM HH:mm')
                     }
                 }
             },
@@ -99,7 +99,7 @@ class LineChartComponent extends Component {
                         options={options}
                         series={options.series}
                         type="line"
-                    // width="100%"
+                        height= "100%"
                     />
                 </div>
             </div>
