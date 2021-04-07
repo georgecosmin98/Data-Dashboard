@@ -3,6 +3,7 @@ package com.airquality.commons.airqualitypersistanceservice.controller;
 import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.BrasovDevRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.BrasovDevServiceImpl;
+import com.airquality.commons.airqualitypersistanceservice.service.UserLocationServiceImpl;
 import com.airquality.commons.airqualitypersistanceservice.util.HaversinUtil;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/brasovdev")
@@ -40,9 +42,9 @@ public class BrasovDevController {
         return brasovDevRepository.findAllByTimestampAfterAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(first.getTime(),"pm25",45.653509,25.56612);
     }
 
-    @GetMapping("/unique")
-    public void unique() throws IOException {
-        brasovDevServiceImpl.findUniqueLatitudeAndLongitudeValue();
+    @GetMapping("/unique/{date}")
+    public void unique(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws IOException {
+        brasovDevServiceImpl.pollutionDataBasedOnLocation(date);
     }
 
     @GetMapping("/{sensorName}/{firstDate}/{lastDate}")

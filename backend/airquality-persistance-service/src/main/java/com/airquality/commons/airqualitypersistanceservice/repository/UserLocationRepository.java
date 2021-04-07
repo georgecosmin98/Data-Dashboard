@@ -11,6 +11,8 @@ public interface UserLocationRepository extends ElasticsearchRepository<UserLoca
 
     List<UserLocationDto> findUserLocationDtoByTimestampAfter(Long timestamp);
 
+    List<UserLocationDto> findUserLocationDtoByTimestampAfterOrderByTimestampAsc(Long timestamp);
+
     List<UserLocationDto> findUserLocationDtoByTimestampAfterAndUsername(Long timestamp, String username);
 
     List<UserLocationDto> findUserLocationDtoByTimestampBetween(Long fromTimestamp, Long toTimestamp);

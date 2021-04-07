@@ -1,8 +1,11 @@
 package com.airquality.commons.airqualitypersistanceservice.service;
 
 import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevDto;
+import com.airquality.commons.airqualitypersistanceservice.model.UserLocationDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.BrasovDevRepository;
+import com.airquality.commons.airqualitypersistanceservice.repository.UserLocationRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.api.BrasovDevService;
+import com.airquality.commons.airqualitypersistanceservice.util.HaversinUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -26,14 +29,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BrasovDevServiceImpl implements BrasovDevService {
 
     @Autowired
     private BrasovDevRepository brasovDevRepository;
+
+    @Autowired
+    private UserLocationRepository userLocationRepository;
+
     private RestHighLevelClient client;
     private ObjectMapper objectMapper;
 
@@ -48,7 +54,40 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         return brasovDevRepository.findBySensor(sensorName);
     }
 
-    public void findUniqueLatitudeAndLongitudeValue() throws IOException {
+    public void pollutionDataBasedOnLocation(Date data) throws IOException {
+        double nearestLatitude = 0;
+        double nearestLongitude = 0;
+        List<UserLocationDto> dataFromElasticsearch = userLocationRepository.findUserLocationDtoByTimestampAfterOrderByTimestampAsc(data.getTime());
+        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValue();
+        List<BrasovDevDto> pollutionDataBasedOnLocation = new ArrayList<BrasovDevDto>();
+
+        //Iterate userLocationDto list and find min distance between our coordinates and near sensors
+        for (UserLocationDto userLocationDto : dataFromElasticsearch) {
+            //Key represent Latitude and Value represent Longitude
+            double minDistance = Double.MAX_VALUE;
+
+            for (Map.Entry<Double, Double> entry : sensorData.entrySet()) {
+                double distance = HaversinUtil.distanceCalculator(userLocationDto.getLatitude(), userLocationDto.getLongitude(),
+                        entry.getKey(), entry.getValue());
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestLatitude = entry.getKey();
+                    nearestLongitude = entry.getValue();
+                }
+            }
+
+            List<BrasovDevDto> result = brasovDevRepository.findByTimestampBetweenAndSensorAndLocationLatAndLocationLong(
+                    userLocationDto.getTimestamp().getTime(), userLocationDto.getTimestamp().getTime() + (3600 * 1000), "pm10", nearestLatitude, nearestLongitude);
+            if (!result.isEmpty())
+                pollutionDataBasedOnLocation.add(result.get(0));
+            System.out.println(nearestLatitude + "   =>    " + nearestLongitude + " distanta minima " + minDistance
+                    + "    coordonatele mele: " + userLocationDto.getLatitude() + "=>" + userLocationDto.getLongitude());
+        }
+    }
+
+    private Map<Double, Double> findUniqueLatitudeAndLongitudeValue() throws IOException {
+
+        Map<Double, Double> sensorData = new HashMap<Double, Double>();
         // we limit it to one index, wildcard patterns are working
         SearchRequest searchRequest = new SearchRequest("brasov-dev");
 
@@ -64,7 +103,6 @@ public class BrasovDevServiceImpl implements BrasovDevService {
 
         // assign search query to search request
         searchRequest.source(searchSourceBuilder);
-        RequestOptions request;
 
         //Run search on elasticsearch
         SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
@@ -84,9 +122,13 @@ public class BrasovDevServiceImpl implements BrasovDevService {
                 Aggregation longitudeAggregation = secondAggregations.get("LocationLong");
                 List<? extends Terms.Bucket> secondBuckets = ((Terms) longitudeAggregation).getBuckets();
                 for (Terms.Bucket secondAggregationBucket : secondBuckets) {
-                    System.out.println(firstAggregationBucket.getKey() + " -> " + secondAggregationBucket.getKey());
+                    //System.out.println(firstAggregationBucket.getKey() + " -> " + secondAggregationBucket.getKey());
+                    sensorData.put((Double) firstAggregationBucket.getKey(), (Double) secondAggregationBucket.getKey());
                 }
             }
         }
+        return sensorData;
     }
+
+
 }
