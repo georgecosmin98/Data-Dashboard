@@ -15,6 +15,7 @@ public interface BrasovDevRepository extends ElasticsearchRepository<BrasovDevDt
     List<BrasovDevDto> findByTimestampIsBetween(Long firstDate, Long lastDate);
     List<BrasovDevDto> findByTimestampBeforeAndLocationLatAndLocationLongOrderByTimestampDesc(Long firstDate,double latitude,double longitude);
     List<BrasovDevDto> findByTimestampBetweenAndSensorAndLocationLatAndLocationLong(Long firstDate,Long secondDate,String sensor,double latitude,double longitude);
+    List<BrasovDevDto> findByTimestampBetweenAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(Long firstDate,Long secondDate,String sensor,double latitude,double longitude);
     Optional<BrasovDevDto> findById(String id);
     List<BrasovDevDto> findBrasovDevDtoByTimestampAfter(Date firstDate);
     List<BrasovDevDto> findBySensor(String sensorName);

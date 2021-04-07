@@ -10,17 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
-import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -85,6 +79,31 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         }
     }
 
+    public List<BrasovDevDto> pollutionDataBasedOnAddressLocation(Date data, String sensor, double latitude, double longitude) throws IOException {
+        double nearestLatitude = 0;
+        double nearestLongitude = 0;
+        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValue();
+        List<BrasovDevDto> pollutionDataBasedOnLocation = new ArrayList<BrasovDevDto>();
+        //Iterate userLocationDto list and find min distance between our coordinates and near sensors
+        double minDistance = Double.MAX_VALUE;
+            for (Map.Entry<Double, Double> entry : sensorData.entrySet()) {
+                double distance = HaversinUtil.distanceCalculator(latitude, longitude,
+                        entry.getKey(), entry.getValue());
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestLatitude = entry.getKey();
+                    nearestLongitude = entry.getValue();
+                }
+            }
+
+            List<BrasovDevDto> result = brasovDevRepository.findByTimestampBetweenAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(
+                    data.getTime(), new Date().getTime(), sensor, nearestLatitude, nearestLongitude);
+            System.out.println(nearestLatitude + "   =>    " + nearestLongitude + " distanta minima " + minDistance
+                    + "    coordonatele mele: " + latitude + "=>" + longitude);
+            return result;
+    }
+
+
     private Map<Double, Double> findUniqueLatitudeAndLongitudeValue() throws IOException {
 
         Map<Double, Double> sensorData = new HashMap<Double, Double>();
@@ -101,7 +120,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         //Set aggregations to search source builder
         searchSourceBuilder.aggregation(aggregation);
 
-        // assign search query to search request
+        //assign search query to search request
         searchRequest.source(searchSourceBuilder);
 
         //Run search on elasticsearch

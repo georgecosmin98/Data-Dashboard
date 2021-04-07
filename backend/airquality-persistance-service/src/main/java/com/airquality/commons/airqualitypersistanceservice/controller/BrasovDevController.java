@@ -52,6 +52,11 @@ public class BrasovDevController {
         return brasovDevRepository.findBySensorAndTimestampIsBetweenOrderByTimestampDesc(sensorName,firstDate.getTime(),lastDate.getTime());
     }
 
+    @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
+    public List<BrasovDevDto> findByDateSensorAndCoordinates(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                                                             @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocation(date, sensor, latitude,longitude);
+    }
     @GetMapping("/test1/{lat}/{longitude}")
     public double distance(@PathVariable double lat, @PathVariable double longitude){
        return HaversinUtil.distanceCalculator(lat,longitude,45,25);

@@ -116,14 +116,6 @@ class GoogleHeatMapComponent extends Component {
                     heatmap={userLocationsData}
                     onZoomAnimationStart={this.adaptPointRadius.bind(this)}
                 >
-                    {/* {userLocationsData.positions.map((mark) => (    
-                        <AnyReactComponent 
-                        lat={mark.lat}
-                        lng={mark.lng}
-                        text="My Marker"
-                        />
-                    ))} */}
-
                 </GoogleMapReact>
                 <button className="toggleButton" onClick={this.toggleHeatMap.bind(this)}>Toggle heatmap</button>
             </div>
