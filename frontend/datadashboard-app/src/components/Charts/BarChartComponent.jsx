@@ -1,38 +1,17 @@
 import React, { Component } from 'react'
 import Chart from "react-apexcharts";
 import UserLocationService from '../../api/UserLocationService'
-import Moment from 'moment';
 
 class BarChartComponent extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            data: [1, 1]
-        }
-        this.updateUserValues = this.updateUserValues.bind(this)
     }
 
-    async componentDidMount() {
-        await this.updateUserValues("2021-04-01")
-    }
-
-    async updateUserValues(afterDate) {
-        await UserLocationService.retrievePollutionValues(afterDate)
-            .then(
-                response => {
-                    console.log(response);
-                    var data = []
-                    for (var i = 0; i < response.data.length; i++) {
-                        data.push([Date.parse(response.data[i].timestamp), response.data[i].value])
-                    }
-                    this.setState({ data: data })
-
-                    console.log(data)
-                }
-            )
+    componentDidMount() {
     }
 
     render() {
+        console.log(this.props.data)
         var options = {
             chart: {
                 type: 'bar',
@@ -40,7 +19,7 @@ class BarChartComponent extends Component {
             },
             series: [{
                 name: 'Values',
-                data: this.state.data
+                data: this.props.data
             }],
             plotOptions: {
                 bar: {
