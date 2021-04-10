@@ -101,6 +101,7 @@ class SignupComponent extends Component {
     }
 
     handleSocialLoginSuccess = (user) => {
+        console.log(user)
         AuthenticationService.authenticateWithSocialAccount(user._profile.email, user._profile.name).then(response => {
             if (response.status === 200) {
                 console.log(response)
