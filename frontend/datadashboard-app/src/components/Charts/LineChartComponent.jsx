@@ -18,12 +18,40 @@ class LineChartComponent extends Component {
                 name: 'Values',
                 data: this.props.data
             }],
+            annotations: {
+                yaxis: [
+                  {
+                    y: 55,
+                    y2: 1000,
+                    borderColor: '#000',
+                    fillColor: '#FF0000',
+                  },{
+                    y: 0,
+                    y2: 20,
+                    borderColor: '#000',
+                    fillColor: '#99ff99',
+                  }
+                ]
+              },
             chart: {
                 height: 300,
                 type: 'line',
+                animations: {
+                    enabled: false,
+                    easing: 'easeinout',
+                    speed: 800,
+                    animateGradually: {
+                        enabled: true,
+                        delay: 150
+                    },
+                    dynamicAnimation: {
+                        enabled: true,
+                        speed: 350
+                    }
+                }
             },
             stroke: {
-                width: 7,
+                width: 4,
                 curve: 'smooth'
             },
             xaxis: {
@@ -44,24 +72,23 @@ class LineChartComponent extends Component {
                 }
             },
             fill: {
-                type: 'gradient',
+                type: ['gradient'],
                 gradient: {
                     shade: 'dark',
-                    gradientToColors: ["#00FF00"],
+                    gradientToColors: ["#0000FF"],
                     shadeIntensity: 1,
                     type: 'vertical',
                     opacityFrom: 1,
-                    opacityTo: 0.7,
-                    stops: [0, 100]
+                    opacityTo: 1
                 },
             },
             markers: {
                 size: 0,
                 colors: ["#FFA41B"],
                 strokeColors: "#fff",
-                strokeWidth: 2,
+                strokeWidth: 1,
                 hover: {
-                    size: 7,
+                    size: 5,
                 }
             },
             yaxis: {

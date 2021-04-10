@@ -1,21 +1,34 @@
 import React, { Component } from 'react'
 import Chart from "react-apexcharts";
-import UserLocationService from '../../api/UserLocationService'
 
 class BarChartComponent extends Component {
-    constructor(props) {
-        super(props)
-    }
-
-    componentDidMount() {
-    }
-
+  
     render() {
         console.log(this.props.data)
+
         var options = {
             chart: {
                 type: 'bar',
-                height: '350px'
+                height: '350px',
+                animations: {
+                    enabled: false,
+                    easing: 'easeinout',
+                    speed: 800,
+                    animateGradually: {
+                        enabled: false,
+                        delay: 150
+                    },
+                    dynamicAnimation: {
+                        enabled: false,
+                        speed: 350
+                    }
+                },
+                zoom: {
+                    autoScaleYaxis: true,
+                }
+            },
+            markers: {
+                size: 0
             },
             series: [{
                 name: 'Values',
@@ -30,24 +43,20 @@ class BarChartComponent extends Component {
                             color: '#00FF00'
                         }, {
                             from: 20,
-                            to: 30,
-                            color: '#eff542'
+                            to: 55,
+                            color: '#ffcc00'
                         }, {
-                            from: 30,
-                            to: 40,
-                            color: '#f5ce42'
-                        }, {
-                            from: 40,
-                            to: 100,
+                            from: 55,
+                            to: 1000,
                             color: '#FF0000'
                         }
                         ]
                     },
-                    columnWidth: '90%',
+                    columnWidth: '100%'
                 }
             },
             title: {
-                text: 'AirQuality',
+                text: this.props.pollutantName.toUpperCase(),
                 align: 'left',
                 style: {
                     fontSize: "16px",
@@ -59,7 +68,7 @@ class BarChartComponent extends Component {
             },
             yaxis: {
                 title: {
-                    text: 'Values [ug/m3]',
+                    text: 'Values [' + this.props.measurement + ']',
                 }
             },
             xaxis: {
