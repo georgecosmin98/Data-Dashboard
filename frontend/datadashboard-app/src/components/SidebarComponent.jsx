@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import SidebarRowComponent from './SidebarRowComponent'
-import HomeIcon from '@material-ui/icons/Home';
-import ErrorIcon from '@material-ui/icons/Error';
+import HomeWorkOutlinedIcon from '@material-ui/icons/HomeWorkOutlined';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
+import BarChartIcon from '@material-ui/icons/BarChart';
 import { NavLink } from 'react-router-dom'
 import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -46,8 +46,8 @@ class SidebarComponent extends Component {
         const isLoggedIn = AuthenticationService.isUserLoggedIn();
         return (
             <div className="sidebar">
-                {!this.state.settingsMenu && <NavLink to="/" exact activeClassName="active"><SidebarRowComponent icon={HomeIcon} title="Home"></SidebarRowComponent> </NavLink>}
-                {!this.state.settingsMenu && <NavLink to="/error" activeClassName="active"><SidebarRowComponent icon={ErrorIcon} title="ErrorPage"></SidebarRowComponent></NavLink>}
+                {!this.state.settingsMenu && <NavLink to="/" exact activeClassName="active"><SidebarRowComponent icon={BarChartIcon} title="Dashboard"></SidebarRowComponent> </NavLink>}
+                {isLoggedIn && !this.state.settingsMenu && <NavLink to="/home" activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={HomeWorkOutlinedIcon} title="Home Data" /></NavLink>}
                 {isLoggedIn && !this.state.settingsMenu && <NavLink to={GENERAL_INFO_LINK_URL} activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={SettingsIcon} title="Settings" /></NavLink>}
                 {!this.state.settingsMenu && <NavLink to="/contact" activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={ContactMailIcon} title="Contact" /></NavLink>}
 

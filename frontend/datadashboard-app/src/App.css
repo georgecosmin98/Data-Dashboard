@@ -122,7 +122,8 @@ body {
 
 /* Dashboard */
 
-.dashboard {
+.dashboard,
+.home {
   flex: 0.9;
   display: flex;
   flex-wrap: wrap;
@@ -143,6 +144,12 @@ body {
 .dashboard h2 {
   margin-left: 5px;
   margin-bottom: 20px;
+}
+
+.dashboard .heatMap {
+  width: 100%;
+  height: 90vh;
+  margin-bottom: "70px";
 }
 
 .bar {
@@ -513,7 +520,7 @@ body {
 
 /* Test */
 
-.dashboard .app {
+.home .app {
   display: flex;
   flex: 1;
   width: 100%;
@@ -523,7 +530,7 @@ body {
   height: 450px
 }
 
-.dashboard .row {
+.home .row {
   flex: 1;
   width: auto;
   justify-content: center;
@@ -531,20 +538,43 @@ body {
   height: 75%;
 }
 
-.dashboard .chart {
+.home .chart {
   margin-top: 75px;
-  height:80%;
+  height: 80%;
   width: 90%;
 }
 
-.dashboard .heatMap {
-  width: 100%;
-  height: 90vh;
-  margin-bottom: "70px";
+.home h1 {
+  font-size: 24px !important;
+  width:100%;
+  margin-top: 30px;
+  margin-left:30px;
 }
 
 @media (max-width: 768px) {
-  .dashboard .chart {
+  .home .chart {
     width: 95%;
   }
+}
+
+.pollutantSelector {
+  display: block;
+  position: absolute;
+  top: 25%;
+  z-index: 1;
+}
+
+.pollutantSelectorButton {
+  margin-right: 5px;
+  color: #fff;
+  background: #333;
+  cursor: pointer;
+  border-radius: .25rem;
+  padding: 5px;
+  border: none;
+}
+
+.pollutantSelectorButton:hover {
+  background: #007bff;
+  color: #FFF !important;
 }

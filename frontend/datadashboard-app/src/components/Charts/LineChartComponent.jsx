@@ -20,19 +20,19 @@ class LineChartComponent extends Component {
             }],
             annotations: {
                 yaxis: [
-                  {
-                    y: 55,
-                    y2: 1000,
-                    borderColor: '#000',
-                    fillColor: '#FF0000',
-                  },{
-                    y: 0,
-                    y2: 20,
-                    borderColor: '#000',
-                    fillColor: '#99ff99',
-                  }
+                    {
+                        y: 55,
+                        y2: 1000,
+                        borderColor: '#000',
+                        fillColor: '#FF0000',
+                    }, {
+                        y: 0,
+                        y2: 20,
+                        borderColor: '#000',
+                        fillColor: '#99ff99',
+                    }
                 ]
-              },
+            },
             chart: {
                 height: 300,
                 type: 'line',
@@ -105,8 +105,9 @@ class LineChartComponent extends Component {
                         options={options}
                         series={options.series}
                         type="line"
-                        height= "100%"
+                        height="100%"
                     />
+
                 </div>
             </div>
         );
