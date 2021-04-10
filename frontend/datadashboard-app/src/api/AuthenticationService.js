@@ -37,13 +37,11 @@ class AuthenticationService {
   }
 
   axiosInterceptors() {
-    console.log("I am at axios interceptors")
     axios.interceptors.request.use(
       (config) => {
         if (this.isUserLoggedIn()) {
           config.headers.authorization = this.createJWTToken(sessionStorage.getItem(USER_TOKEN_SESSION_ATTRIBUTE_NAME));
         }
-        console.log(config)
         return config
       }
     )

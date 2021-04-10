@@ -35,7 +35,6 @@ class LoginComponent extends Component {
     onSubmit(values) {
         this.setState({ isEnable: false })
         AuthenticationService.logInWithLocalAccount(values.email, values.password).then(response => {
-            console.log(response)
             if (response.status === 200) {
                 AuthenticationService.registerSuccesfulLoginWithJwt(values.email, response.data.token)
                 toast.success('You have successfully logged in!', {
@@ -94,7 +93,6 @@ class LoginComponent extends Component {
     handleSocialLoginSuccess = (user) => {
         AuthenticationService.authenticateWithSocialAccount(user._profile.email, user._profile.name).then(response => {
             if (response.status === 200) {
-                console.log(response)
                 AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.data.token);
                 toast.success('You have signed up successfully!', {
                     position: "top-right",

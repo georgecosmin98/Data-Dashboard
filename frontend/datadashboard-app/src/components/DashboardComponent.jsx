@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AuthenticationService from '../api/AuthenticationService'
 import GoogleHeatMapComponent from './GoogleHeatMapComponent';
-
 class DashboardComponent extends Component {
 
     render() {

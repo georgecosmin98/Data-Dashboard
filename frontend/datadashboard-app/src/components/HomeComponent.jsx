@@ -20,7 +20,7 @@ class DashboardComponent extends Component {
 
     async componentDidMount() {
         await UserService.retrieveUserGeneralInfo().then(response => {
-            console.log(response.data)
+            //console.log(response.data)
             this.setState({ address: response.data.address })
         })
         this.retrieveHomePollutionData(0, 0, this.state.address);
@@ -34,10 +34,7 @@ class DashboardComponent extends Component {
             latitude = response.data.features[0].center[1];
             longitude = response.data.features[0].center[0];
         })
-        console.log(latitude)
-        console.log(longitude)
         AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
-            console.log(response)
             var data = []
             this.setState({ measurement: response.data[0].measurement })
             this.setState({ pollutantName: response.data[0].sensor })

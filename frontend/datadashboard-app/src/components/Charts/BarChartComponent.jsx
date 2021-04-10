@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 class BarChartComponent extends Component {
   
     render() {
-        console.log(this.props.data)
+        // console.log(this.props.data)
 
         var options = {
             chart: {

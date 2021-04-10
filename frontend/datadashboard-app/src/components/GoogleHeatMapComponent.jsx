@@ -32,7 +32,7 @@ class GoogleHeatMapComponent extends Component {
     }
 
     onChange(date) {
-        console.log(date)
+        //console.log(date)
         this.setState({ value: date })
         this.updateUserLocationsHeatmapValues(Moment(date).format('YYYY-MM-DD, HH:mm'))
     }
@@ -45,13 +45,13 @@ class GoogleHeatMapComponent extends Component {
         UserLocationService.retriveUserLocationAfter(afterDate)
             .then(
                 response => {
-                    console.log(response);
+                    //console.log(response);
                     var data = []
                     for (var i = 0; i < response.data.length; i++) {
                         data.push({ lat: response.data[i].latitude, lng: response.data[i].longitude })
                     }
                     this.setState({ heatmapPoints: data })
-                    console.log(data)
+                    //console.log(data)
                 }
             )
     }
@@ -72,14 +72,14 @@ class GoogleHeatMapComponent extends Component {
     }
 
     adaptPointRadius() {
-        console.log("Zoom")
-        console.log(this._googleMap.map_.zoom)
-        console.log(this._googleMap.heatmap)
-        // if (this._googleMap.map_.zoom <= 13)
-        //     this._googleMap.heatmap.radius = ((2 / 3) * (this._googleMap.map_.zoom)) / 2
-        // else
-        //     this._googleMap.heatmap.radius = ((4 / 3) * (this._googleMap.map_.zoom))/ 2
-        console.log(this._googleMap.heatmap)
+        // console.log("Zoom")
+        // console.log(this._googleMap.map_.zoom)
+        // console.log(this._googleMap.heatmap)
+        // // if (this._googleMap.map_.zoom <= 13)
+        // //     this._googleMap.heatmap.radius = ((2 / 3) * (this._googleMap.map_.zoom)) / 2
+        // // else
+        // //     this._googleMap.heatmap.radius = ((4 / 3) * (this._googleMap.map_.zoom))/ 2
+        // console.log(this._googleMap.heatmap)
     }
     render() {
 
