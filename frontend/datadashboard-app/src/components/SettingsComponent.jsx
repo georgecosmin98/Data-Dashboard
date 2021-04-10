@@ -5,6 +5,7 @@ import { USER_NAME_SESSION_ATTRIBUTE_NAME } from '../Constants';
 import AuthenticationService from '../api/AuthenticationService'
 import { toast } from 'react-toastify';
 import UserService from '../api/UserService';
+import UtilityService from '../api/UtilityService';
 
 class SettingsComponent extends Component {
 
@@ -53,20 +54,10 @@ class SettingsComponent extends Component {
 
     changeGeneralInformations(values) {
         this.setState({ isEnable: false })
-        UserService.changeUserGeneralInfo(values.name, values.address).then(response => {
+        UtilityService.addressToCoordinates(values.address).then(response => {
             console.log(response)
-            if (response.status === 200) {
-                toast.success('Your general information have been update!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-                this.setState({ isEnable: true })
-            } else {
-                toast.error('An error occured. Please try again.', {
+            if (response.data.features.length === 0) {
+                toast.error('Invalid address', {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -75,6 +66,34 @@ class SettingsComponent extends Component {
                     progress: undefined,
                 })
                 this.setState({ isEnable: true })
+            }
+            else {
+                console.log(response)
+                this.setState({ address: response.data.features[0].place_name })
+                UserService.changeUserGeneralInfo(values.name, response.data.features[0].place_name).then(response => {
+                    console.log(response)
+                    if (response.status === 200) {
+                        toast.success('Your general information have been update!', {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            draggable: true,
+                            progress: undefined,
+                        })
+                        this.setState({ isEnable: true })
+                    } else {
+                        toast.error('An error occured. Please try again.', {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            draggable: true,
+                            progress: undefined,
+                        })
+                        this.setState({ isEnable: true })
+                    }
+                })
             }
         })
     }
@@ -167,7 +186,7 @@ class SettingsComponent extends Component {
                         initialValues={{ name, address }}
                         enableReinitialize={true}
                         onSubmit={this.changeGeneralInformations.bind(this)}
-                       // validateOnChange={this.handleChange.bind(this)}
+                        // validateOnChange={this.handleChange.bind(this)}
                         validateOnBlur={false}
                     //  validate={this.validate}
                     >
@@ -186,11 +205,11 @@ class SettingsComponent extends Component {
 
                                     {this.state.isEnable && <div className="general-info"><button className="btn" type="submit">Save changes</button></div>}
                                     {!this.state.isEnable && <Loader
-                                            type="Puff"
-                                            color="#00BFFF"
-                                            height={50}
-                                            width={50}
-                                        />}
+                                        type="Puff"
+                                        color="#00BFFF"
+                                        height={50}
+                                        width={50}
+                                    />}
                                 </Form>
                             )
                         }
