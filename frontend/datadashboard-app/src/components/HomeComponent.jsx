@@ -9,6 +9,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
+import Moment from 'moment';
 
 const options = [
     { value: 'pm1', label: 'PM1' },
@@ -33,24 +34,24 @@ class DashboardComponent extends Component {
                 label: 'PM25'}
             ,
             pollutantSelectorWindowOn: false,
-            date: ''
+            date: Moment(new Date((new Date().getTime() - 604800000)).toString()).format('YYYY-MM-DD')
         }
         this.onChangePollutant = this.onChangePollutant.bind(this)
-        this.onChange = this.onChange.bind(this)
+        this.onChangeData = this.onChangeData.bind(this)
         this.retrieveHomePollutionData = this.retrieveHomePollutionData.bind(this);
         this.tooglePollutantSelectorWindow = this.tooglePollutantSelectorWindow.bind(this);
     }
 
-    onChange(date) {
-        //console.log(date)
+    onChangeData(date) {
         this.setState({ date: date })
+        this.retrieveHomePollutionData(Moment(date).format('YYYY-MM-DD') , this.state.pollutant.value, this.state.address);
     }
 
     onChangePollutant(values) {
         console.log(values);
         this.setState({ pollutant:{value: values.value, label: values.label }})
 
-        this.retrieveHomePollutionData(0, values.value, this.state.address);
+        this.retrieveHomePollutionData(this.state.date , values.value, this.state.address);
     }
 
     async componentDidMount() {
@@ -58,7 +59,7 @@ class DashboardComponent extends Component {
             //console.log(response.data)
             this.setState({ address: response.data.address })
         })
-        this.retrieveHomePollutionData(0, this.state.pollutant.value, this.state.address);
+        this.retrieveHomePollutionData(this.state.date, this.state.pollutant.value, this.state.address);
     }
 
     async retrieveHomePollutionData(date, sensor, address) {
@@ -69,8 +70,6 @@ class DashboardComponent extends Component {
             latitude = response.data.features[0].center[1];
             longitude = response.data.features[0].center[0];
         })
-        console.log(date)
-        console.log(sensor)
         AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
             console.log(response)
             console.log(response.data.length)
@@ -95,13 +94,13 @@ class DashboardComponent extends Component {
             <div className="home">
                 <TuneIcon className="pollutantSelector" onClick={this.tooglePollutantSelectorWindow}></TuneIcon>
                 {isLoggedIn && <h1>Pollution Data for <span className="text-primary">{this.state.address}</span></h1>}
-                {!this.state.pollutantSelectorWindowOn && <div className="pollutantSelectorWindow">
+                {this.state.pollutantSelectorWindowOn && <div className="pollutantSelectorWindow">
                     <h1>Control Panel</h1>
                     <p>Time Interval</p>
                     <DatePicker popperClassName="datepicker-userslocations"
                         className="datepicker-userslocations"
                         selected={this.state.date}
-                        onChange={this.onChange}
+                        onChange={this.onChangeData}
                         on
                         placeholderText="Start Date"
                         showTimeSelect
@@ -119,16 +118,6 @@ class DashboardComponent extends Component {
                 </div>}
                 <div className="flex-break"></div>
                 {isLoggedIn && <>
-                    {/* <div className="pollutantSelector">
-                        <button className="pollutantSelectorButton">PM1</button>
-                        <button className="pollutantSelectorButton">PM10</button>
-                        <button className="pollutantSelectorButton">PM25</button>
-                        <button className="pollutantSelectorButton">O3</button>
-                        <button className="pollutantSelectorButton">CHO2</button>
-                        <button className="pollutantSelectorButton">CO2</button>
-                        <button className="pollutantSelectorButton">NO2</button>
-                        <button className="pollutantSelectorButton">SO2</button>
-                    </div> */}
                     <LineChartComponent data={this.state.pm25Data}>
                     </LineChartComponent></>}
                 <div className="flex-break"></div>
