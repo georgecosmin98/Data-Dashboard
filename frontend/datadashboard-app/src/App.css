@@ -122,8 +122,7 @@ body {
 
 /* Dashboard */
 
-.dashboard,
-.home {
+.dashboard {
   flex: 0.9;
   display: flex;
   flex-wrap: wrap;
@@ -480,12 +479,12 @@ body {
   margin-left: 5%;
 }
 
-.datepicker-userslocations,
-.react-datepicker-wrapper {
+.dashboard .datepicker-userslocations,
+.dashboard .react-datepicker-wrapper {
   position: absolute;
   z-index: 1;
-  top:4.4%;
-  padding:0;
+  top: 4.4%;
+  padding: 0;
 }
 
 .react-datepicker {
@@ -519,37 +518,43 @@ body {
   color: white !important;
 }
 
-/* Test */
+/* Home Chart */
+
+.home {
+  display: flex;
+  flex: 0.9;
+  flex-wrap: wrap;
+  background: #f9f9f9;
+  padding-bottom: 0;
+  justify-content: center;
+}
 
 .home .app {
-  display: flex;
-  flex: 1;
+  display: block;
   width: 100%;
   justify-content: center;
   margin-left: 20px;
   margin-right: 20px;
-  height: 450px
+  height: 300px;
+  margin-bottom: 50px;
 }
 
 .home .row {
-  flex: 1;
   width: auto;
   justify-content: center;
-  /* sda */
-  height: 75%;
+  height: 100%;
 }
 
 .home .chart {
-  margin-top: 75px;
-  height: 80%;
+  height: 100%;
   width: 90%;
 }
 
 .home h1 {
   font-size: 24px !important;
-  width:100%;
+  width: 100%;
   margin-top: 30px;
-  margin-left:30px;
+  margin-left: 30px;
 }
 
 @media (max-width: 768px) {
@@ -559,17 +564,21 @@ body {
 }
 
 .pollutantSelector {
-  display: block;
   position: absolute;
-  top: 25%;
+  top: 50px;
+  right: 5px;
   z-index: 1;
+  cursor: pointer;
+  color: #333;
+  width: 30px !important;
+  height: 30px !important;
+
 }
 
 .pollutantSelectorButton {
   margin-right: 5px;
   color: #fff;
   background: #333;
-  cursor: pointer;
   border-radius: .25rem;
   padding: 5px;
   border: none;
@@ -578,4 +587,65 @@ body {
 .pollutantSelectorButton:hover {
   background: #007bff;
   color: #FFF !important;
+}
+
+.pollutantSelectorWindow {
+  position: absolute;
+  top: 80px;
+  right: 5px;
+  z-index: 99;
+  background-color: #ddd;
+  box-shadow: 0px 1px 12px 0px #464646;
+  border-radius: 5px;
+  width: 250px !important;
+  height: 350px !important;
+  padding: 30px;
+}
+
+.pollutantSelectorWindow h1 {
+  text-align: center;
+  margin:0;
+  padding:0;
+  margin-bottom: 30px;
+}
+
+.pollutantSelectorWindow p {
+  text-align: left;
+  margin:0;
+  padding:0;
+  font-weight: 600;
+}
+
+.pollutantSelectorWindow .datepicker-userslocations,
+.pollutantSelectorWindow .react-datepicker-wrapper {
+  margin-bottom: 10px;
+  right:25px;
+}
+
+.pollutantSelectorWindow .react-datepicker{
+  z-index: 15;
+  right:0px;
+  top:0px;
+  width:328px;
+  position: absolute;
+  margin: 0;
+}
+
+.pollutantSelectorWindow .react-datepicker-popper{
+  margin: 0 !important;;
+}
+
+.pollutantSelectorWindow .datepicker-userslocations {
+  border-radius: 4px;
+  min-height: 38px;
+  min-width: 190px;
+  border-style: solid;
+  border-color: #ddd;
+  border-width: 1px;
+  line-height: 24px;
+  padding-left:10px;
+}
+
+.css-yk16xz-control{
+  border-color:#ddd!important;
 }

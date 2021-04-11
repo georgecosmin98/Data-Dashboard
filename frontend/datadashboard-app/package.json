@@ -18,6 +18,7 @@
     "react-loader-spinner": "^4.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.8",
+    "react-select": "^4.3.0",
     "react-social-login": "^3.4.13",
     "react-toastify": "^7.0.3"
   },
