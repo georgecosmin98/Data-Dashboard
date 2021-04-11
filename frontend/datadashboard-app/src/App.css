@@ -652,13 +652,16 @@ body {
     font-size: 1em;
     color: #fff;
     background: #333;
-    margin-top: 25px;
     padding: 10px 0px;
     border: none;
     cursor: pointer;
     border-radius: .25rem;
     width: 50%;
     text-align: center;
+}
+
+.pollutantSelectorWindow .btn-center{
+  margin-top: 25px;
 }
 
 .pollutantSelectorWindow .btn-controlPanel:hover{

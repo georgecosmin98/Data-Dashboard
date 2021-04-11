@@ -9,6 +9,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
+import Loader from "react-loader-spinner";
 
 const options = [
     { value: 'pm1', label: 'PM1' },
@@ -34,7 +35,8 @@ class DashboardComponent extends Component {
             }
             ,
             pollutantSelectorWindowOn: false,
-            date: ''
+            date: '',
+            isEnable: true
         }
         this.onChangePollutant = this.onChangePollutant.bind(this)
         this.onChangeData = this.onChangeData.bind(this)
@@ -52,7 +54,8 @@ class DashboardComponent extends Component {
         this.setState({ pollutant: { value: values.value, label: values.label } })
     }
 
-    applyChanges(){
+    applyChanges() {
+        this.setState({isEnable: false})
         this.retrieveHomePollutionData(this.state.date, this.state.pollutant.value, this.state.address);
     }
 
@@ -81,6 +84,9 @@ class DashboardComponent extends Component {
                     data.push([Date.parse(response.data[i].timestamp) + 10800000, response.data[i].value])
                 }
                 this.setState({ pm25Data: data })
+                this.setState({isEnable:true})
+            }else{
+                this.setState({isEnable:true})
             }
         })
     }
@@ -115,9 +121,15 @@ class DashboardComponent extends Component {
                         value={this.state.pollutant}
                         onChange={this.onChangePollutant}
                         options={options}
-                    /> 
+                    />
                     <div className="btn-center">
-                        <button className="btn-controlPanel" onClick={this.applyChanges}>Apply</button>
+                        {this.state.isEnable && <button className="btn-controlPanel" onClick={this.applyChanges}>Apply</button>}
+                        {!this.state.isEnable && <Loader
+                            type="Puff"
+                            color="#00BFFF"
+                            height={50}
+                            width={50}
+                        />}
                     </div>
                 </div>}
                 <div className="flex-break"></div>
