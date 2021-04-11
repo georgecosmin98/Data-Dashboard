@@ -14,7 +14,12 @@ const options = [
     { value: 'pm1', label: 'PM1' },
     { value: 'pm10', label: 'PM10' },
     { value: 'pm25', label: 'PM25' },
-  ];
+    { value: 'no2', label: 'NO2' },
+    { value: 'o3', label: 'O3' },
+    { value: 'cho2', label: 'CHO2' },
+    { value: 'co2', label: 'CO2' },
+    { value: 'so2', label: 'SO2' },
+];
 
 class DashboardComponent extends Component {
     constructor(props) {
@@ -23,10 +28,14 @@ class DashboardComponent extends Component {
             pm25Data: [1, 1],
             address: '',
             measurement: '',
-            pollutantName: '',
+            pollutant: {
+                value: 'pm25',
+                label: 'PM25'}
+            ,
             pollutantSelectorWindowOn: false,
             date: ''
         }
+        this.onChangePollutant = this.onChangePollutant.bind(this)
         this.onChange = this.onChange.bind(this)
         this.retrieveHomePollutionData = this.retrieveHomePollutionData.bind(this);
         this.tooglePollutantSelectorWindow = this.tooglePollutantSelectorWindow.bind(this);
@@ -37,12 +46,19 @@ class DashboardComponent extends Component {
         this.setState({ date: date })
     }
 
+    onChangePollutant(values) {
+        console.log(values);
+        this.setState({ pollutant:{value: values.value, label: values.label }})
+
+        this.retrieveHomePollutionData(0, values.value, this.state.address);
+    }
+
     async componentDidMount() {
         await UserService.retrieveUserGeneralInfo().then(response => {
             //console.log(response.data)
             this.setState({ address: response.data.address })
         })
-        this.retrieveHomePollutionData(0, 0, this.state.address);
+        this.retrieveHomePollutionData(0, this.state.pollutant.value, this.state.address);
     }
 
     async retrieveHomePollutionData(date, sensor, address) {
@@ -53,14 +69,14 @@ class DashboardComponent extends Component {
             latitude = response.data.features[0].center[1];
             longitude = response.data.features[0].center[0];
         })
+        console.log(date)
+        console.log(sensor)
         AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
             console.log(response)
             console.log(response.data.length)
             if (response.data.length) {
                 var data = []
                 this.setState({ measurement: response.data[0].measurement })
-                this.setState({ pollutantName: response.data[0].sensor })
-
                 for (var i = 0; i < response.data.length; i++) {
                     data.push([Date.parse(response.data[i].timestamp) + 10800000, response.data[i].value])
                 }
@@ -96,8 +112,8 @@ class DashboardComponent extends Component {
                     />
                     <p>Pollutant</p>
                     <Select
-                        value={options[1]}
-                        onChange={this.handleChange}
+                        value={this.state.pollutant}
+                        onChange={this.onChangePollutant}
                         options={options}
                     />
                 </div>}
@@ -116,7 +132,7 @@ class DashboardComponent extends Component {
                     <LineChartComponent data={this.state.pm25Data}>
                     </LineChartComponent></>}
                 <div className="flex-break"></div>
-                {isLoggedIn && <BarChartComponent data={this.state.pm25Data} measurement={this.state.measurement} pollutantName={this.state.pollutantName}></BarChartComponent>}
+                {isLoggedIn && <BarChartComponent data={this.state.pm25Data} measurement={this.state.measurement} pollutantName={this.state.pollutant.label}></BarChartComponent>}
             </div>
         )
     }
