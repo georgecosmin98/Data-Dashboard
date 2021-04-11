@@ -646,6 +646,26 @@ body {
   padding-left:10px;
 }
 
+.pollutantSelectorWindow .btn-controlPanel{
+    align-items: center;
+    display: inline-block;
+    font-size: 1em;
+    color: #fff;
+    background: #333;
+    margin-top: 25px;
+    padding: 10px 0px;
+    border: none;
+    cursor: pointer;
+    border-radius: .25rem;
+    width: 50%;
+    text-align: center;
+}
+
+.pollutantSelectorWindow .btn-controlPanel:hover{
+  background: #007bff;
+  color: #FFF !important;
+}
+
 .css-yk16xz-control{
   border-color:#ddd!important;
 }

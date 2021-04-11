@@ -9,7 +9,6 @@ import TuneIcon from '@material-ui/icons/Tune';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
-import Moment from 'moment';
 
 const options = [
     { value: 'pm1', label: 'PM1' },
@@ -31,35 +30,37 @@ class DashboardComponent extends Component {
             measurement: '',
             pollutant: {
                 value: 'pm25',
-                label: 'PM25'}
+                label: 'PM25'
+            }
             ,
             pollutantSelectorWindowOn: false,
-            date: Moment(new Date((new Date().getTime() - 604800000)).toString()).format('YYYY-MM-DD')
+            date: ''
         }
         this.onChangePollutant = this.onChangePollutant.bind(this)
         this.onChangeData = this.onChangeData.bind(this)
+        this.applyChanges = this.applyChanges.bind(this)
         this.retrieveHomePollutionData = this.retrieveHomePollutionData.bind(this);
         this.tooglePollutantSelectorWindow = this.tooglePollutantSelectorWindow.bind(this);
     }
 
     onChangeData(date) {
         this.setState({ date: date })
-        this.retrieveHomePollutionData(Moment(date).format('YYYY-MM-DD') , this.state.pollutant.value, this.state.address);
     }
 
     onChangePollutant(values) {
         console.log(values);
-        this.setState({ pollutant:{value: values.value, label: values.label }})
+        this.setState({ pollutant: { value: values.value, label: values.label } })
+    }
 
-        this.retrieveHomePollutionData(this.state.date , values.value, this.state.address);
+    applyChanges(){
+        this.retrieveHomePollutionData(this.state.date, this.state.pollutant.value, this.state.address);
     }
 
     async componentDidMount() {
         await UserService.retrieveUserGeneralInfo().then(response => {
-            //console.log(response.data)
             this.setState({ address: response.data.address })
         })
-        this.retrieveHomePollutionData(this.state.date, this.state.pollutant.value, this.state.address);
+        this.retrieveHomePollutionData(new Date((new Date().getTime() - 604800000)).toString(), this.state.pollutant.value, this.state.address);
     }
 
     async retrieveHomePollutionData(date, sensor, address) {
@@ -114,7 +115,10 @@ class DashboardComponent extends Component {
                         value={this.state.pollutant}
                         onChange={this.onChangePollutant}
                         options={options}
-                    />
+                    /> 
+                    <div className="btn-center">
+                        <button className="btn-controlPanel" onClick={this.applyChanges}>Apply</button>
+                    </div>
                 </div>}
                 <div className="flex-break"></div>
                 {isLoggedIn && <>
