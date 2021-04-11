@@ -40,7 +40,7 @@ class DashboardComponent extends Component {
             this.setState({ pollutantName: response.data[0].sensor })
 
             for (var i = 0; i < response.data.length; i++) {
-                data.push([Date.parse(response.data[i].timestamp), response.data[i].value])
+                data.push([Date.parse(response.data[i].timestamp) + 10800000, response.data[i].value])
             }
             this.setState({ pm25Data: data })
 
