@@ -36,6 +36,7 @@ class DashboardComponent extends Component {
             ,
             pollutantSelectorWindowOn: false,
             date: '',
+            currentPollutantName:'PM25',
             isEnable: true
         }
         this.onChangePollutant = this.onChangePollutant.bind(this)
@@ -80,15 +81,14 @@ class DashboardComponent extends Component {
             if (response.data.length) {
                 var data = []
                 this.setState({ measurement: response.data[0].measurement })
+                this.setState({ currentPollutantName: response.data[0].sensor })
                 for (var i = 0; i < response.data.length; i++) {
                     data.push([Date.parse(response.data[i].timestamp) + 10800000, response.data[i].value])
                 }
                 this.setState({ pm25Data: data })
-                this.setState({isEnable:true})
-            }else{
-                this.setState({isEnable:true})
             }
         })
+        this.setState({isEnable:true})
     }
 
     tooglePollutantSelectorWindow() {
@@ -132,12 +132,11 @@ class DashboardComponent extends Component {
                         />}
                     </div>
                 </div>}
-                <div className="flex-break"></div>
                 {isLoggedIn && <>
                     <LineChartComponent data={this.state.pm25Data}>
                     </LineChartComponent></>}
                 <div className="flex-break"></div>
-                {isLoggedIn && <BarChartComponent data={this.state.pm25Data} measurement={this.state.measurement} pollutantName={this.state.pollutant.label}></BarChartComponent>}
+                {isLoggedIn && <BarChartComponent data={this.state.pm25Data} measurement={this.state.measurement} pollutantName={this.state.currentPollutantName}></BarChartComponent>}
             </div>
         )
     }

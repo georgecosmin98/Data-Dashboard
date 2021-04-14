@@ -637,8 +637,8 @@ body {
 
 .pollutantSelectorWindow .datepicker-userslocations {
   border-radius: 4px;
-  min-height: 38px;
-  min-width: 190px;
+  height: 38px;
+  width: 190px;
   border-style: solid;
   border-color: #ddd;
   border-width: 1px;
