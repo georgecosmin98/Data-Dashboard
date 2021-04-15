@@ -1,16 +1,7 @@
 import React, { Component } from 'react'
 import Chart from "react-apexcharts";
-import UserLocationService from '../../api/UserLocationService'
-import Moment from 'moment';
 
 class LineChartComponent extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            data: [1, 1]
-        }
-    }
 
     render() {
         var options = {
@@ -95,8 +86,15 @@ class LineChartComponent extends Component {
                 title: {
                     text: 'Values [ug/m3]',
                 },
+            },
+            noData: {
+                text: 'No data available',
+                style: {
+                    fontSize: '24px',
+                  }
             }
         };
+        console.log(this.props.data)
         return (
             <div className="app">
                 <div className="row">

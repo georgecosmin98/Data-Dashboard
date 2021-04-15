@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Chart from "react-apexcharts";
 
 class BarChartComponent extends Component {
-  
+
     render() {
         // console.log(this.props.data)
 
@@ -80,19 +80,26 @@ class BarChartComponent extends Component {
                     }
                 }
             },
-        }
-        return (
-            <div className="app">
-                <div className="row">
-                    <Chart
-                        className="chart"
-                        options={options}
-                        series={options.series}
-                        type="bar"
-                        height="100%"
-                        width="100%"
-                    />
-                </div>
+            noData: {
+                text: 'No data available',
+                style: {
+                    fontSize: '24px',
+                  }
+            }
+
+    }
+    return(
+            <div className = "app" >
+            <div className="row">
+                <Chart
+                    className="chart"
+                    options={options}
+                    series={options.series}
+                    type="bar"
+                    height="100%"
+                    width="100%"
+                />
+            </div>
             </div>
         );
     }

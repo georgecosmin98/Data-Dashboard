@@ -26,7 +26,7 @@ class DashboardComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            pm25Data: [1, 1],
+            pm25Data: [],
             address: '',
             measurement: '',
             pollutant: {
@@ -36,7 +36,7 @@ class DashboardComponent extends Component {
             ,
             pollutantSelectorWindowOn: false,
             date: '',
-            currentPollutantName:'PM25',
+            currentPollutantName: 'PM25',
             isEnable: true
         }
         this.onChangePollutant = this.onChangePollutant.bind(this)
@@ -56,7 +56,7 @@ class DashboardComponent extends Component {
     }
 
     applyChanges() {
-        this.setState({isEnable: false})
+        this.setState({ isEnable: false })
         this.retrieveHomePollutionData(this.state.date, this.state.pollutant.value, this.state.address);
     }
 
@@ -86,9 +86,13 @@ class DashboardComponent extends Component {
                     data.push([Date.parse(response.data[i].timestamp) + 10800000, response.data[i].value])
                 }
                 this.setState({ pm25Data: data })
+            } else {
+                this.setState({ pm25Data: [] })
             }
+
+
         })
-        this.setState({isEnable:true})
+        this.setState({ isEnable: true })
     }
 
     tooglePollutantSelectorWindow() {
