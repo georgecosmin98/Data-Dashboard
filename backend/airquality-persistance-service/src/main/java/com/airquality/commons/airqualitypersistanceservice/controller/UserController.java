@@ -2,10 +2,7 @@ package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.jwt.JwtTokenUtil;
 import com.airquality.commons.airqualitypersistanceservice.jwt.resource.JwtTokenResponse;
-import com.airquality.commons.airqualitypersistanceservice.model.ChangePasswordDto;
-import com.airquality.commons.airqualitypersistanceservice.model.PasswordRecoveryDto;
-import com.airquality.commons.airqualitypersistanceservice.model.UserDto;
-import com.airquality.commons.airqualitypersistanceservice.model.UserGeneralInfoDto;
+import com.airquality.commons.airqualitypersistanceservice.model.*;
 import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceImpl;
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
 import lombok.NonNull;
@@ -101,25 +98,29 @@ public class UserController {
     }
 
     @PostMapping("/socialsignup")
-    public ResponseEntity socialSignup(@RequestBody @NonNull UserDto userDto) {
-        if (!userServiceImpl.findUserByUsername(userDto.getUsername()).isPresent()) {
-            // Creating user's account
-            UserDto user = new UserDto();
-            user.setUsername(userDto.getUsername());
-            user.setName(userDto.getName());
-            user.setPassword(userDto.getPassword());
-            userServiceImpl.createUser(user);
-            //Generate JWT Token
-            final String token = jwtTokenUtil.generateToken(userDto);
-            return ResponseEntity.ok(new JwtTokenResponse(token));
-        } else {
-            UserDto user = userServiceImpl.loadUserByUsername(userDto.getUsername());
-            user.setName(userDto.getName());
-            userServiceImpl.createUser(user);
-            //Generate JWT Token
-            final String token = jwtTokenUtil.generateToken(userDto);
-            return ResponseEntity.ok(new JwtTokenResponse(token));
-        }
+    public ResponseEntity socialSignup(@RequestBody @NonNull SocialLoginDto socialLoginDto) throws IOException, ParseException {
+
+        UserDto socialUser = userServiceImpl.getUserDetailsFromProvider(socialLoginDto.getId(), socialLoginDto.getProvider(), socialLoginDto.getToken());
+        if (socialUser != null) {
+            if (!userServiceImpl.findUserByUsername(socialUser.getUsername()).isPresent()) {
+                // Creating user's account
+                UserDto user = new UserDto();
+                user.setUsername(socialUser.getUsername());
+                user.setName(socialUser.getName());
+                user.setPassword(socialUser.getPassword());
+                userServiceImpl.createUser(user);
+                //Generate JWT Token
+                final String token = jwtTokenUtil.generateToken(socialUser);
+                return ResponseEntity.ok(new JwtTokenResponse(token));
+            } else {
+                UserDto user = userServiceImpl.loadUserByUsername(socialUser.getUsername());
+                userServiceImpl.createUser(user);
+                //Generate JWT Token
+                final String token = jwtTokenUtil.generateToken(socialUser);
+                return ResponseEntity.ok(new JwtTokenResponse(token));
+            }
+        } else
+            return null;
     }
 
     @PostMapping("/isTokenExpired")
@@ -161,7 +162,7 @@ public class UserController {
     }
 
     @PostMapping("/something/{id}/{provider}/{token}")
-    public UserDto test(@PathVariable String id,@PathVariable String provider,@PathVariable String token) throws IOException, ParseException {
-        return userServiceImpl.getUserDetailsFromProvider(id,provider,token);
+    public UserDto test(@PathVariable String id, @PathVariable String provider, @PathVariable String token) throws IOException, ParseException {
+        return userServiceImpl.getUserDetailsFromProvider(id, provider, token);
     }
 }

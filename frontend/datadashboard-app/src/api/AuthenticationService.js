@@ -11,8 +11,8 @@ class AuthenticationService {
     return axios.post(`${process.env.REACT_APP_BASE_URL}/authenticate`, { username, password })
   }
 
-  authenticateWithSocialAccount(username, name) {
-    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/socialsignup`, { username, name })
+  authenticateWithSocialAccount(id, provider, token) {
+    return axios.post(`${process.env.REACT_APP_BASE_URL}/users/socialsignup`, { id, provider, token})
   }
 
   isUserLoggedIn() {
