@@ -10,6 +10,7 @@ import com.airquality.commons.airqualitypersistanceservice.service.EmailServiceI
 import com.airquality.commons.airqualitypersistanceservice.service.UserServiceImpl;
 import lombok.NonNull;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -158,8 +160,8 @@ public class UserController {
         return jwtTokenUtil.getEmailFromToken(text);
     }
 
-    @PostMapping("/something")
-    public String test() {
-        return "Hello";
+    @PostMapping("/something/{id}/{provider}/{token}")
+    public UserDto test(@PathVariable String id,@PathVariable String provider,@PathVariable String token) throws IOException, ParseException {
+        return userServiceImpl.getUserDetailsFromProvider(id,provider,token);
     }
 }
