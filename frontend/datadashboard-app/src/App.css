@@ -706,7 +706,17 @@ body {
   font-weight: 700;
   font-size: 56px;
   padding: 0 !important;
-  margin: 10px 0px !important;
+  margin-bottom: 0;
+  height:70px;
+  /* margin: 10px 0px !important; */
+  text-align: center;
+}
+
+.airquality-status{
+  font-weight: 600;
+  font-size: 20px;
+  padding: 0 !important;
+  margin: 0 !important;
   text-align: center;
 }
 
