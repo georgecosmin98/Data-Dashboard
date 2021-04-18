@@ -551,7 +551,7 @@ body {
 }
 
 .home h1 {
-  font-size: 24px !important;
+  font-size: 24px;
   width: 100%;
   margin-top: 30px;
   margin-left: 30px;
@@ -604,35 +604,36 @@ body {
 
 .pollutantSelectorWindow h1 {
   text-align: center;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   margin-bottom: 30px;
 }
 
 .pollutantSelectorWindow p {
   text-align: left;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   font-weight: 600;
 }
 
 .pollutantSelectorWindow .datepicker-userslocations,
 .pollutantSelectorWindow .react-datepicker-wrapper {
   margin-bottom: 10px;
-  right:25px;
+  right: 25px;
 }
 
-.pollutantSelectorWindow .react-datepicker{
+.pollutantSelectorWindow .react-datepicker {
   z-index: 15;
-  right:0px;
-  top:0px;
-  width:328px;
+  right: 0px;
+  top: 0px;
+  width: 328px;
   position: absolute;
   margin: 0;
 }
 
-.pollutantSelectorWindow .react-datepicker-popper{
-  margin: 0 !important;;
+.pollutantSelectorWindow .react-datepicker-popper {
+  margin: 0 !important;
+  ;
 }
 
 .pollutantSelectorWindow .datepicker-userslocations {
@@ -643,32 +644,100 @@ body {
   border-color: #ddd;
   border-width: 1px;
   line-height: 24px;
-  padding-left:10px;
+  padding-left: 10px;
 }
 
-.pollutantSelectorWindow .btn-controlPanel{
-    align-items: center;
-    display: inline-block;
-    font-size: 1em;
-    color: #fff;
-    background: #333;
-    padding: 10px 0px;
-    border: none;
-    cursor: pointer;
-    border-radius: .25rem;
-    width: 50%;
-    text-align: center;
+.pollutantSelectorWindow .btn-controlPanel {
+  align-items: center;
+  display: inline-block;
+  font-size: 1em;
+  color: #fff;
+  background: #333;
+  padding: 10px 0px;
+  border: none;
+  cursor: pointer;
+  border-radius: .25rem;
+  width: 50%;
+  text-align: center;
 }
 
-.pollutantSelectorWindow .btn-center{
+.pollutantSelectorWindow .btn-center {
   margin-top: 25px;
 }
 
-.pollutantSelectorWindow .btn-controlPanel:hover{
+.pollutantSelectorWindow .btn-controlPanel:hover {
   background: #007bff;
   color: #FFF !important;
 }
 
-.css-yk16xz-control{
-  border-color:#ddd!important;
+.css-yk16xz-control {
+  border-color: #ddd !important;
+}
+
+
+/* Airquality Dashboard Content */
+.airquality-dashboard {
+  top: 80px;
+  background-color: #f4f4f4;
+  box-shadow: 0px 1px 12px 0px #464646;
+  border-radius: 5px;
+  width: 250px !important;
+  height: 350px !important;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.airquality-dashboard-header{
+  font-weight: 600;
+  font-size: 30px !important;
+  padding: 0 !important;
+  margin: 0px 15px !important;
+}
+
+.airquality-dashboard-text {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center;
+}
+
+.airquality-dashboard-value{
+  font-weight: 700;
+  font-size: 56px;
+  padding: 0 !important;
+  margin: 10px 0px !important;
+  text-align: center;
+}
+
+.airquality-separator {
+  border-bottom: 3px solid #ccc;
+  padding: 5px 0;
+  position: relative;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+.airquality-separator-text {
+  position: absolute;
+  left: 39%;
+  top: 0;
+  background: #fff;
+  padding: 8px;
+  color: rgba(0, 0, 0, .45);
+}
+
+.health-effect{
+  align-items: center;
+  text-align: center;
+  fill:"#444"
+}
+
+.health-effect-images {
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin:10px 10px;
+  color: Green;
 }
