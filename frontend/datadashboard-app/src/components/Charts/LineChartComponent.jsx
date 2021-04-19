@@ -94,10 +94,10 @@ class LineChartComponent extends Component {
                   }
             }
         };
-        console.log(this.props.data)
+        // console.log(this.props.data)
         return (
             <div className="app">
-                <div className="row">
+                <div className="charts-row">
                     <Chart
                         className="chart"
                         options={options}

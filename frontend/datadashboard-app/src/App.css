@@ -539,7 +539,11 @@ body {
   margin-bottom: 50px;
 }
 
-.home .row {
+.home .charts-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
   width: auto;
   justify-content: center;
   height: 100%;
@@ -555,6 +559,7 @@ body {
   width: 100%;
   margin-top: 30px;
   margin-left: 30px;
+  margin-bottom:30px;
 }
 
 @media (max-width: 768px) {
@@ -681,13 +686,13 @@ body {
   background-color: #f4f4f4;
   box-shadow: 0px 1px 12px 0px #464646;
   border-radius: 5px;
-  width: 250px !important;
+  width: 275px !important;
   height: 350px !important;
   padding: 30px;
   margin-bottom: 30px;
 }
 
-.airquality-dashboard-header{
+.airquality-dashboard-header {
   font-weight: 600;
   font-size: 30px !important;
   padding: 0 !important;
@@ -702,17 +707,26 @@ body {
   text-align: center;
 }
 
-.airquality-dashboard-value{
+.airquality-dashboard-street {
+  font-weight: 600;
+  font-size: 16px !important;
+  padding: 0 !important;
+  margin: 0px 15px !important;
+}
+
+.airquality-dashboard-value {
   font-weight: 700;
   font-size: 56px;
   padding: 0 !important;
   margin-bottom: 0;
-  height:70px;
+  height: 70px;
   /* margin: 10px 0px !important; */
   text-align: center;
+  margin-top: 7px;
+  line-height: 50px;
 }
 
-.airquality-status{
+.airquality-status {
   font-weight: 600;
   font-size: 20px;
   padding: 0 !important;
@@ -738,16 +752,125 @@ body {
   color: rgba(0, 0, 0, .45);
 }
 
-.health-effect{
+.health-effect {
   align-items: center;
   text-align: center;
-  fill:"#444"
+  fill: "#444"
 }
 
 .health-effect-images {
   align-items: center;
   width: 40px;
   height: 40px;
-  margin:10px 10px;
+  margin: 10px 10px;
   color: Green;
+}
+
+@media (max-width: 480px) {
+  .airquality-dashboard {
+    top: 80px;
+    background-color: #f4f4f4;
+    box-shadow: 0px 1px 12px 0px #464646;
+    border-radius: 5px;
+    width: 220px !important;
+    height: 350px !important;
+    padding: 15px;
+    margin-bottom: 30px;
+  }
+
+  .health-effect-images {
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    margin: 5px 5px;
+    color: Green;
+  }
+
+  .col-md-5 {
+    align-content: center;
+    padding: 0;
+    width: 220px;
+  }
+
+  .col-md-12 {
+    margin-left: 0!important;
+    margin-right: 0!important;
+    margin-top: 10px;
+    border: 1px solid black;
+    min-width: 220px!important;
+    width: 220px!important;
+    max-width: 220px!important;
+  }
+
+  .row {
+    justify-content: flex-end!important;
+    margin-left: 0px!important;
+    margin-right: 0px!important;
+    margin-bottom: 15px;
+    width: 220px;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .col-md-12 {
+    min-width: 275px;
+    width:275px!important;
+  }
+
+  .col-md-5{
+    margin-left:0px!important;
+  }
+}
+
+
+.row {
+  justify-content: center;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-bottom: 15px;
+}
+
+.nestead-row{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 5px 2px;
+}
+.col-md-12 {
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  border: none!important;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  border: 1px solid black;
+  box-shadow: 0px 1px 12px 0px #464646;
+  height:150px!important;
+  min-width:220px;
+  max-width: 375px;
+}
+
+.col-md-5 {
+  align-content: center;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.airquality-dashboard-pollutants-name {
+  font-weight: 600;
+  font-size: 24px !important;
+  padding: 0 !important;
+  margin: 0px 15px !important;
+  margin-top: 10px!important;
+}
+
+.measurement-unit{
+  display: inline-block;
+  /* align-items:center; */
+  vertical-align: top;
+  text-align: center;
+  font-size: 24px;
 }

@@ -10,10 +10,8 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 import Loader from "react-loader-spinner";
-import { GiBrain } from "react-icons/gi";
-import { RiLungsLine } from "react-icons/ri";
-import { GiLiver } from "react-icons/gi";
 import AirqualityComponent from './AirqualityComponent';
+
 const options = [
     { value: 'pm1', label: 'PM1' },
     { value: 'pm10', label: 'PM10' },
@@ -40,7 +38,9 @@ class DashboardComponent extends Component {
             pollutantSelectorWindowOn: false,
             date: '',
             currentPollutantName: 'PM25',
-            isEnable: true
+            isEnable: true,
+            latitude: '',
+            longitude: ''
         }
         this.onChangePollutant = this.onChangePollutant.bind(this)
         this.onChangeData = this.onChangeData.bind(this)
@@ -65,9 +65,17 @@ class DashboardComponent extends Component {
 
     async componentDidMount() {
         await UserService.retrieveUserGeneralInfo().then(response => {
+            console.log("salute")
             this.setState({ address: response.data.address })
         })
-        this.retrieveHomePollutionData(new Date((new Date().getTime() - 604800000)).toString(), this.state.pollutant.value, this.state.address);
+        await UtilityService.addressToCoordinates(this.state.address).then(response => {
+            console.log(response.data.features[0].place_name)
+            this.setState({latitude: response.data.features[0].center[1]}) 
+            this.setState({longitude: response.data.features[0].center[0]})
+            console.log("Hello")
+        })
+        console.log(this.state.address);
+        await this.retrieveHomePollutionData(new Date((new Date().getTime() - 604800000)).toString(), this.state.pollutant.value, this.state.address);
     }
 
     async retrieveHomePollutionData(date, sensor, address) {
@@ -104,10 +112,12 @@ class DashboardComponent extends Component {
 
     render() {
         const isLoggedIn = AuthenticationService.isUserLoggedIn();
+        // console.log(this.state.address)
+        // console.log(this.state.address.slice(this.state.address.indexOf(" "), this.state.address.indexOf(',')))
         return (
             <div className="home">
                 <TuneIcon className="pollutantSelector" onClick={this.tooglePollutantSelectorWindow}></TuneIcon>
-                {isLoggedIn && <h1>Pollution Data for <span className="text-primary">{this.state.address}</span></h1>}
+                {isLoggedIn && <h1>Air Quality around your home</h1>}
                 {this.state.pollutantSelectorWindowOn && <div className="pollutantSelectorWindow">
                     <h1>Control Panel</h1>
                     <p>Time Interval</p>
@@ -139,7 +149,7 @@ class DashboardComponent extends Component {
                         />}
                     </div>
                 </div>}
-                <AirqualityComponent></AirqualityComponent>
+                <AirqualityComponent address={this.state.address} latitude={this.state.latitude} longitude={this.state.longitude}></AirqualityComponent>
                 {isLoggedIn && <>
                     <LineChartComponent data={this.state.pm25Data}>
                     </LineChartComponent></>}

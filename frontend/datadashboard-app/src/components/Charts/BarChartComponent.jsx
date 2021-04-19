@@ -90,7 +90,7 @@ class BarChartComponent extends Component {
     }
     return(
             <div className = "app" >
-            <div className="row">
+            <div className="charts-row">
                 <Chart
                     className="chart"
                     options={options}
