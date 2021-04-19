@@ -11,7 +11,9 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -51,11 +53,11 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         return brasovDevRepository.findBySensor(sensorName);
     }
 
-    public void pollutionDataBasedOnLocation(Date data) throws IOException {
+    public void pollutionDataBasedOnLocation(Date data,String sensor) throws IOException {
         double nearestLatitude = 0;
         double nearestLongitude = 0;
         List<UserLocationDto> dataFromElasticsearch = userLocationRepository.findUserLocationDtoByTimestampAfterOrderByTimestampAsc(data.getTime());
-        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValue();
+        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValueBySensorNameAndData(sensor,data);
         List<BrasovDevDto> pollutionDataBasedOnLocation = new ArrayList<BrasovDevDto>();
         List<UserLocationDto> minMax = userLocationRepository.findUserLocationDtoByTimestampAfterOrderByLatitudeAsc(data.getTime());
         double minLat = minMax.get(0).getLatitude();
@@ -104,11 +106,33 @@ public class BrasovDevServiceImpl implements BrasovDevService {
 //                    + "    coordonatele mele: " + userLocationDto.getLatitude() + "=>" + userLocationDto.getLongitude());
 //        }
 //    }
+public List<BrasovDevDto> pollutionDataBasedOnAddressLocationAndData(double latitude, double longitude, Date data) throws IOException {
+    double nearestLatitude = 0;
+    double nearestLongitude = 0;
+    Map<Double, Double> sensorData = findUniqueSensorByDate(data);
+    List<BrasovDevDto> pollutionDataBasedOnLocation = new ArrayList<BrasovDevDto>();
+    //Iterate userLocationDto list and find min distance between our coordinates and near sensors
+    double minDistance = Double.MAX_VALUE;
+    for (Map.Entry<Double, Double> entry : sensorData.entrySet()) {
+        double distance = HaversinUtil.distanceCalculator(latitude, longitude,
+                entry.getKey(), entry.getValue());
+        if (distance < minDistance) {
+            minDistance = distance;
+            nearestLatitude = entry.getKey();
+            nearestLongitude = entry.getValue();
+        }
+    }
+
+    List<BrasovDevDto> result = brasovDevRepository.findAllByLocationLatAndLocationLongAndTimestampAfterOrderByTimestampDesc(nearestLatitude,nearestLongitude, data.getTime());
+    System.out.println(nearestLatitude + "   =>    " + nearestLongitude + " distanta minima " + minDistance
+            + "    coordonatele mele: " + latitude + "=>" + longitude);
+    return result;
+}
 
     public List<BrasovDevDto> pollutionDataBasedOnAddressLocation(Date data, String sensor, double latitude, double longitude) throws IOException {
         double nearestLatitude = 0;
         double nearestLongitude = 0;
-        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValue();
+        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValueBySensorNameAndData(sensor,data);
         List<BrasovDevDto> pollutionDataBasedOnLocation = new ArrayList<BrasovDevDto>();
         //Iterate userLocationDto list and find min distance between our coordinates and near sensors
         double minDistance = Double.MAX_VALUE;
@@ -129,8 +153,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         return result;
     }
 
-
-    private Map<Double, Double> findUniqueLatitudeAndLongitudeValue() throws IOException {
+    private Map<Double, Double> findUniqueLatitudeAndLongitudeValueBySensorNameAndData(String sensor,Date data) throws IOException {
 
         Map<Double, Double> sensorData = new HashMap<Double, Double>();
         // we limit it to one index, wildcard patterns are working
@@ -138,6 +161,102 @@ public class BrasovDevServiceImpl implements BrasovDevService {
 
         // Use a builder to construct the search query
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("Sensor", sensor);
+
+        RangeQueryBuilder rangeQueryBuilder = new RangeQueryBuilder("TimeStamp").gte(data.getTime());
+
+        // Bool query that contain match query and range query
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder().must(matchQueryBuilder).must(rangeQueryBuilder);
+
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        // Set terms aggregation and subaggregations
+        TermsAggregationBuilder aggregation = AggregationBuilders.terms("LocationLat").field("LocationLat");
+        aggregation.subAggregation(AggregationBuilders.terms("LocationLong").field("LocationLong"));
+        //Set aggregations to search source builder
+        searchSourceBuilder.aggregation(aggregation);
+
+        //assign search query to search request
+        searchRequest.source(searchSourceBuilder);
+
+        //Run search on elasticsearch
+        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+
+        //Verify status of elasticsearch client request
+        RestStatus status = searchResponse.status();
+
+        //Verify if request was succesfully
+        if (status == RestStatus.OK) {
+            //Process first aggregations data received from elasticsearch
+            Aggregations firstAggregations = searchResponse.getAggregations();
+            Aggregation latitudeAggregation = firstAggregations.get("LocationLat");
+            List<? extends Terms.Bucket> buckets = ((Terms) latitudeAggregation).getBuckets();
+            for (Terms.Bucket firstAggregationBucket : buckets) {
+                //Process second aggregations data received from elasticsearch
+                Aggregations secondAggregations = firstAggregationBucket.getAggregations();
+                Aggregation longitudeAggregation = secondAggregations.get("LocationLong");
+                List<? extends Terms.Bucket> secondBuckets = ((Terms) longitudeAggregation).getBuckets();
+                for (Terms.Bucket secondAggregationBucket : secondBuckets) {
+                    //System.out.println(firstAggregationBucket.getKey() + " -> " + secondAggregationBucket.getKey());
+                    sensorData.put((Double) firstAggregationBucket.getKey(), (Double) secondAggregationBucket.getKey());
+                }
+            }
+        }
+        return sensorData;
+    }
+
+    public Map<String, String> findUniqueSensorNameForALocation() throws IOException {
+
+        Map<String, String> sensorData = new HashMap<String, String>();
+        // we limit it to one index, wildcard patterns are working
+        SearchRequest searchRequest = new SearchRequest("brasov-dev");
+
+        // Use a builder to construct the search query
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        // Set terms aggregation and subaggregations
+        TermsAggregationBuilder cardinalityAggregationBuilder = AggregationBuilders.terms("Sensor").field("Sensor.keyword");
+        //Set aggregations to search source builder
+        searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
+
+        //assign search query to search request
+        searchRequest.source(searchSourceBuilder);
+
+        //Run search on elasticsearch
+        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+
+        //Verify status of elasticsearch client request
+        RestStatus status = searchResponse.status();
+
+        //Verify if request was succesfully
+        if (status == RestStatus.OK) {
+            //Process first aggregations data received from elasticsearch
+            Aggregations firstAggregations = searchResponse.getAggregations();
+            Aggregation latitudeAggregation = firstAggregations.get("Sensor");
+            List<? extends Terms.Bucket> buckets = ((Terms) latitudeAggregation).getBuckets();
+            for (Terms.Bucket firstAggregationBucket : buckets) {
+                sensorData.put("Sensor",(String) firstAggregationBucket.getKey());
+            }
+        }
+        return sensorData;
+    }
+
+    private Map<Double, Double> findUniqueSensorByDate(Date data) throws IOException {
+
+        Map<Double, Double> sensorData = new HashMap<Double, Double>();
+        // we limit it to one index, wildcard patterns are working
+        SearchRequest searchRequest = new SearchRequest("brasov-dev");
+
+        // Use a builder to construct the search query
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        RangeQueryBuilder rangeQueryBuilder = new RangeQueryBuilder("TimeStamp").gte(data.getTime());
+
+        // Bool query that contain match query and range query
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder().must(rangeQueryBuilder);
+
+        searchSourceBuilder.query(boolQueryBuilder);
 
         // Set terms aggregation and subaggregations
         TermsAggregationBuilder aggregation = AggregationBuilders.terms("LocationLat").field("LocationLat");

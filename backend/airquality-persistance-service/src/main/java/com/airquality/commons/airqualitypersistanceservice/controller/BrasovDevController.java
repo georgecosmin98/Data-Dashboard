@@ -3,10 +3,6 @@ package com.airquality.commons.airqualitypersistanceservice.controller;
 import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevDto;
 import com.airquality.commons.airqualitypersistanceservice.repository.BrasovDevRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.BrasovDevServiceImpl;
-import com.airquality.commons.airqualitypersistanceservice.service.UserLocationServiceImpl;
-import com.airquality.commons.airqualitypersistanceservice.util.HaversinUtil;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -37,28 +33,34 @@ public class BrasovDevController {
         return brasovDevServiceImpl.findBySensor(sensorName);
     }
 
-    @GetMapping("/findAllAfter/{first}")
-    public List<BrasovDevDto> findAllAfterDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date first) {
-        return brasovDevRepository.findAllByTimestampAfterAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(first.getTime(),"pm25",45.653509,25.56612);
+    @GetMapping("/findAllAfter/{first}/{latitude}/{longitude}")
+    public List<BrasovDevDto> findAllAfterDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd, HH:mm") Date first,@PathVariable double latitude,@PathVariable double longitude) throws IOException {
+        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocationAndData(latitude, longitude, first);
     }
 
     @GetMapping("/unique/{date}")
-    public void unique(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws IOException {
-        brasovDevServiceImpl.pollutionDataBasedOnLocation(date);
+    public void unique(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, String sensor) throws IOException {
+        brasovDevServiceImpl.pollutionDataBasedOnLocation(date, sensor);
     }
 
     @GetMapping("/{sensorName}/{firstDate}/{lastDate}")
     public List<BrasovDevDto> findBySensorNameAndTimestamp(@PathVariable String sensorName, @PathVariable("firstDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date firstDate, @PathVariable("lastDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date lastDate) {
-        return brasovDevRepository.findBySensorAndTimestampIsBetweenOrderByTimestampDesc(sensorName,firstDate.getTime(),lastDate.getTime());
+        return brasovDevRepository.findBySensorAndTimestampIsBetweenOrderByTimestampDesc(sensorName, firstDate.getTime(), lastDate.getTime());
     }
 
     @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> findByDateSensorAndCoordinates(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                                              @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocation(date, sensor, latitude,longitude);
+        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocation(date, sensor, latitude, longitude);
     }
-    @GetMapping("/test1/{lat}/{longitude}")
-    public double distance(@PathVariable double lat, @PathVariable double longitude){
-       return HaversinUtil.distanceCalculator(lat,longitude,45,25);
+
+    @GetMapping("/test1")
+    public Map<String, String> distance() throws IOException {
+        return brasovDevServiceImpl.findUniqueSensorNameForALocation();
+    }
+
+    @GetMapping("/test1/{name}/{lat1}/{lat2}/{long1}/{long2}/{firstDate}")
+    public List<BrasovDevDto> test(@PathVariable String name, @PathVariable double lat1, @PathVariable double lat2, @PathVariable double long1, @PathVariable double long2, @PathVariable("firstDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date firstDate) {
+        return brasovDevRepository.findAllBySensorAndLocationLatBetweenAndLocationLongBetweenAndTimestampAfterOrderByTimestampAsc(name, lat1, lat2, long1, long2, firstDate.getTime());
     }
 }
