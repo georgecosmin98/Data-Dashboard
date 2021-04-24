@@ -48,7 +48,10 @@ class SettingsComponent extends Component {
         console.log("i am here")
         UserService.retrieveUserGeneralInfo().then(response => {
             console.log(response.data)
-            this.setState({ name: response.data.name, address: response.data.address })
+            if (response.data.address !== null)
+                this.setState({ name: response.data.name, address: response.data.address })
+            else
+                this.setState({ name: response.data.name })
         })
     }
 

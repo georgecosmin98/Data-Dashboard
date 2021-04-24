@@ -120,10 +120,10 @@ class ResetPasswordComponent extends Component {
                                 <ErrorMessage name="confirmPassword" component="div"
                                     className="alert alert-warning" />
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="text" name="password" placeholder="New Password" onKeyUp={this.handleChange} />
+                                    <Field className="input" type="password" name="password" placeholder="New Password" onKeyUp={this.handleChange} />
                                 </fieldset>
                                 <fieldset className="form-group-login">
-                                    <Field className="input" type="text" name="confirmPassword" placeholder="Confirm Password" onKeyUp={this.handleChange} />
+                                    <Field className="input" type="password" name="confirmPassword" placeholder="Confirm Password" onKeyUp={this.handleChange} />
                                 </fieldset>
                                 <div className="btn-center">
                                     {this.state.isEnable && <button className="btn-reset-password" type="submit">Reset Password</button>}
