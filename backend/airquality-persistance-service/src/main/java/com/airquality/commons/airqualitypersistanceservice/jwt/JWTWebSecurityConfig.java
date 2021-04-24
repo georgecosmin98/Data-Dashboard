@@ -43,7 +43,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 //Handle unauthorized request
                 .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
-                //We have a stateless web application, we dont need to save cliend data generated
+                //We have a stateless web application, we dont need to save client data generated
                 //in one session for use in next session, because we generate JWT token for auth request
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 //Config authorization requests => all request must be authenticated

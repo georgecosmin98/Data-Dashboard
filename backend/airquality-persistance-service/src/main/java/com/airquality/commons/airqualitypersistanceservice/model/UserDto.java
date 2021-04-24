@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!
-@Document(indexName = "test-user1234")
+@Document(indexName = "useraccount")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
