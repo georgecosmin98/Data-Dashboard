@@ -727,8 +727,8 @@ body {
 }
 
 .airquality-status {
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 21px;
   padding: 0 !important;
   margin: 0 !important;
   text-align: center;
@@ -760,9 +760,9 @@ body {
 
 .health-effect-images {
   align-items: center;
-  width: 40px;
-  height: 40px;
-  margin: 10px 10px;
+  width: 39px;
+  height: 45px;
+  margin: 5px 5px;
   color: Green;
 }
 
@@ -873,4 +873,10 @@ body {
   vertical-align: top;
   text-align: center;
   font-size: 24px;
+}
+
+.trend-line{
+  z-index: 99;
+  height:50px!important;
+  width: 40px!important;
 }

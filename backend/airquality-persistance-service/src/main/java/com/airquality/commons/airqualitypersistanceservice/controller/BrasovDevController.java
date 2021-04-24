@@ -54,11 +54,6 @@ public class BrasovDevController {
         return brasovDevServiceImpl.pollutionDataBasedOnAddressLocation(date, sensor, latitude, longitude);
     }
 
-    @GetMapping("/test1")
-    public Map<String, String> distance() throws IOException {
-        return brasovDevServiceImpl.findUniqueSensorNameForALocation();
-    }
-
     @GetMapping("/test1/{name}/{lat1}/{lat2}/{long1}/{long2}/{firstDate}")
     public List<BrasovDevDto> test(@PathVariable String name, @PathVariable double lat1, @PathVariable double lat2, @PathVariable double long1, @PathVariable double long2, @PathVariable("firstDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date firstDate) {
         return brasovDevRepository.findAllBySensorAndLocationLatBetweenAndLocationLongBetweenAndTimestampAfterOrderByTimestampAsc(name, lat1, lat2, long1, long2, firstDate.getTime());

@@ -8,6 +8,163 @@ import AirQualityService from '../api/AirQualityService';
 import { CgArrowRight } from "react-icons/cg";
 import { GiHeartOrgan } from "react-icons/gi";
 
+const PM25SpecificIndex = [{
+    specificIndex: 1,
+    qualifying: "Bun",
+    color: "#50f0e6",
+    minValue: 0,
+    maxValue: 10
+}, {
+    specificIndex: 2,
+    qualifying: "Acceptabil",
+    color: "#50ccaa",
+    minValue: 10,
+    maxValue: 20
+}
+    , {
+    specificIndex: 3,
+    qualifying: "Moderat",
+    color: "#f0e641",
+    minValue: 20,
+    maxValue: 25
+}
+    , {
+    specificIndex: 4,
+    qualifying: "Rau",
+    color: "#ff5050",
+    minValue: 25,
+    maxValue: 50
+}, {
+    specificIndex: 5,
+    qualifying: "Foarte rau",
+    color: "#960032",
+    minValue: 50,
+    maxValue: 75
+}, {
+    specificIndex: 6,
+    qualifying: "Extrem de rau",
+    color: "#7D2181",
+    minValue: 75,
+    maxValue: 800
+}]
+const PM10SpecificIndex = [{
+    specificIndex: 1,
+    qualifying: "Bun",
+    color: "#50f0e6",
+    minValue: 0,
+    maxValue: 20
+}, {
+    specificIndex: 2,
+    qualifying: "Acceptabil",
+    color: "#50ccaa",
+    minValue: 20,
+    maxValue: 40
+}
+    , {
+    specificIndex: 3,
+    qualifying: "Moderat",
+    color: "#f0e641",
+    minValue: 40,
+    maxValue: 50
+}
+    , {
+    specificIndex: 4,
+    qualifying: "Rau",
+    color: "#ff5050",
+    minValue: 50,
+    maxValue: 100
+}, {
+    specificIndex: 5,
+    qualifying: "Foarte rau",
+    color: "#960032",
+    minValue: 100,
+    maxValue: 150
+}, {
+    specificIndex: 6,
+    qualifying: "Extrem de rau",
+    color: "#7D2181",
+    minValue: 150,
+    maxValue: 1500
+}]
+const O3SpecificIndex = [{
+    specificIndex: 1,
+    qualifying: "Bun",
+    color: "#50f0e6",
+    minValue: 0,
+    maxValue: 50
+}, {
+    specificIndex: 2,
+    qualifying: "Acceptabil",
+    color: "#50ccaa",
+    minValue: 50,
+    maxValue: 100
+}
+    , {
+    specificIndex: 3,
+    qualifying: "Moderat",
+    color: "#f0e641",
+    minValue: 100,
+    maxValue: 130
+}
+    , {
+    specificIndex: 4,
+    qualifying: "Rau",
+    color: "#ff5050",
+    minValue: 130,
+    maxValue: 240
+}, {
+    specificIndex: 5,
+    qualifying: "Foarte rau",
+    color: "#960032",
+    minValue: 240,
+    maxValue: 380
+}, {
+    specificIndex: 6,
+    qualifying: "Extrem de rau",
+    color: "#7D2181",
+    minValue: 380,
+    maxValue: 800
+}]
+const SO2SpecificIndex = [{
+    specificIndex: 1,
+    qualifying: "Bun",
+    color: "#50f0e6",
+    minValue: 0,
+    maxValue: 100
+}, {
+    specificIndex: 2,
+    qualifying: "Acceptabil",
+    color: "#50ccaa",
+    minValue: 100,
+    maxValue: 200
+}
+    , {
+    specificIndex: 3,
+    qualifying: "Moderat",
+    color: "#f0e641",
+    minValue: 200,
+    maxValue: 350
+}
+    , {
+    specificIndex: 4,
+    qualifying: "Rau",
+    color: "#ff5050",
+    minValue: 350,
+    maxValue: 500
+}, {
+    specificIndex: 5,
+    qualifying: "Foarte rau",
+    color: "#960032",
+    minValue: 500,
+    maxValue: 750
+}, {
+    specificIndex: 6,
+    qualifying: "Extrem de rau",
+    color: "#7D2181",
+    minValue: 750,
+    maxValue: 1250
+}]
+
 class AirqualityComponent extends Component {
     constructor(props) {
         super(props)
@@ -25,11 +182,59 @@ class AirqualityComponent extends Component {
                 so2: ''
             },
             latitude: '',
-            longitude: ''
+            longitude: '',
+            specificIndex: '',
+            qualifying: '',
+            color: ''
         }
 
         this.processDataForAirqualityDashboard = this.processDataForAirqualityDashboard.bind(this);
         this.trendingLine = this.trendingLine.bind(this);
+        this.specificIndex = this.specificIndex.bind(this);
+    }
+
+    specificIndex(value, type) {
+        console.log("value: " + value + "  =>  " + type)
+        if (value >= 0) {
+            if (type === "pm25") {
+                for (var i = 0; i < PM25SpecificIndex.length; i++) {
+                    if (PM25SpecificIndex[i].minValue <= value && value <= PM25SpecificIndex[i].maxValue) {
+                        if (PM25SpecificIndex[i].specificIndex > this.state.specificIndex)
+                            this.setState({ specificIndex: PM25SpecificIndex[i].specificIndex, qualifying: PM25SpecificIndex[i].qualifying, color: PM25SpecificIndex[i].color });
+                        return <p className="airquality-status" style={{ color: PM25SpecificIndex[i].color }} >{PM25SpecificIndex[i].qualifying}</p>
+                    }
+                }
+            } else
+                if (type === "pm10") {
+                    for (var i = 0; i < PM10SpecificIndex.length; i++) {
+                        if (PM10SpecificIndex[i].minValue <= value && value <= PM10SpecificIndex[i].maxValue) {
+                            if (PM10SpecificIndex[i].specificIndex > this.state.specificIndex)
+                                this.setState({ specificIndex: PM10SpecificIndex[i].specificIndex, qualifying: PM10SpecificIndex[i].qualifying, color: PM10SpecificIndex[i].color });
+                            return <p className="airquality-status" style={{ color: PM10SpecificIndex[i].color }} >{PM10SpecificIndex[i].qualifying}</p>
+                        }
+                    }
+                }
+                else
+                    if (type === "o3") {
+                        for (var i = 0; i < O3SpecificIndex.length; i++) {
+                            if (O3SpecificIndex[i].minValue <= value && value <= O3SpecificIndex[i].maxValue) {
+                                if (O3SpecificIndex[i].specificIndex > this.state.specificIndex)
+                                    this.setState({ specificIndex: O3SpecificIndex[i].specificIndex, qualifying: O3SpecificIndex[i].qualifying, color: O3SpecificIndex[i].color });
+                                return <p className="airquality-status" style={{ color: O3SpecificIndex[i].color }} >{O3SpecificIndex[i].qualifying}</p>
+                            }
+                        }
+                    }
+                    else
+                        if (type === "so2") {
+                            for (var i = 0; i < SO2SpecificIndex.length; i++) {
+                                if (SO2SpecificIndex[i].minValue <= value && value <= SO2SpecificIndex[i].maxValue) {
+                                    if (SO2SpecificIndex[i].specificIndex > this.state.specificIndex)
+                                        this.setState({ specificIndex: SO2SpecificIndex[i].specificIndex, qualifying: SO2SpecificIndex[i].qualifying, color: SO2SpecificIndex[i].color });
+                                    return <p className="airquality-status" style={{ color: SO2SpecificIndex[i].color }} >{SO2SpecificIndex[i].qualifying}</p>
+                                }
+                            }
+                        }
+        }
     }
 
     trendingLine(currentValues, previousValues) {
@@ -45,6 +250,7 @@ class AirqualityComponent extends Component {
     }
 
     componentDidMount() {
+        this.specificIndex();
     }
 
     componentDidUpdate() {
@@ -105,9 +311,9 @@ class AirqualityComponent extends Component {
                     <p className="airquality-dashboard-street"><span className="text-primary">{this.props.address && this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))}</span></p>
                     <div className="airquality-separator">
                     </div>
-                    <p className="airquality-dashboard-text"> Air Quality Index </p>
-                    <p className="airquality-dashboard-value"> 50 </p>
-                    <p className="airquality-status">GOOD</p>
+                    <p className="airquality-dashboard-text"> Specific Index </p>
+                    <p className="airquality-dashboard-value"> {this.state.specificIndex} </p>
+                    <p className="airquality-status" style={{ color: this.state.color }}>{this.state.qualifying}</p>
                     <div className="airquality-separator">
                     </div>
                     <p className="airquality-dashboard-text"> Health Effect</p>
@@ -123,11 +329,12 @@ class AirqualityComponent extends Component {
                         <div className="nestead-row">
                             <div className="col-md-12"> <h1 className="airquality-dashboard-pollutants-name">PM25</h1>
                                 <p className="airquality-dashboard-value"> {this.state.currentValues.pm25} <span className="measurement-unit">ug/m3</span> {this.state.currentValues.pm25 && this.trendingLine(this.state.currentValues.pm25, this.state.previousValues.pm25)}</p>
-                                <p className="airquality-status">GOOD</p>
+                                {/* <p className="airquality-status"></p> */}
+                                {this.state.currentValues.pm25 && this.specificIndex(this.state.currentValues.pm25, "pm25")}
                             </div>
                             <div className="col-md-12"><h1 className="airquality-dashboard-pollutants-name">PM10</h1>
                                 <p className="airquality-dashboard-value"> {this.state.currentValues.pm10} <span className="measurement-unit">ug/m3</span> {this.state.currentValues.pm10 && this.trendingLine(this.state.currentValues.pm10, this.state.previousValues.pm10)}</p>
-                                <p className="airquality-status">GOOD</p>
+                                {this.state.currentValues.pm10 && this.specificIndex(this.state.currentValues.pm10, "pm10")}
                             </div>
                         </div>
                     </div>
@@ -135,13 +342,13 @@ class AirqualityComponent extends Component {
                         <div className="nestead-row">
                             <div className="col-md-12"><h1 className="airquality-dashboard-pollutants-name">O3</h1>
                                 <p className="airquality-dashboard-value"> {this.state.currentValues.o3} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.o3 && this.trendingLine(this.state.currentValues.o3, this.state.previousValues.o3)}</p>
-                                <p className="airquality-status">GOOD</p>
+                                {this.state.currentValues.o3 && this.specificIndex(this.state.currentValues.o3, "o3")}
                             </div>
                             <div className="col-md-12" style={{
                                 // background: red
                             }}><h1 className="airquality-dashboard-pollutants-name">SO2</h1>
                                 <p className="airquality-dashboard-value"> {this.state.currentValues.so2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.so2 && this.trendingLine(this.state.currentValues.so2, this.state.previousValues.so2)}</p>
-                                <p className="airquality-status">GOOD</p>
+                                {this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.so2, "so2")}
                             </div>
                         </div>
                     </div>
