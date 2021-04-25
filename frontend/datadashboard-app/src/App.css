@@ -763,7 +763,6 @@ body {
   width: 39px;
   height: 45px;
   margin: 5px 5px;
-  color: Green;
 }
 
 @media (max-width: 480px) {
@@ -772,7 +771,10 @@ body {
     width: 35px;
     height: 35px;
     margin: 5px 5px;
-    color: Green;
+  }
+
+  .col-sm-4, .col-md-4{
+    margin:auto!important;
   }
 }
 
@@ -836,6 +838,7 @@ body {
 }
 
 
+
 .airquality-dashboard-pollutants-name {
   font-weight: 600;
   font-size: 24px !important;
@@ -846,7 +849,6 @@ body {
 
 .measurement-unit {
   display: inline-block;
-  /* align-items:center; */
   vertical-align: top;
   text-align: center;
   font-size: 24px;
@@ -856,4 +858,10 @@ body {
   z-index: 99;
   height: 50px !important;
   width: 40px !important;
+}
+
+.settings-airquality{
+  position:absolute;
+  top:5px;
+  right:5px;
 }
