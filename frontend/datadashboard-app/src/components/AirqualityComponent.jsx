@@ -164,7 +164,45 @@ const SO2SpecificIndex = [{
     minValue: 750,
     maxValue: 1250
 }]
-
+const NO2SpecificIndex = [{
+    specificIndex: 1,
+    qualifying: "Bun",
+    color: "#50f0e6",
+    minValue: 0,
+    maxValue: 40
+}, {
+    specificIndex: 2,
+    qualifying: "Acceptabil",
+    color: "#50ccaa",
+    minValue: 40,
+    maxValue: 90
+}
+    , {
+    specificIndex: 3,
+    qualifying: "Moderat",
+    color: "#f0e641",
+    minValue: 90,
+    maxValue: 120
+}
+    , {
+    specificIndex: 4,
+    qualifying: "Rau",
+    color: "#ff5050",
+    minValue: 120,
+    maxValue: 230
+}, {
+    specificIndex: 5,
+    qualifying: "Foarte rau",
+    color: "#960032",
+    minValue: 230,
+    maxValue: 340
+}, {
+    specificIndex: 6,
+    qualifying: "Extrem de rau",
+    color: "#7D2181",
+    minValue: 340,
+    maxValue: 1000
+}]
 class AirqualityComponent extends Component {
     constructor(props) {
         super(props)
@@ -305,54 +343,69 @@ class AirqualityComponent extends Component {
     render() {
         const red = '#553300'
         return (
-            <>
-                <div className="airquality-dashboard">
-                    <h1 className="airquality-dashboard-header"> Brasov</h1>
-                    <p className="airquality-dashboard-street"><span className="text-primary">{this.props.address && this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))}</span></p>
-                    <div className="airquality-separator">
-                    </div>
-                    <p className="airquality-dashboard-text"> Specific Index </p>
-                    <p className="airquality-dashboard-value"> {this.state.specificIndex} </p>
-                    <p className="airquality-status" style={{ color: this.state.color }}>{this.state.qualifying}</p>
-                    <div className="airquality-separator">
-                    </div>
-                    <p className="airquality-dashboard-text"> Health Effect</p>
-                    <div className="health-effect">
-                        <GiBrain className="health-effect-images" />
-                        <RiLungsLine className="health-effect-images" />
-                        <GiHeartOrgan className="health-effect-images"></GiHeartOrgan>
-                        <GiLiver className="health-effect-images" />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-5">
-                        <div className="nestead-row">
-                            <div className="col-md-12"> <h1 className="airquality-dashboard-pollutants-name">PM25</h1>
-                                <p className="airquality-dashboard-value"> {this.state.currentValues.pm25} <span className="measurement-unit">ug/m3</span> {this.state.currentValues.pm25 && this.trendingLine(this.state.currentValues.pm25, this.state.previousValues.pm25)}</p>
-                                {/* <p className="airquality-status"></p> */}
-                                {this.state.currentValues.pm25 && this.specificIndex(this.state.currentValues.pm25, "pm25")}
-                            </div>
-                            <div className="col-md-12"><h1 className="airquality-dashboard-pollutants-name">PM10</h1>
-                                <p className="airquality-dashboard-value"> {this.state.currentValues.pm10} <span className="measurement-unit">ug/m3</span> {this.state.currentValues.pm10 && this.trendingLine(this.state.currentValues.pm10, this.state.previousValues.pm10)}</p>
-                                {this.state.currentValues.pm10 && this.specificIndex(this.state.currentValues.pm10, "pm10")}
-                            </div>
+            <><div className="row">
+                <div className="col-sm-4">
+                    <div className="airquality-dashboard">
+                        <h1 className="airquality-dashboard-header"> Brasov</h1>
+                        <p className="airquality-dashboard-street"><span className="text-primary">{this.props.address && this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))}</span></p>
+                        <div className="airquality-separator">
                         </div>
-                    </div>
-                    <div className="col-md-5">
-                        <div className="nestead-row">
-                            <div className="col-md-12"><h1 className="airquality-dashboard-pollutants-name">O3</h1>
-                                <p className="airquality-dashboard-value"> {this.state.currentValues.o3} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.o3 && this.trendingLine(this.state.currentValues.o3, this.state.previousValues.o3)}</p>
-                                {this.state.currentValues.o3 && this.specificIndex(this.state.currentValues.o3, "o3")}
-                            </div>
-                            <div className="col-md-12" style={{
-                                // background: red
-                            }}><h1 className="airquality-dashboard-pollutants-name">SO2</h1>
-                                <p className="airquality-dashboard-value"> {this.state.currentValues.so2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.so2 && this.trendingLine(this.state.currentValues.so2, this.state.previousValues.so2)}</p>
-                                {this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.so2, "so2")}
-                            </div>
+                        <p className="airquality-dashboard-text"> Specific Index </p>
+                        <p className="airquality-dashboard-value"> {this.state.specificIndex} </p>
+                        <p className="airquality-status" style={{ color: this.state.color }}>{this.state.qualifying}</p>
+                        <div className="airquality-separator">
+                        </div>
+                        <p className="airquality-dashboard-text"> Health Effect</p>
+                        <div className="health-effect">
+                            <GiBrain className="health-effect-images" />
+                            <RiLungsLine className="health-effect-images" />
+                            <GiHeartOrgan className="health-effect-images"></GiHeartOrgan>
+                            <GiLiver className="health-effect-images" />
                         </div>
                     </div>
                 </div>
+                <div className="col-md-4">
+                    <div className="nestead-row">
+                        <div className="col-md-12"> <h1 className="airquality-dashboard-pollutants-name">PM25</h1>
+                            <p className="airquality-dashboard-value"> {this.state.currentValues.pm25} <span className="measurement-unit">ug/m3</span> {this.state.currentValues.pm25 && this.trendingLine(this.state.currentValues.pm25, this.state.previousValues.pm25)}</p>
+                            {/* <p className="airquality-status"></p> */}
+                            {this.state.currentValues.pm25 && this.specificIndex(this.state.currentValues.pm25, "pm25")}
+                        </div>
+                        <div className="col-md-12"><h1 className="airquality-dashboard-pollutants-name">PM10</h1>
+                            <p className="airquality-dashboard-value"> {this.state.currentValues.pm10} <span className="measurement-unit">ug/m3</span> {this.state.currentValues.pm10 && this.trendingLine(this.state.currentValues.pm10, this.state.previousValues.pm10)}</p>
+                            {this.state.currentValues.pm10 && this.specificIndex(this.state.currentValues.pm10, "pm10")}
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="nestead-row">
+                        <div className="col-md-12"><h1 className="airquality-dashboard-pollutants-name">O3</h1>
+                            <p className="airquality-dashboard-value"> {this.state.currentValues.o3} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.o3 && this.trendingLine(this.state.currentValues.o3, this.state.previousValues.o3)}</p>
+                            {this.state.currentValues.o3 && this.specificIndex(this.state.currentValues.o3, "o3")}
+                        </div>
+                        <div className="col-md-12" style={{
+                            // background: red
+                        }}><h1 className="airquality-dashboard-pollutants-name">SO2</h1>
+                            <p className="airquality-dashboard-value"> {this.state.currentValues.so2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.so2 && this.trendingLine(this.state.currentValues.so2, this.state.previousValues.so2)}</p>
+                            {this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.so2, "so2")}
+                        </div>
+                    </div>
+                </div>
+                {/* <div className="col-md-4">
+                    <div className="nestead-row">
+                        <div className="col-md-12"><h1 className="airquality-dashboard-pollutants-name">O3</h1>
+                            <p className="airquality-dashboard-value"> {this.state.currentValues.o3} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.o3 && this.trendingLine(this.state.currentValues.o3, this.state.previousValues.o3)}</p>
+                            {this.state.currentValues.o3 && this.specificIndex(this.state.currentValues.o3, "o3")}
+                        </div>
+                        <div className="col-md-12" style={{
+                            // background: red
+                        }}><h1 className="airquality-dashboard-pollutants-name">SO2</h1>
+                            <p className="airquality-dashboard-value"> {this.state.currentValues.so2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.so2 && this.trendingLine(this.state.currentValues.so2, this.state.previousValues.so2)}</p>
+                            {this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.so2, "so2")}
+                        </div>
+                    </div>
+                </div> */}
+            </div>
             </>
         )
     }
