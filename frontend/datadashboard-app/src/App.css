@@ -773,8 +773,9 @@ body {
     margin: 5px 5px;
   }
 
-  .col-sm-4, .col-md-4{
-    margin:auto!important;
+  .col-sm-4,
+  .col-md-4 {
+    margin: auto !important;
   }
 }
 
@@ -860,8 +861,8 @@ body {
   width: 40px !important;
 }
 
-.settings-airquality{
-  position:absolute;
-  top:5px;
-  right:5px;
+.settings-airquality {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }

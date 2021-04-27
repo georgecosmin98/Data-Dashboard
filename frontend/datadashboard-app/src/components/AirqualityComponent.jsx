@@ -241,6 +241,7 @@ class AirqualityComponent extends Component {
         this.brainEffect = this.brainEffect.bind(this);
         this.lungsEffect = this.lungsEffect.bind(this);
         this.heartEffect = this.heartEffect.bind(this);
+        this.processAddress = this.processAddress.bind(this);
     }
 
     healthEffect(pm10, pm25, o3, so2, no2) {
@@ -259,7 +260,7 @@ class AirqualityComponent extends Component {
         var brainColor;
         var maxSpecificIndex = -1;
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            console.log(this.state.specificIndexPositionPM25)
+            // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 brainColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
@@ -290,7 +291,7 @@ class AirqualityComponent extends Component {
         var lungsColor;
         var maxSpecificIndex = -1;
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            console.log(this.state.specificIndexPositionPM25)
+            // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 lungsColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
@@ -313,7 +314,7 @@ class AirqualityComponent extends Component {
         var heartColor;
         var maxSpecificIndex = -1;
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            console.log(this.state.specificIndexPositionPM25)
+            // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 heartColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
@@ -334,10 +335,10 @@ class AirqualityComponent extends Component {
                     }
                 }
                 else
-                    if (isNaN(this.state.specificIndexPositionNO2.length)) {
-                        if (maxSpecificIndex < this.state.specificIndexPositionNO2) {
-                            maxSpecificIndex = this.state.specificIndexPositionNO2
-                            heartColor = SO2SpecificIndex[this.state.specificIndexPositionNO2].color;
+                    if (isNaN(this.state.specificIndexPositionO3.length)) {
+                        if (maxSpecificIndex < this.state.specificIndexPositionO3) {
+                            maxSpecificIndex = this.state.specificIndexPositionO3
+                            heartColor = SO2SpecificIndex[this.state.specificIndexPositionO3].color;
                         }
                     }
 
@@ -348,7 +349,7 @@ class AirqualityComponent extends Component {
     }
 
     specificIndex(value, type) {
-        console.log("value: " + value + "  =>  " + type)
+        // console.log("value: " + value + "  =>  " + type)
         if (value >= 0) {
             if (type === "pm25") {
                 for (var i = 0; i < PM25SpecificIndex.length; i++) {
@@ -414,16 +415,54 @@ class AirqualityComponent extends Component {
     componentDidMount() {
     }
 
-    componentDidUpdate() {
+    async componentDidUpdate() {
+        var response;
         if (this.props.latitude !== this.state.latitude && this.props.longitude !== this.state.longitude) {
-            AirQualityService.retrievePollutionValuesForAirqualityDashboard('2021-04-19, 18:45', this.props.latitude, this.props.longitude).then(response => {
-                this.processDataForAirqualityDashboard(response.data)
-            })
             this.setState({
                 latitude: this.props.latitude,
                 longitude: this.props.longitude
             })
+            await AirQualityService.retrievePollutionValuesForAirqualityDashboard('2021-04-19, 18:45', this.props.latitude, this.props.longitude).then(response => {
+                console.log(response.data)
+                this.processDataForAirqualityDashboard(response.data)
+                if (response.data[0].sensor === "pm10" || response.data[1].sensor === "pm10" || response.data[2].sensor === "pm10" || response.data[3].sensor === "pm10" || response.data[4].sensor === "pm10" || response.data[5].sensor === "pm10")
+                    console.log("Nu Pm10");
+                else
+                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "pm10", this.props.latitude, this.props.longitude).then(response => {
+                        console.log(response.data)
+                        this.processDataForAirqualityDashboard(response.data)
+                    })
+                if (response.data[0].sensor === "pm25" || response.data[1].sensor === "pm25" || response.data[2].sensor === "pm25" || response.data[3].sensor === "pm25" || response.data[4].sensor === "pm25" || response.data[5].sensor === "pm25")
+                    console.log("Nu pm25")
+                else
+                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "pm25", this.props.latitude, this.props.longitude).then(response => {
+                        console.log(response.data)
+                        this.processDataForAirqualityDashboard(response.data)
+                    })
+                if (response.data[0].sensor === "o3" || response.data[1].sensor === "o3" || response.data[2].sensor === "o3" || response.data[3].sensor === "o3" || response.data[4].sensor === "o3" || response.data[5].sensor === "o3")
+                    console.log("Nu o3")
+                else
+                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "o3", this.props.latitude, this.props.longitude).then(response => {
+                        console.log(response.data)
+                        this.processDataForAirqualityDashboard(response.data)
+                    })
+                if (response.data[0].sensor === "so2" || response.data[1].sensor === "so2" || response.data[2].sensor === "so2" || response.data[3].sensor === "so2" || response.data[4].sensor === "so2" || response.data[5].sensor === "so2")
+                    console.log("Nu so2")
+                else
+                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "so2", this.props.latitude, this.props.longitude).then(response => {
+                        console.log(response.data)
+                        this.processDataForAirqualityDashboard(response.data)
+                    })
+                if (response.data[0].sensor === "no2" || response.data[1].sensor === "no2" || response.data[2].sensor === "no2" || response.data[3].sensor === "no2" || response.data[4].sensor === "no2" || response.data[5].sensor === "no2")
+                    console.log("Nu no2")
+                else
+                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "no2", this.props.latitude, this.props.longitude).then(response => {
+                        console.log(response.data)
+                        this.processDataForAirqualityDashboard(response.data)
+                    })
+            })
         }
+
     }
 
     processDataForAirqualityDashboard(data) {
@@ -440,6 +479,11 @@ class AirqualityComponent extends Component {
             o3: '',
             so2: ''
         }
+        if (this.state.currentValues)
+            currentValues = this.state.currentValues;
+        if (this.state.previousValues)
+            previousValues = this.state.previousValues;
+
         for (var i = 0; i < data.length; i++) {
             // console.log(previousValues.pm25)
             if (data[i].sensor === "pm25" && !currentValues.pm25) {
@@ -463,13 +507,23 @@ class AirqualityComponent extends Component {
         this.setState({ currentValues: currentValues, previousValues: previousValues })
     }
 
+    processAddress() {
+        var address = this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))
+        if (address.length > 0) {
+            return address
+        }
+        else{
+            return this.props.address.slice(0, this.props.address.indexOf(','))
+        }
+    }
+
     render() {
         return (
             <><div className="row">
                 <div className="col-sm-4">
                     <div className="airquality-dashboard">
                         <h1 className="airquality-dashboard-header"> Brasov</h1>
-                        <p className="airquality-dashboard-street"><span className="text-primary">{this.props.address && this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))}</span></p>
+                        <p className="airquality-dashboard-street"><span className="text-primary">{this.props.address && this.processAddress()}</span></p>
                         <div className="airquality-separator">
                         </div>
                         <p className="airquality-dashboard-text"> Specific Index </p>

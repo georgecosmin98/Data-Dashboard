@@ -69,8 +69,8 @@ class DashboardComponent extends Component {
             this.setState({ address: response.data.address })
         })
         await UtilityService.addressToCoordinates(this.state.address).then(response => {
-            console.log(response.data.features.length !==0)
-            if (response.data.features.length !==0) {
+            console.log(response.data.features.length !== 0)
+            if (response.data.features.length !== 0) {
                 console.log(response.data.features[0].place_name)
                 this.setState({ latitude: response.data.features[0].center[1] })
                 this.setState({ longitude: response.data.features[0].center[0] })
@@ -85,10 +85,11 @@ class DashboardComponent extends Component {
         var latitude, longitude;
 
         await UtilityService.addressToCoordinates(address).then(response => {
-            if (response.data.features.length !==0) {
-            console.log(response.data.features[0].place_name)
-            latitude = response.data.features[0].center[1];
-            longitude = response.data.features[0].center[0];}
+            if (response.data.features.length !== 0) {
+                console.log(response.data.features[0].place_name)
+                latitude = response.data.features[0].center[1];
+                longitude = response.data.features[0].center[0];
+            }
         })
         AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
             console.log(response)
