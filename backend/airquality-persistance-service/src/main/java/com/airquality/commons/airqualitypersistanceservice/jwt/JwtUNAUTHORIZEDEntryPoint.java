@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtUnAuthorizedResponseAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JwtUNAUTHORIZEDEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,

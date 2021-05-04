@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @Component
 @Log4j2
-public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFilter {
+public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserServiceImpl userService;
@@ -41,7 +41,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             JwtUserDetails userDetails = new JwtUserDetails(userDto.getId(), userDto.getUsername(), userDto.getPassword(),"");
 
             //Validate the token
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+            if (jwtTokenUtil.validateToken(jwtToken)) {
                 //Creating authentication object
                 //UsernamePasswordAuthenticationToken is an object used by spring to represent the current authenticated user
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, AuthorityUtils.createAuthorityList("Role_USER"));

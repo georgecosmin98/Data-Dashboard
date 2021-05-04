@@ -61,15 +61,11 @@ public class JwtTokenUtil {
     //Generate token
     public String generateToken(UserDto userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
         final Date createdDate = clock.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
 
         //Return JWT Token with claims: sub,exp and iat
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(createdDate)
+        return Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername()).setIssuedAt(createdDate)
                 .setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
@@ -93,8 +89,7 @@ public class JwtTokenUtil {
         return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        UserDetails user = userDetails;
+    public Boolean validateToken(String token) {
         //Extract email from given token
         final String email = getEmailFromToken(token);
         //Verify if JWT Token is valid

@@ -147,7 +147,7 @@ public List<BrasovDevDto> pollutionDataBasedOnAddressLocationAndData(double lati
         }
         System.out.println(nearestLatitude + "   =>    " + nearestLongitude + " distanta minima " + minDistance
                 + "    coordonatele mele: " + latitude + "=>" + longitude);
-        if(minDistance<1.5){
+        if(minDistance<2){
         List<BrasovDevDto> result = brasovDevRepository.findByTimestampBetweenAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(
                 data.getTime(), new Date().getTime(), sensor, nearestLatitude, nearestLongitude);
         return result;}

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,14 +18,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint;
+    private JwtUNAUTHORIZEDEntryPoint jwtUNAUTHORIZEDEntryPoint;
 
     @Autowired
-    private JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter;
+    private JwtTokenFilter jwtAuthenticationTokenFilter;
 
     @Value("${jwt.get.token.uri}")
     private String authenticationPath;
@@ -39,10 +38,9 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 //Disable Cross-Site Request Forgery
                 //Because we dont need for stateless web applications
-                //
                 .csrf().disable()
                 //Handle unauthorized request
-                .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
+                .exceptionHandling().authenticationEntryPoint(jwtUNAUTHORIZEDEntryPoint).and()
                 //We have a stateless web application, we dont need to save client data generated
                 //in one session for use in next session, because we generate JWT token for auth request
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

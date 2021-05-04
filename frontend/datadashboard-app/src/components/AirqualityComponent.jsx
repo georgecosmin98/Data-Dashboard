@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { GiBrain } from "react-icons/gi";
 import { RiLungsLine } from "react-icons/ri";
-import { GiLiver } from "react-icons/gi";
 import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
 import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
 import AirQualityService from '../api/AirQualityService';
@@ -245,8 +244,8 @@ class AirqualityComponent extends Component {
     }
 
     healthEffect(pm10, pm25, o3, so2, no2) {
-
         if (pm10 || pm25 || o3 || so2 || no2) {
+            console.log("HealthEffect")
             return <div className="health-effect">
                 <GiBrain className="health-effect-images" style={{ color: this.brainEffect() }} />
                 <RiLungsLine className="health-effect-images" style={{ color: this.lungsEffect() }} />
@@ -260,7 +259,7 @@ class AirqualityComponent extends Component {
         var brainColor;
         var maxSpecificIndex = -1;
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            // console.log(this.state.specificIndexPositionPM25)
+            console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 brainColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
@@ -349,7 +348,7 @@ class AirqualityComponent extends Component {
     }
 
     specificIndex(value, type) {
-        // console.log("value: " + value + "  =>  " + type)
+        //console.log("value: " + value + "  =>  " + type)
         if (value >= 0) {
             if (type === "pm25") {
                 for (var i = 0; i < PM25SpecificIndex.length; i++) {
@@ -416,7 +415,7 @@ class AirqualityComponent extends Component {
     }
 
     async componentDidUpdate() {
-        var response;
+        var existPM10, existPM25, existO3, existSO2, existNO2 = false;
         if (this.props.latitude !== this.state.latitude && this.props.longitude !== this.state.longitude) {
             this.setState({
                 latitude: this.props.latitude,
@@ -425,40 +424,61 @@ class AirqualityComponent extends Component {
             await AirQualityService.retrievePollutionValuesForAirqualityDashboard('2021-04-19, 18:45', this.props.latitude, this.props.longitude).then(response => {
                 console.log(response.data)
                 this.processDataForAirqualityDashboard(response.data)
-                if (response.data[0].sensor === "pm10" || response.data[1].sensor === "pm10" || response.data[2].sensor === "pm10" || response.data[3].sensor === "pm10" || response.data[4].sensor === "pm10" || response.data[5].sensor === "pm10")
+                for (var i = 0; i < response.data.length; i++)
+                    if (response.data[i].sensor === "pm10")
+                        existPM10 = true;
+                    else
+                        if (response.data[i].sensor === "pm25")
+                            existPM25 = true;
+                        else
+                            if (response.data[i].sensor === "o3")
+                                existO3 = true;
+                            else
+                                if (response.data[i].sensor === "so2")
+                                    existSO2 = true;
+                                else
+                                    if (response.data[i].sensor === "no2")
+                                        existNO2 = true;
+
+                if (existPM10)
                     console.log("Nu Pm10");
                 else
                     AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "pm10", this.props.latitude, this.props.longitude).then(response => {
                         console.log(response.data)
                         this.processDataForAirqualityDashboard(response.data)
+                        this.healthEffect(1)
                     })
-                if (response.data[0].sensor === "pm25" || response.data[1].sensor === "pm25" || response.data[2].sensor === "pm25" || response.data[3].sensor === "pm25" || response.data[4].sensor === "pm25" || response.data[5].sensor === "pm25")
+                if (existPM25)
                     console.log("Nu pm25")
                 else
                     AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "pm25", this.props.latitude, this.props.longitude).then(response => {
                         console.log(response.data)
                         this.processDataForAirqualityDashboard(response.data)
+                        this.healthEffect(1)
                     })
-                if (response.data[0].sensor === "o3" || response.data[1].sensor === "o3" || response.data[2].sensor === "o3" || response.data[3].sensor === "o3" || response.data[4].sensor === "o3" || response.data[5].sensor === "o3")
+                if (existO3)
                     console.log("Nu o3")
                 else
                     AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "o3", this.props.latitude, this.props.longitude).then(response => {
                         console.log(response.data)
                         this.processDataForAirqualityDashboard(response.data)
+                        this.healthEffect(1)
                     })
-                if (response.data[0].sensor === "so2" || response.data[1].sensor === "so2" || response.data[2].sensor === "so2" || response.data[3].sensor === "so2" || response.data[4].sensor === "so2" || response.data[5].sensor === "so2")
+                if (existSO2)
                     console.log("Nu so2")
                 else
                     AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "so2", this.props.latitude, this.props.longitude).then(response => {
                         console.log(response.data)
                         this.processDataForAirqualityDashboard(response.data)
+                        this.healthEffect(1)
                     })
-                if (response.data[0].sensor === "no2" || response.data[1].sensor === "no2" || response.data[2].sensor === "no2" || response.data[3].sensor === "no2" || response.data[4].sensor === "no2" || response.data[5].sensor === "no2")
+                if (existNO2)
                     console.log("Nu no2")
                 else
                     AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "no2", this.props.latitude, this.props.longitude).then(response => {
                         console.log(response.data)
                         this.processDataForAirqualityDashboard(response.data)
+                        this.healthEffect(1)
                     })
             })
         }
@@ -508,11 +528,14 @@ class AirqualityComponent extends Component {
     }
 
     processAddress() {
-        var address = this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))
-        if (address.length > 0) {
-            return address
+        if (this.props.address.startsWith("Strada")) {
+            var address = this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))
+            console.log(address)
+            if (address.length > 0) {
+                return address
+            }
         }
-        else{
+        else {
             return this.props.address.slice(0, this.props.address.indexOf(','))
         }
     }

@@ -40,7 +40,7 @@ public class JwtAuthenticationRestController {
                     , authenticationRequest.getPassword()));
         } catch (Exception e) {
             log.info("User with invalid credentials trying to login ", e);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.notFound().build();
         }
         //Load user information from database
         Optional<UserDto> userDto = userService.findUserByUsername(authenticationRequest.getUsername());
@@ -59,7 +59,7 @@ public class JwtAuthenticationRestController {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
             return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
         } else {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.notFound().build();
         }
     }
 }
