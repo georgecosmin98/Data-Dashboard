@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Chart from "react-apexcharts";
 import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex } from '../../Constants';
+
 class LineChartComponent extends Component {
     constructor(props) {
         super(props)

@@ -11,17 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 import Loader from "react-loader-spinner";
 import AirqualityComponent from './AirqualityComponent';
-
-const options = [
-    { value: 'pm1', label: 'PM1' },
-    { value: 'pm10', label: 'PM10' },
-    { value: 'pm25', label: 'PM25' },
-    { value: 'no2', label: 'NO2' },
-    { value: 'o3', label: 'O3' },
-    { value: 'cho2', label: 'CHO2' },
-    { value: 'co2', label: 'CO2' },
-    { value: 'so2', label: 'SO2' },
-];
+import {options} from "../Constants"
 
 class DashboardComponent extends Component {
     constructor(props) {

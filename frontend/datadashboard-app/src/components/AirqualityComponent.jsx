@@ -47,6 +47,7 @@ class AirqualityComponent extends Component {
         this.lungsEffect = this.lungsEffect.bind(this);
         this.heartEffect = this.heartEffect.bind(this);
         this.processAddress = this.processAddress.bind(this);
+        this.processSpecificIndex = this.processSpecificIndex.bind(this);
     }
 
     healthEffect(pm10, pm25, o3, so2, no2) {
@@ -64,6 +65,7 @@ class AirqualityComponent extends Component {
     brainEffect() {
         var brainColor;
         var maxSpecificIndex = -1;
+        console.log(this.state)
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
             // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
@@ -149,61 +151,47 @@ class AirqualityComponent extends Component {
 
         if (maxSpecificIndex === -1)
             heartColor = "black";
+        console.log(this.state.specificIndexPositionO3)
+        console.log(isNaN(this.state.specificIndexPositionO3.length))
+        console.log(maxSpecificIndex)
         return heartColor;
 
     }
 
     specificIndex(value, type) {
-        //console.log("value: " + value + "  =>  " + type)
         if (value >= 0) {
             if (type === "pm25") {
-                for (var i = 0; i < PM25SpecificIndex.length; i++) {
-                    if (PM25SpecificIndex[i].minValue <= value && value <= PM25SpecificIndex[i].maxValue) {
-                        if (PM25SpecificIndex[i].specificIndex > this.state.specificIndex)
-                            this.setState({ specificIndex: PM25SpecificIndex[i].specificIndex, qualifying: PM25SpecificIndex[i].qualifying, color: PM25SpecificIndex[i].color, specificIndexPositionPM25: i });
-                        return <p className="airquality-status" style={{ color: PM25SpecificIndex[i].color }} >{PM25SpecificIndex[i].qualifying}</p>
-                    }
-                }
+                return this.processSpecificIndex(PM25SpecificIndex, value, "specificIndexPositionPM25")
             } else
                 if (type === "pm10") {
-                    for (var i = 0; i < PM10SpecificIndex.length; i++) {
-                        if (PM10SpecificIndex[i].minValue <= value && value <= PM10SpecificIndex[i].maxValue) {
-                            if (PM10SpecificIndex[i].specificIndex > this.state.specificIndex)
-                                this.setState({ specificIndex: PM10SpecificIndex[i].specificIndex, qualifying: PM10SpecificIndex[i].qualifying, color: PM10SpecificIndex[i].color, specificIndexPositionPM10: i });
-                            return <p className="airquality-status" style={{ color: PM10SpecificIndex[i].color }} >{PM10SpecificIndex[i].qualifying}</p>
-                        }
-                    }
+                    return this.processSpecificIndex(PM10SpecificIndex, value, "specificIndexPositionPM10")
                 }
                 else
                     if (type === "o3") {
-                        for (var i = 0; i < O3SpecificIndex.length; i++) {
-                            if (O3SpecificIndex[i].minValue <= value && value <= O3SpecificIndex[i].maxValue) {
-                                if (O3SpecificIndex[i].specificIndex > this.state.specificIndex)
-                                    this.setState({ specificIndex: O3SpecificIndex[i].specificIndex, qualifying: O3SpecificIndex[i].qualifying, color: O3SpecificIndex[i].color, specificIndexPositionO3: i });
-                                return <p className="airquality-status" style={{ color: O3SpecificIndex[i].color }} >{O3SpecificIndex[i].qualifying}</p>
-                            }
-                        }
+                        return this.processSpecificIndex(O3SpecificIndex, 750, "specificIndexPositionO3")
                     }
                     else
                         if (type === "so2") {
-                            for (var i = 0; i < SO2SpecificIndex.length; i++) {
-                                if (SO2SpecificIndex[i].minValue <= value && value <= SO2SpecificIndex[i].maxValue) {
-                                    if (SO2SpecificIndex[i].specificIndex > this.state.specificIndex)
-                                        this.setState({ specificIndex: SO2SpecificIndex[i].specificIndex, qualifying: SO2SpecificIndex[i].qualifying, color: SO2SpecificIndex[i].color, specificIndexPositionSO2: i });
-                                    return <p className="airquality-status" style={{ color: SO2SpecificIndex[i].color }} >{SO2SpecificIndex[i].qualifying}</p>
-                                }
-                            }
+                            return this.processSpecificIndex(SO2SpecificIndex, value, "specificIndexPositionSO2")
                         }
                         else
                             if (type === "no2") {
-                                for (var i = 0; i < NO2SpecificIndex.length; i++) {
-                                    if (NO2SpecificIndex[i].minValue <= value && value <= NO2SpecificIndex[i].maxValue) {
-                                        if (NO2SpecificIndex[i].specificIndex > this.state.specificIndex)
-                                            this.setState({ specificIndex: NO2SpecificIndex[i].specificIndex, qualifying: NO2SpecificIndex[i].qualifying, color: NO2SpecificIndex[i].color, specificIndexPositionNO2: i });
-                                        return <p className="airquality-status" style={{ color: NO2SpecificIndex[i].color }} >{NO2SpecificIndex[i].qualifying}</p>
-                                    }
-                                }
+                                return this.processSpecificIndex(NO2SpecificIndex, value, "specificIndexPositionNO2")
                             }
+        }
+    }
+
+    processSpecificIndex(pollutants, value, pollutantName) {
+        for (var i = 0; i < pollutants.length; i++) {
+            if (pollutants[i].minValue <= value && value <= pollutants[i].maxValue) {
+                if (pollutants[i].specificIndex > this.state.specificIndex) {
+    
+                    this.setState({ specificIndex: pollutants[i].specificIndex, qualifying: pollutants[i].qualifying, color: pollutants[i].color, [pollutantName]: i });
+                }else if(this.state.[pollutantName] < i || this.state.[pollutantName] === ""){
+                    this.setState({[pollutantName]: i });
+                }
+                return <p className="airquality-status" style={{ color: pollutants[i].color }} >{pollutants[i].qualifying}</p>
+            }
         }
     }
 
