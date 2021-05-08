@@ -16,11 +16,7 @@ class LineChartComponent extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.props.data)
-        console.log(this.props.pollutantName)
         if (this.props.data && this.props.pollutantName !== this.state.currentPollutant) {
-            console.log(this.props.data)
-            console.log(this.props.pollutantName)
             if (this.props.pollutantName === "pm25") {
                 this.setState({
                     maxGreen: PM25SpecificIndex[0].maxValue,
@@ -28,7 +24,6 @@ class LineChartComponent extends Component {
                     maxRed: PM25SpecificIndex[5].maxValue,
                     currentPollutant: 'pm25'
                 })
-                console.log("Sunt pm25")
             }
             else
                 if (this.props.pollutantName === "pm10") {
@@ -38,7 +33,6 @@ class LineChartComponent extends Component {
                         maxRed: PM10SpecificIndex[5].maxValue,
                         currentPollutant: 'pm10'
                     })
-                    console.log("Sunt pm10")
                 } else
                     if (this.props.pollutantName === "o3") {
                         this.setState({
@@ -47,7 +41,6 @@ class LineChartComponent extends Component {
                             maxRed: O3SpecificIndex[5].maxValue,
                             currentPollutant: 'o3'
                         })
-                        console.log("Sunt o3")
                     } else
                         if (this.props.pollutantName === "so2") {
                             this.setState({ 
@@ -55,7 +48,6 @@ class LineChartComponent extends Component {
                                 minRed: SO2SpecificIndex[5].minValue,
                                 maxRed: SO2SpecificIndex[5].maxValue,
                                 currentPollutant: 'so2' })
-                            console.log("Sunt so2")
                         } else
                             if (this.props.pollutantName === "no2") {
                                 this.setState({ 
@@ -63,7 +55,6 @@ class LineChartComponent extends Component {
                                     minRed: NO2SpecificIndex[5].minValue,
                                     maxRed: NO2SpecificIndex[5].maxValue,
                                     currentPollutant: 'no2' })
-                                console.log("Sunt no2")
                             } else
                                 if (this.props.pollutantName === "cho2" || this.props.pollutantName === "co2" || this.props.pollutantName === "pm1") {
                                     this.setState({ 
@@ -71,12 +62,7 @@ class LineChartComponent extends Component {
                                         minRed: 0,
                                         maxRed: 0,
                                         currentPollutant: this.props.pollutantName })
-                                    console.log("Sunt no2")
                                 }
-
-
-            console.log("Sunt aici")
-            console.log(this.state.maxGreen)
         }
     }
 

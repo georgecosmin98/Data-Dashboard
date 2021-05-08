@@ -32,7 +32,6 @@ class GoogleHeatMapComponent extends Component {
     }
 
     onChange(date) {
-        //console.log(date)
         this.setState({ value: date })
         this.updateUserLocationsHeatmapValues(Moment(date).format('YYYY-MM-DD, HH:mm'))
     }
@@ -45,13 +44,11 @@ class GoogleHeatMapComponent extends Component {
         UserLocationService.retriveUserLocationAfter(afterDate)
             .then(
                 response => {
-                    //console.log(response);
                     var data = []
                     for (var i = 0; i < response.data.length; i++) {
                         data.push({ lat: response.data[i].latitude, lng: response.data[i].longitude })
                     }
                     this.setState({ heatmapPoints: data })
-                    //console.log(data)
                 }
             )
     }

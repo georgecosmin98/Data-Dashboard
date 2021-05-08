@@ -44,7 +44,6 @@ class DashboardComponent extends Component {
     }
 
     onChangePollutant(values) {
-        console.log(values);
         this.setState({ pollutant: { value: values.value, label: values.label } })
     }
 
@@ -55,19 +54,15 @@ class DashboardComponent extends Component {
 
     async componentDidMount() {
         await UserService.retrieveUserGeneralInfo().then(response => {
-            console.log("salute")
             this.setState({ address: response.data.address })
         })
         await UtilityService.addressToCoordinates(this.state.address).then(response => {
-            console.log(response.data.features.length !== 0)
             if (response.data.features.length !== 0) {
                 console.log(response.data.features[0].place_name)
                 this.setState({ latitude: response.data.features[0].center[1] })
                 this.setState({ longitude: response.data.features[0].center[0] })
             }
-            console.log("Hello")
         })
-        console.log(this.state.address);
         await this.retrieveHomePollutionData(new Date((new Date().getTime() - 604800000)).toString(), this.state.pollutant.value, this.state.address);
     }
 
@@ -82,8 +77,7 @@ class DashboardComponent extends Component {
             }
         })
         AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
-            console.log(response)
-            console.log(response.data.length)
+            // console.log(response)
             if (response.data.length) {
                 var data = []
                 this.setState({ measurement: response.data[0].measurement })
@@ -107,8 +101,6 @@ class DashboardComponent extends Component {
 
     render() {
         const isLoggedIn = AuthenticationService.isUserLoggedIn();
-        // console.log(this.state.address)
-        // console.log(this.state.address.slice(this.state.address.indexOf(" "), this.state.address.indexOf(',')))
         return (
             <div className="home">
                 <TuneIcon className="pollutantSelector" onClick={this.tooglePollutantSelectorWindow}></TuneIcon>
