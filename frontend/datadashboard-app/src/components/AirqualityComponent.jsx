@@ -7,201 +7,7 @@ import AirQualityService from '../api/AirQualityService';
 import { CgArrowRight } from "react-icons/cg";
 import { GiHeartOrgan } from "react-icons/gi";
 import SecurityIcon from '@material-ui/icons/Security';
-const PM10SpecificIndex = [{
-    specificIndex: 1,
-    qualifying: "Bun",
-    color: "#50f0e6",
-    minValue: 0,
-    maxValue: 20
-}, {
-    specificIndex: 2,
-    qualifying: "Acceptabil",
-    color: "#50ccaa",
-    minValue: 20,
-    maxValue: 40
-}
-    , {
-    specificIndex: 3,
-    qualifying: "Moderat",
-    color: "#f0e641",
-    minValue: 40,
-    maxValue: 50
-}
-    , {
-    specificIndex: 4,
-    qualifying: "Rau",
-    color: "#ff5050",
-    minValue: 50,
-    maxValue: 100
-}, {
-    specificIndex: 5,
-    qualifying: "Foarte rau",
-    color: "#960032",
-    minValue: 100,
-    maxValue: 150
-}, {
-    specificIndex: 6,
-    qualifying: "Extrem de rau",
-    color: "#7D2181",
-    minValue: 150,
-    maxValue: 1500
-}]
-const PM25SpecificIndex = [{
-    specificIndex: 1,
-    qualifying: "Bun",
-    color: "#50f0e6",
-    minValue: 0,
-    maxValue: 10
-}, {
-    specificIndex: 2,
-    qualifying: "Acceptabil",
-    color: "#50ccaa",
-    minValue: 10,
-    maxValue: 20
-}
-    , {
-    specificIndex: 3,
-    qualifying: "Moderat",
-    color: "#f0e641",
-    minValue: 20,
-    maxValue: 25
-}
-    , {
-    specificIndex: 4,
-    qualifying: "Rau",
-    color: "#ff5050",
-    minValue: 25,
-    maxValue: 50
-}, {
-    specificIndex: 5,
-    qualifying: "Foarte rau",
-    color: "#960032",
-    minValue: 50,
-    maxValue: 75
-}, {
-    specificIndex: 6,
-    qualifying: "Extrem de rau",
-    color: "#7D2181",
-    minValue: 75,
-    maxValue: 800
-}]
-const O3SpecificIndex = [{
-    specificIndex: 1,
-    qualifying: "Bun",
-    color: "#50f0e6",
-    minValue: 0,
-    maxValue: 50
-}, {
-    specificIndex: 2,
-    qualifying: "Acceptabil",
-    color: "#50ccaa",
-    minValue: 50,
-    maxValue: 100
-}
-    , {
-    specificIndex: 3,
-    qualifying: "Moderat",
-    color: "#f0e641",
-    minValue: 100,
-    maxValue: 130
-}
-    , {
-    specificIndex: 4,
-    qualifying: "Rau",
-    color: "#ff5050",
-    minValue: 130,
-    maxValue: 240
-}, {
-    specificIndex: 5,
-    qualifying: "Foarte rau",
-    color: "#960032",
-    minValue: 240,
-    maxValue: 380
-}, {
-    specificIndex: 6,
-    qualifying: "Extrem de rau",
-    color: "#7D2181",
-    minValue: 380,
-    maxValue: 800
-}]
-const SO2SpecificIndex = [{
-    specificIndex: 1,
-    qualifying: "Bun",
-    color: "#50f0e6",
-    minValue: 0,
-    maxValue: 100
-}, {
-    specificIndex: 2,
-    qualifying: "Acceptabil",
-    color: "#50ccaa",
-    minValue: 100,
-    maxValue: 200
-}
-    , {
-    specificIndex: 3,
-    qualifying: "Moderat",
-    color: "#f0e641",
-    minValue: 200,
-    maxValue: 350
-}
-    , {
-    specificIndex: 4,
-    qualifying: "Rau",
-    color: "#ff5050",
-    minValue: 350,
-    maxValue: 500
-}, {
-    specificIndex: 5,
-    qualifying: "Foarte rau",
-    color: "#960032",
-    minValue: 500,
-    maxValue: 750
-}, {
-    specificIndex: 6,
-    qualifying: "Extrem de rau",
-    color: "#7D2181",
-    minValue: 750,
-    maxValue: 1250
-}]
-const NO2SpecificIndex = [{
-    specificIndex: 1,
-    qualifying: "Bun",
-    color: "#50f0e6",
-    minValue: 0,
-    maxValue: 40
-}, {
-    specificIndex: 2,
-    qualifying: "Acceptabil",
-    color: "#50ccaa",
-    minValue: 40,
-    maxValue: 90
-}
-    , {
-    specificIndex: 3,
-    qualifying: "Moderat",
-    color: "#f0e641",
-    minValue: 90,
-    maxValue: 120
-}
-    , {
-    specificIndex: 4,
-    qualifying: "Rau",
-    color: "#ff5050",
-    minValue: 120,
-    maxValue: 230
-}, {
-    specificIndex: 5,
-    qualifying: "Foarte rau",
-    color: "#960032",
-    minValue: 230,
-    maxValue: 340
-}, {
-    specificIndex: 6,
-    qualifying: "Extrem de rau",
-    color: "#7D2181",
-    minValue: 340,
-    maxValue: 1000
-}]
+import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex } from '../Constants';
 
 class AirqualityComponent extends Component {
     constructor(props) {
@@ -245,7 +51,7 @@ class AirqualityComponent extends Component {
 
     healthEffect(pm10, pm25, o3, so2, no2) {
         if (pm10 || pm25 || o3 || so2 || no2) {
-            console.log("HealthEffect")
+            // console.log("HealthEffect")
             return <div className="health-effect">
                 <GiBrain className="health-effect-images" style={{ color: this.brainEffect() }} />
                 <RiLungsLine className="health-effect-images" style={{ color: this.lungsEffect() }} />
@@ -259,7 +65,7 @@ class AirqualityComponent extends Component {
         var brainColor;
         var maxSpecificIndex = -1;
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            console.log(this.state.specificIndexPositionPM25)
+            // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 brainColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
@@ -422,7 +228,7 @@ class AirqualityComponent extends Component {
                 longitude: this.props.longitude
             })
             await AirQualityService.retrievePollutionValuesForAirqualityDashboard('2021-04-19, 18:45', this.props.latitude, this.props.longitude).then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 this.processDataForAirqualityDashboard(response.data)
                 for (var i = 0; i < response.data.length; i++)
                     if (response.data[i].sensor === "pm10")
@@ -476,7 +282,7 @@ class AirqualityComponent extends Component {
                     console.log("Nu no2")
                 else
                     AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "no2", this.props.latitude, this.props.longitude).then(response => {
-                        console.log(response.data)
+                        // console.log(response.data)
                         this.processDataForAirqualityDashboard(response.data)
                         this.healthEffect(1)
                     })
@@ -530,7 +336,7 @@ class AirqualityComponent extends Component {
     processAddress() {
         if (this.props.address.startsWith("Strada")) {
             var address = this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))
-            console.log(address)
+            // console.log(address)
             if (address.length > 0) {
                 return address
             }

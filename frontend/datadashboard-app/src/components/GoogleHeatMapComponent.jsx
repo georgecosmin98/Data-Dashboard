@@ -95,7 +95,7 @@ class GoogleHeatMapComponent extends Component {
 
         return (
             <div className="heatMap">
-                <DatePicker popperClassName="datepicker-userslocations"
+                {/* <DatePicker popperClassName="datepicker-userslocations"
                     className="datepicker-userslocations"
                     selected={this.state.value}
                     onChange={this.onChange}
@@ -106,7 +106,7 @@ class GoogleHeatMapComponent extends Component {
                     timeIntervals={15}
                     timeCaption="time"
                     dateFormat="yyyy MM dd h:mm aa"
-                />
+                /> */}
                 <GoogleMapReact
                     ref={(el) => this._googleMap = el}
                     bootstrapURLKeys={apiKey}
@@ -117,7 +117,7 @@ class GoogleHeatMapComponent extends Component {
                     onZoomAnimationStart={this.adaptPointRadius.bind(this)}
                 >
                 </GoogleMapReact>
-                <button className="toggleButton" onClick={this.toggleHeatMap.bind(this)}>Toggle heatmap</button>
+                {/* <button className="toggleButton" onClick={this.toggleHeatMap.bind(this)}>Toggle heatmap</button> */}
             </div>
         )
     }

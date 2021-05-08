@@ -1,7 +1,83 @@
 import React, { Component } from 'react'
 import Chart from "react-apexcharts";
-
+import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex } from '../../Constants';
 class LineChartComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            minGreen: 0,
+            maxGreen: '',
+            minRed: '',
+            maxRed: '',
+            currentPollutant: '',
+        }
+
+    }
+
+    componentDidUpdate() {
+        console.log(this.props.data)
+        console.log(this.props.pollutantName)
+        if (this.props.data && this.props.pollutantName !== this.state.currentPollutant) {
+            console.log(this.props.data)
+            console.log(this.props.pollutantName)
+            if (this.props.pollutantName === "pm25") {
+                this.setState({
+                    maxGreen: PM25SpecificIndex[0].maxValue,
+                    minRed: PM25SpecificIndex[5].minValue,
+                    maxRed: PM25SpecificIndex[5].maxValue,
+                    currentPollutant: 'pm25'
+                })
+                console.log("Sunt pm25")
+            }
+            else
+                if (this.props.pollutantName === "pm10") {
+                    this.setState({
+                        maxGreen: PM10SpecificIndex[0].maxValue,
+                        minRed: PM10SpecificIndex[5].minValue,
+                        maxRed: PM10SpecificIndex[5].maxValue,
+                        currentPollutant: 'pm10'
+                    })
+                    console.log("Sunt pm10")
+                } else
+                    if (this.props.pollutantName === "o3") {
+                        this.setState({
+                            maxGreen: O3SpecificIndex[0].maxValue,
+                            minRed: O3SpecificIndex[5].minValue,
+                            maxRed: O3SpecificIndex[5].maxValue,
+                            currentPollutant: 'o3'
+                        })
+                        console.log("Sunt o3")
+                    } else
+                        if (this.props.pollutantName === "so2") {
+                            this.setState({ 
+                                maxGreen: SO2SpecificIndex[0].maxValue,
+                                minRed: SO2SpecificIndex[5].minValue,
+                                maxRed: SO2SpecificIndex[5].maxValue,
+                                currentPollutant: 'so2' })
+                            console.log("Sunt so2")
+                        } else
+                            if (this.props.pollutantName === "no2") {
+                                this.setState({ 
+                                    maxGreen: NO2SpecificIndex[0].maxValue, 
+                                    minRed: NO2SpecificIndex[5].minValue,
+                                    maxRed: NO2SpecificIndex[5].maxValue,
+                                    currentPollutant: 'no2' })
+                                console.log("Sunt no2")
+                            } else
+                                if (this.props.pollutantName === "cho2" || this.props.pollutantName === "co2" || this.props.pollutantName === "pm1") {
+                                    this.setState({ 
+                                        maxGreen: 0,
+                                        minRed: 0,
+                                        maxRed: 0,
+                                        currentPollutant: this.props.pollutantName })
+                                    console.log("Sunt no2")
+                                }
+
+
+            console.log("Sunt aici")
+            console.log(this.state.maxGreen)
+        }
+    }
 
     render() {
         var options = {
@@ -12,13 +88,13 @@ class LineChartComponent extends Component {
             annotations: {
                 yaxis: [
                     {
-                        y: 55,
-                        y2: 1000,
+                        y: this.state.minRed,
+                        y2: this.state.maxRed,
                         borderColor: '#000',
                         fillColor: '#FF0000',
                     }, {
-                        y: 0,
-                        y2: 20,
+                        y: this.state.minGreen,
+                        y2: this.state.maxGreen,
                         borderColor: '#000',
                         fillColor: '#99ff99',
                     }
@@ -91,7 +167,7 @@ class LineChartComponent extends Component {
                 text: 'No data available',
                 style: {
                     fontSize: '24px',
-                  }
+                }
             }
         };
         // console.log(this.props.data)

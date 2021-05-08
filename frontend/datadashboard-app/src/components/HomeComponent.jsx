@@ -99,7 +99,7 @@ class DashboardComponent extends Component {
                 this.setState({ measurement: response.data[0].measurement })
                 this.setState({ currentPollutantName: response.data[0].sensor })
                 for (var i = 0; i < response.data.length; i++) {
-                    data.push([Date.parse(response.data[i].timestamp) + 10800000, response.data[i].value])
+                    data.push([response.data[i].timestamp + 10800000, response.data[i].value])
                 }
                 this.setState({ pm25Data: data })
             } else {
@@ -138,6 +138,7 @@ class DashboardComponent extends Component {
                         timeCaption="time"
                         dateFormat="yyyy MM dd h:mm aa"
                     />
+
                     <p>Pollutant</p>
                     <Select
                         value={this.state.pollutant}
@@ -156,7 +157,7 @@ class DashboardComponent extends Component {
                 </div>}
                 <AirqualityComponent address={this.state.address} latitude={this.state.latitude} longitude={this.state.longitude}></AirqualityComponent>
                 {isLoggedIn && <>
-                    <LineChartComponent data={this.state.pm25Data}>
+                    <LineChartComponent data={this.state.pm25Data} pollutantName={this.state.currentPollutantName}>
                     </LineChartComponent></>}
                 <div className="flex-break"></div>
                 {isLoggedIn && <BarChartComponent data={this.state.pm25Data} measurement={this.state.measurement} pollutantName={this.state.currentPollutantName}></BarChartComponent>}
