@@ -73,23 +73,21 @@ class AirqualityComponent extends Component {
                 brainColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
             }
         }
-        else
-            if (isNaN(this.state.specificIndexPositionPM10.length)) {
-                if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
-                    maxSpecificIndex = this.state.specificIndexPositionPM10
-                    brainColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
-                }
+        if (isNaN(this.state.specificIndexPositionPM10.length)) {
+            if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
+                maxSpecificIndex = this.state.specificIndexPositionPM10
+                brainColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
             }
-            else
-                if (isNaN(this.state.specificIndexPositionSO2.length)) {
-                    if (maxSpecificIndex < this.state.specificIndexPositionSO2) {
-                        maxSpecificIndex = this.state.specificIndexPositionSO2
-                        brainColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].color;
-                    }
-                }
-                else
-                    if (maxSpecificIndex === -1)
-                        brainColor = "black";
+        }
+        if (isNaN(this.state.specificIndexPositionSO2.length)) {
+            if (maxSpecificIndex < this.state.specificIndexPositionSO2) {
+                maxSpecificIndex = this.state.specificIndexPositionSO2
+                brainColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].color;
+            }
+        }
+
+        if (maxSpecificIndex === -1)
+            brainColor = "black";
         return brainColor;
 
     }
@@ -104,15 +102,14 @@ class AirqualityComponent extends Component {
                 lungsColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
             }
         }
-        else
-            if (isNaN(this.state.specificIndexPositionPM10.length)) {
-                if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
-                    maxSpecificIndex = this.state.specificIndexPositionPM10
-                    lungsColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
-                }
+        if (isNaN(this.state.specificIndexPositionPM10.length)) {
+            if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
+                maxSpecificIndex = this.state.specificIndexPositionPM10
+                lungsColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
             }
-            else
-                lungsColor = "black";
+        }
+        if (maxSpecificIndex === -1)
+            lungsColor = "black";
 
         return lungsColor;
     }
@@ -127,33 +124,27 @@ class AirqualityComponent extends Component {
                 heartColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
             }
         }
-        else
-            if (isNaN(this.state.specificIndexPositionPM10.length)) {
-                if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
-                    maxSpecificIndex = this.state.specificIndexPositionPM10
-                    heartColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
-                }
+        if (isNaN(this.state.specificIndexPositionPM10.length)) {
+            if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
+                maxSpecificIndex = this.state.specificIndexPositionPM10
+                heartColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
             }
-            else
-                if (isNaN(this.state.specificIndexPositionSO2.length)) {
-                    if (maxSpecificIndex < this.state.specificIndexPositionSO2) {
-                        maxSpecificIndex = this.state.specificIndexPositionSO2
-                        heartColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].color;
-                    }
-                }
-                else
-                    if (isNaN(this.state.specificIndexPositionO3.length)) {
-                        if (maxSpecificIndex < this.state.specificIndexPositionO3) {
-                            maxSpecificIndex = this.state.specificIndexPositionO3
-                            heartColor = SO2SpecificIndex[this.state.specificIndexPositionO3].color;
-                        }
-                    }
+        }
+        if (isNaN(this.state.specificIndexPositionSO2.length)) {
+            if (maxSpecificIndex < this.state.specificIndexPositionSO2) {
+                maxSpecificIndex = this.state.specificIndexPositionSO2
+                heartColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].color;
+            }
+        }
+        if (isNaN(this.state.specificIndexPositionO3.length)) {
+            if (maxSpecificIndex < this.state.specificIndexPositionO3) {
+                maxSpecificIndex = this.state.specificIndexPositionO3
+                heartColor = SO2SpecificIndex[this.state.specificIndexPositionO3].color;
+            }
+        }
 
         if (maxSpecificIndex === -1)
             heartColor = "black";
-        console.log(this.state.specificIndexPositionO3)
-        console.log(isNaN(this.state.specificIndexPositionO3.length))
-        console.log(maxSpecificIndex)
         return heartColor;
 
     }
@@ -168,7 +159,7 @@ class AirqualityComponent extends Component {
                 }
                 else
                     if (type === "o3") {
-                        return this.processSpecificIndex(O3SpecificIndex, 750, "specificIndexPositionO3")
+                        return this.processSpecificIndex(O3SpecificIndex, value, "specificIndexPositionO3")
                     }
                     else
                         if (type === "so2") {
@@ -185,10 +176,10 @@ class AirqualityComponent extends Component {
         for (var i = 0; i < pollutants.length; i++) {
             if (pollutants[i].minValue <= value && value <= pollutants[i].maxValue) {
                 if (pollutants[i].specificIndex > this.state.specificIndex) {
-    
+
                     this.setState({ specificIndex: pollutants[i].specificIndex, qualifying: pollutants[i].qualifying, color: pollutants[i].color, [pollutantName]: i });
-                }else if(this.state.[pollutantName] < i || this.state.[pollutantName] === ""){
-                    this.setState({[pollutantName]: i });
+                } else if (this.state.[pollutantName] < i || this.state.[pollutantName] === "") {
+                    this.setState({ [pollutantName]: i });
                 }
                 return <p className="airquality-status" style={{ color: pollutants[i].color }} >{pollutants[i].qualifying}</p>
             }
