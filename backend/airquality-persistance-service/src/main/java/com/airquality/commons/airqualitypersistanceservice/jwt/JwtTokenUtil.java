@@ -12,7 +12,6 @@ import io.jsonwebtoken.impl.DefaultClock;
 import lombok.extern.log4j.Log4j2;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,12 +90,12 @@ public class JwtTokenUtil {
 
     public Boolean validateToken(String token) {
         //Extract email from given token
-        final String email = getEmailFromToken(token);
+//        final String email = getEmailFromToken(token);
         //Verify if JWT Token is valid
         try {
             Algorithm algorithm = Algorithm.HMAC512(new Base64(true).decodeBase64(secret));
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withSubject(email)
+//                    .withSubject(email)
                     .build();
             DecodedJWT jwt = verifier.verify(token);
         } catch (JWTVerificationException exception) {

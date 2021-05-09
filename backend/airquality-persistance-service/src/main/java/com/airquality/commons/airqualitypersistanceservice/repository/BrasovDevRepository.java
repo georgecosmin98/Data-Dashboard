@@ -6,6 +6,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @EnableElasticsearchRepositories
 public interface BrasovDevRepository extends ElasticsearchRepository<BrasovDevDto,String> {
@@ -17,4 +18,6 @@ public interface BrasovDevRepository extends ElasticsearchRepository<BrasovDevDt
     List<BrasovDevDto> findAllByTimestampAfterAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(Long from, String sensor,double latitude, double longitude);
     List<BrasovDevDto> findAllBySensorAndLocationLatBetweenAndLocationLongBetweenAndTimestampAfterOrderByTimestampAsc(String name,double lat1,double lat2, double long1,double long2,Long date);
     List<BrasovDevDto> findAllByLocationLatAndLocationLongAndTimestampAfterOrderByTimestampDesc(double latitude,double longitude, Long timestamp);
+    Stream<BrasovDevDto> findBySensorAndTimestampAfter(String sensor, Long date);
+    Stream<BrasovDevDto> findByTimestampAfter(Long date);
 }

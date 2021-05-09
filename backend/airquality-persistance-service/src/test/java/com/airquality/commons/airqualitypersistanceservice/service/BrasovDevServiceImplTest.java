@@ -37,7 +37,7 @@ public class BrasovDevServiceImplTest {
 
         brasovDevDto = new BrasovDevDto("testId", "testSource", "testSensor",
                 1, 1, 1,
-                new Date(), "testMeasurement");
+                new Date().getTime(), "testMeasurement");
 
         listOfSensorData.add(brasovDevDto);
     }

@@ -33,7 +33,7 @@ public class BrasovDevDto {
     @Field(name = "LocationLong")
     private double locationLong;
     @Field(name = "TimeStamp", format = DateFormat.epoch_millis)
-    private Date timestamp;
+    private long timestamp;
     @Field(name = "Measurement")
     private String measurement;
 

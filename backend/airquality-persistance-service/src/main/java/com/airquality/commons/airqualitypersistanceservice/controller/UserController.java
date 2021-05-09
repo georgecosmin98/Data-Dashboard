@@ -82,15 +82,30 @@ public class UserController {
         }
         return HttpStatus.NOT_FOUND;
     }
+//
+//    @PostMapping("/changepassword")
+//    public HttpStatus changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
+//        //Verify if password is too short
+//        if (changePasswordDto.getPassword().length() < 5)
+//            return HttpStatus.BAD_REQUEST;
+//        Optional<UserDto> userDto = userServiceImpl.findUserByUsername(changePasswordDto.getUsername());
+//        if (userDto.isPresent()) {
+//            userDto.get().setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
+//            userServiceImpl.createUser(userDto.get());
+//            return HttpStatus.OK;
+//        }
+//        return HttpStatus.NOT_FOUND;
+//    }
+
 
     @PostMapping("/changepassword")
-    public HttpStatus changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
+    public HttpStatus changePassword(@RequestBody ChangePasswordDto changePasswordDto, HttpServletRequest request) {
         //Verify if password is too short
-        if (changePasswordDto.getPassword().length() < 5)
+        if (changePasswordDto.getPassword().length() < 5 || !changePasswordDto.getUsername().equals(userServiceImpl.getUsernameFromRequestHeader(request)))
             return HttpStatus.BAD_REQUEST;
         Optional<UserDto> userDto = userServiceImpl.findUserByUsername(changePasswordDto.getUsername());
         if (userDto.isPresent()) {
-            userDto.get().setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
+            userDto.get().setPassword(passwordEncoder.encode(userServiceImpl.getUsernameFromRequestHeader(request)));
             userServiceImpl.createUser(userDto.get());
             return HttpStatus.OK;
         }
@@ -145,7 +160,7 @@ public class UserController {
     }
 
     @PostMapping("/changeUserDetails")
-    private HttpStatus userGeneralInfoDto(HttpServletRequest request, @RequestBody UserGeneralInfoDto userGeneralInfoDto) {
+    private HttpStatus changeUserGeneralInfo(HttpServletRequest request, @RequestBody UserGeneralInfoDto userGeneralInfoDto) {
         Optional<UserDto> userDto = userServiceImpl.findUserByUsername(userServiceImpl.getUsernameFromRequestHeader(request));
         if (userDto.isPresent()) {
             userDto.get().setName(userGeneralInfoDto.getName());
