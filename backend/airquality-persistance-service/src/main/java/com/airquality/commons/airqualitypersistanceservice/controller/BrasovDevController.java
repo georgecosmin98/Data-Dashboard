@@ -1,16 +1,21 @@
 package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevDto;
+import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevInterpolationModel;
 import com.airquality.commons.airqualitypersistanceservice.repository.BrasovDevRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.BrasovDevServiceImpl;
+import com.airquality.commons.airqualitypersistanceservice.util.InverseDistanceWeightingUtil;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/brasovdev")
@@ -34,7 +39,7 @@ public class BrasovDevController {
     }
 
     @GetMapping("/findAllAfter/{first}/{latitude}/{longitude}")
-    public List<BrasovDevDto> findAllAfterDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd, HH:mm") Date first,@PathVariable double latitude,@PathVariable double longitude) throws IOException {
+    public List<BrasovDevDto> findAllAfterDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd, HH:mm") Date first, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
         return brasovDevServiceImpl.pollutionDataBasedOnAddressLocationAndData(latitude, longitude, first);
     }
 
@@ -48,14 +53,42 @@ public class BrasovDevController {
         return brasovDevRepository.findBySensorAndTimestampIsBetweenOrderByTimestampDesc(sensorName, firstDate.getTime(), lastDate.getTime());
     }
 
-    @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
-    public List<BrasovDevDto> findByDateSensorAndCoordinates(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                             @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocation(date, sensor, latitude, longitude);
-    }
+//    @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
+//    public List<BrasovDevDto> findByDateSensorAndCoordinates(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+//                                                             @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+//        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocation(date, sensor, latitude, longitude);
+//    }
 
     @GetMapping("/test1/{name}/{lat1}/{lat2}/{long1}/{long2}/{firstDate}")
     public List<BrasovDevDto> test(@PathVariable String name, @PathVariable double lat1, @PathVariable double lat2, @PathVariable double long1, @PathVariable double long2, @PathVariable("firstDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date firstDate) {
         return brasovDevRepository.findAllBySensorAndLocationLatBetweenAndLocationLongBetweenAndTimestampAfterOrderByTimestampAsc(name, lat1, lat2, long1, long2, firstDate.getTime());
+    }
+
+    @GetMapping("/testArea")
+    public List<BrasovDevDto> test() throws IOException {
+//       return brasovDevServiceImpl.pollutionDataBasedOnLocation(new Date("2021/04/04"), "PM10");
+        return brasovDevServiceImpl.findByCoordinatesTimestampAndInterpolateAllValues(new Date("2021/05/10"),45.6431238,25.5972285);
+    }
+
+    @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
+    public List<BrasovDevDto> findBySensorNameCoordinatesTimestampAndInterpolate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                                                                                 @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+//       return brasovDevServiceImpl.pollutionDataBasedOnLocation(new Date("2021/04/04"), "PM10");
+//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.6568,25.5917,1.228));
+//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.642198,25.588532,0.414));
+//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.645914,25.602642,1.029));
+//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.646976,25.595224,0.469));
+
+//        List<BrasovDevDto> sensorData = new ArrayList<>();
+//        sensorData.add(new BrasovDevDto("","","",13,45.6568,25.5917,251L,""));
+//        sensorData.add(new BrasovDevDto("","","",9,45.642198,25.588532,252L,""));
+//        sensorData.add(new BrasovDevDto("","","",11,45.645914,25.602642,253L,""));
+//        sensorData.add(new BrasovDevDto("","","",9,45.646976,25.595224,254L,""));
+//
+//        sensorData.add(new BrasovDevDto("","","",15,45.6568,25.5917,3251L,""));
+//        sensorData.add(new BrasovDevDto("","","",2,45.642198,25.588532,3252L,""));
+//        sensorData.add(new BrasovDevDto("","","",1,45.645914,25.602642,3253L,""));
+//        sensorData.add(new BrasovDevDto("","","",6,45.646976,25.595224,3254L,""));
+        return brasovDevServiceImpl.findBySensorNameCoordinatesTimestampAndInterpolate(date,sensor,latitude,longitude);
     }
 }

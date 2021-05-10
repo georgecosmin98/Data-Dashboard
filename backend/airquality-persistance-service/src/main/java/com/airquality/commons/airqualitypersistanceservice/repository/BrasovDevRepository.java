@@ -20,4 +20,7 @@ public interface BrasovDevRepository extends ElasticsearchRepository<BrasovDevDt
     List<BrasovDevDto> findAllByLocationLatAndLocationLongAndTimestampAfterOrderByTimestampDesc(double latitude,double longitude, Long timestamp);
     Stream<BrasovDevDto> findBySensorAndTimestampAfter(String sensor, Long date);
     Stream<BrasovDevDto> findByTimestampAfter(Long date);
+    Stream<BrasovDevDto> findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(String name,double lat1,double lat2, double long1,double long2,Long date);
+    Stream<BrasovDevDto> findAllByLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(double lat1,double lat2, double long1,double long2,Long date);
+
 }
