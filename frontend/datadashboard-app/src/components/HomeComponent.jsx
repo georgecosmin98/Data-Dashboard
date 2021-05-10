@@ -77,7 +77,7 @@ class DashboardComponent extends Component {
             }
         })
         AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
-            // console.log(response)
+            console.log(response)
             if (response.data.length) {
                 var data = []
                 this.setState({ measurement: response.data[0].measurement })

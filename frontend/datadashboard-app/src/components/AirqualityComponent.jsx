@@ -150,6 +150,8 @@ class AirqualityComponent extends Component {
     }
 
     specificIndex(value, type) {
+        console.log(value)
+        console.log(type)
         if (value >= 0) {
             if (type === "pm25") {
                 return this.processSpecificIndex(PM25SpecificIndex, value, "specificIndexPositionPM25")
@@ -207,23 +209,23 @@ class AirqualityComponent extends Component {
                 longitude: this.props.longitude
             })
             await AirQualityService.retrievePollutionValuesForAirqualityDashboard('2021-04-19, 18:45', this.props.latitude, this.props.longitude).then(response => {
-                // console.log(response.data)
-                this.processDataForAirqualityDashboard(response.data)
+                console.log(response.data)
+                // this.processDataForAirqualityDashboard(response.data)
                 for (var i = 0; i < response.data.length; i++)
                     if (response.data[i].sensor === "pm10")
-                        existPM10 = true;
+                        existPM10 = false;
                     else
                         if (response.data[i].sensor === "pm25")
-                            existPM25 = true;
+                            existPM25 = false;
                         else
                             if (response.data[i].sensor === "o3")
-                                existO3 = true;
+                                existO3 = false;
                             else
                                 if (response.data[i].sensor === "so2")
-                                    existSO2 = true;
+                                    existSO2 = false;
                                 else
                                     if (response.data[i].sensor === "no2")
-                                        existNO2 = true;
+                                        existNO2 = false;
 
                 if (existPM10)
                     console.log("Nu Pm10");
@@ -271,7 +273,8 @@ class AirqualityComponent extends Component {
     }
 
     processDataForAirqualityDashboard(data) {
-        // console.log(data)
+        
+       console.log(data)
         var currentValues = {
             pm25: '',
             pm10: '',
@@ -290,25 +293,25 @@ class AirqualityComponent extends Component {
             previousValues = this.state.previousValues;
 
         for (var i = 0; i < data.length; i++) {
-            // console.log(previousValues.pm25)
-            if (data[i].sensor === "pm25" && !currentValues.pm25) {
-                currentValues.pm25 = previousValues.pm25;
-                previousValues.pm25 = data[i].value;
+            if (data[i].sensor === "pm25") {
+                previousValues.pm25 = currentValues.pm25;
+                currentValues.pm25 = data[i].value;
             }
-            if (data[i].sensor === "pm10" && !currentValues.pm10) {
-                currentValues.pm10 = previousValues.pm10;
-                previousValues.pm10 = data[i].value;
+            if (data[i].sensor === "pm10") {
+                previousValues.pm10 = currentValues.pm10;
+                currentValues.pm10 = data[i].value;
             }
-            if (data[i].sensor === "o3" && !currentValues.o3) {
-                currentValues.o3 = previousValues.o3;
-                previousValues.o3 = data[i].value;
+            if (data[i].sensor === "o3") {
+                previousValues.o3 = currentValues.o3;
+                currentValues.o3 = data[i].value;
             }
-            if (data[i].sensor === "so2" && !currentValues.so2) {
-                currentValues.so2 = previousValues.so2;
-                previousValues.so2 = data[i].value;
+            if (data[i].sensor === "so2") {
+                previousValues.so2 = currentValues.so2;
+                currentValues.so2 = data[i].value;
             }
         }
-
+        console.log(currentValues)
+        console.log(previousValues)
         this.setState({ currentValues: currentValues, previousValues: previousValues })
     }
 
