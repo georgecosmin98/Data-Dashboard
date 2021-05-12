@@ -6,7 +6,7 @@ import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
 import AirQualityService from '../api/AirQualityService';
 import { CgArrowRight } from "react-icons/cg";
 import { GiHeartOrgan } from "react-icons/gi";
-import SecurityIcon from '@material-ui/icons/Security';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
 import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex } from '../Constants';
 
 class AirqualityComponent extends Component {
@@ -36,7 +36,8 @@ class AirqualityComponent extends Component {
             longitude: '',
             specificIndex: '',
             qualifying: '',
-            color: ''
+            color: '',
+            no2On: false
         }
 
         this.processDataForAirqualityDashboard = this.processDataForAirqualityDashboard.bind(this);
@@ -48,6 +49,7 @@ class AirqualityComponent extends Component {
         this.heartEffect = this.heartEffect.bind(this);
         this.processAddress = this.processAddress.bind(this);
         this.processSpecificIndex = this.processSpecificIndex.bind(this);
+        this.changePollutants = this.changePollutants.bind(this);
     }
 
     healthEffect(pm10, pm25, o3, so2, no2) {
@@ -214,19 +216,21 @@ class AirqualityComponent extends Component {
     }
 
     processDataForAirqualityDashboard(data) {
-        
-       console.log(data)
+
+        console.log(data)
         var currentValues = {
             pm25: '',
             pm10: '',
             o3: '',
-            so2: ''
+            so2: '',
+            no2: ''
         }
         var previousValues = {
             pm25: '',
             pm10: '',
             o3: '',
-            so2: ''
+            so2: '',
+            no2: ''
         }
         if (this.state.currentValues)
             currentValues = this.state.currentValues;
@@ -250,6 +254,10 @@ class AirqualityComponent extends Component {
                 previousValues.so2 = currentValues.so2;
                 currentValues.so2 = data[i].value;
             }
+            if (data[i].sensor === "no2") {
+                previousValues.no2 = currentValues.no2;
+                currentValues.no2 = data[i].value;
+            }
         }
         console.log(currentValues)
         console.log(previousValues)
@@ -267,6 +275,10 @@ class AirqualityComponent extends Component {
         else {
             return this.props.address.slice(0, this.props.address.indexOf(','))
         }
+    }
+
+    changePollutants() {
+        this.setState({no2On: !this.state.no2On});
     }
 
     render() {
@@ -290,7 +302,7 @@ class AirqualityComponent extends Component {
                 </div>
                 <div className="col-md-4">
                     <div className="nestead-row">
-                        <div className="col-md-12"> <h1 className="airquality-dashboard-pollutants-name">PM25</h1><SecurityIcon className="settings-airquality"></SecurityIcon>
+                        <div className="col-md-12"> <h1 className="airquality-dashboard-pollutants-name">PM25</h1>
                             {this.state.currentValues.pm25 && <p className="airquality-dashboard-value"> {this.state.currentValues.pm25} <span className="measurement-unit">ug/m3</span> {this.state.currentValues.pm25 && this.trendingLine(this.state.currentValues.pm25, this.state.previousValues.pm25)}</p>}
                             {/* <p className="airquality-status"></p> */}
                             {this.state.currentValues.pm25 && this.specificIndex(this.state.currentValues.pm25, "pm25")}
@@ -307,15 +319,17 @@ class AirqualityComponent extends Component {
                             {this.state.currentValues.o3 && <p className="airquality-dashboard-value"> {this.state.currentValues.o3} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.o3 && this.trendingLine(this.state.currentValues.o3, this.state.previousValues.o3)}</p>}
                             {this.state.currentValues.o3 && this.specificIndex(this.state.currentValues.o3, "o3")}
                         </div>
-                        <div className="col-md-12" style={{
-                            // background: red
-                        }}><h1 className="airquality-dashboard-pollutants-name">SO2</h1>
-                            {this.state.currentValues.so2 && <p className="airquality-dashboard-value"> {this.state.currentValues.so2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.so2 && this.trendingLine(this.state.currentValues.so2, this.state.previousValues.so2)}</p>}
-                            {this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.so2, "so2")}
+                        <div className="col-md-12">
+                            {!this.state.no2On && <h1 className="airquality-dashboard-pollutants-name">SO2</h1>}<SkipNextIcon className="settings-airquality" onClick={this.changePollutants}></SkipNextIcon>
+                            {!this.state.no2On && this.state.currentValues.so2 && <p className="airquality-dashboard-value"> {this.state.currentValues.so2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.so2 && this.trendingLine(this.state.currentValues.so2, this.state.previousValues.so2)}</p>}
+                            {!this.state.no2On && this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.no2, "no2")}
+                            {this.state.no2On && <h1 className="airquality-dashboard-pollutants-name">NO2</h1>}<SkipNextIcon className="settings-airquality" onClick={this.changePollutants}></SkipNextIcon>
+                            {this.state.no2On && this.state.currentValues.no2 && <p className="airquality-dashboard-value"> {this.state.currentValues.no2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.no2 && this.trendingLine(this.state.currentValues.no2, this.state.previousValues.no2)}</p>}
+                            {this.state.no2On && this.state.currentValues.no2 && this.specificIndex(this.state.currentValues.no2, "no2")}
+                       
                         </div>
                     </div>
                 </div>
-                {this.state.currentValues.no2 && this.specificIndex(this.state.currentValues.no2, "no2")}
             </div>
             </>
         )

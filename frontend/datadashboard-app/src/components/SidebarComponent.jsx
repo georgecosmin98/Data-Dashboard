@@ -9,6 +9,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AuthenticationService from "../api/AuthenticationService"
 import SecurityIcon from '@material-ui/icons/Security';
 import DirectionsWalkIcon from '@material-ui/icons/DirectionsWalk';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { GENERAL_INFO_LINK_URL, CHANGE_PASSWORD_LINK_URL } from '../Constants'
 
 class SidebarComponent extends Component {
@@ -55,6 +56,7 @@ class SidebarComponent extends Component {
 
                 {this.state.settingsMenu && <NavLink to={GENERAL_INFO_LINK_URL} activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={AccountCircleIcon} title="General" /></NavLink>}
                 {this.state.settingsMenu && <NavLink to={CHANGE_PASSWORD_LINK_URL} activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={SecurityIcon} title="Security" /></NavLink>}
+                {this.state.settingsMenu && <NavLink to="/" exact activeClassName="active" onClick={this.onClick.bind(this)}><SidebarRowComponent icon={ArrowBackIcon} title="Back" /></NavLink>}
             </div>
         )
     }
