@@ -69,11 +69,11 @@ public class BrasovDevController {
     @GetMapping("/testArea")
     public List<BrasovDevDto> test() throws IOException {
 //       return brasovDevServiceImpl.pollutionDataBasedOnLocation(new Date("2021/04/04"), "PM10");
-        double latitude = 45.645873;
-        double longitude = 25.589398;
+        double latitude = 45.6568;
+        double longitude = 25.5917;
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = brasovDevServiceImpl.findUniqueSensor("pm10",new Date("2021/05/10"),latitude,longitude, 1.5);
         List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc("pm10",longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, new Date("2021/05/10").getTime()).collect(Collectors.toList());
-        return InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels,sensorData);
+        return InverseDistanceWeightingUtil.calculatorForTest(brasovDevInterpolationModels,sensorData);
     }
 
     @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")

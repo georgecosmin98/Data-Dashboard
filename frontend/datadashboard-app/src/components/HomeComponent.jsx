@@ -29,7 +29,7 @@ class DashboardComponent extends Component {
                 label: 'LIVE'
             },
             pollutantSelectorWindowOn: false,
-            date: '',
+            date: new Date().getTime() - ((new Date().getTime()/1000)%3600)*1000 - 604800000,
             currentPollutantName: 'PM25',
             isEnable: true,
             latitude: '',

@@ -452,7 +452,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
 
     public List<BrasovDevDto> findBySensorNameCoordinatesTimestampAndInterpolate(Date date, String sensor, double latitude, double longitude) throws IOException {
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
-        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime()).collect(Collectors.toList());
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.0135, longitude + 0.0135, latitude - 0.0135, latitude + 0.0135, date.getTime()).collect(Collectors.toList());
         System.out.println(sensorData.size());
         return InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
     }
@@ -479,15 +479,15 @@ public class BrasovDevServiceImpl implements BrasovDevService {
                 no2Data.add(sensorData.get(i));
         }
         if (!pm25Data.isEmpty())
-            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, pm25Data));
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, pm25Data));
         if (!pm10Data.isEmpty())
-            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, pm10Data));
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, pm10Data));
         if (!o3Data.isEmpty())
-            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, o3Data));
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, o3Data));
         if (!so2Data.isEmpty())
-            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, so2Data));
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, so2Data));
         if (!no2Data.isEmpty())
-            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, no2Data));
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, no2Data));
         return procesedList;
 
     }
