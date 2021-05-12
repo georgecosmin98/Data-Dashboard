@@ -553,24 +553,25 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime()).collect(Collectors.toList());
         List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
         List<BrasovDevDto> processedList = new ArrayList<>();
-        int minValues = 0;
+        int minValues = Integer.MAX_VALUE;
         for (int i = 0; i < interpolatedValues.size() - 1; i++) {
             long currentTime = (interpolatedValues.get(i).getTimestamp() / 1000) % (3600 * 24);
             currentTime = interpolatedValues.get(i).getTimestamp() - currentTime * 1000;
             long nextTime = (interpolatedValues.get(i + 1).getTimestamp() / 1000) % (3600 * 24);
             nextTime = interpolatedValues.get(i + 1).getTimestamp() - nextTime * 1000;
-
             if (currentTime == nextTime) {
-                if (minValues < interpolatedValues.get(i).getValue())
+                if (minValues > interpolatedValues.get(i).getValue())
                     minValues = interpolatedValues.get(i).getValue();
             } else {
-                BrasovDevDto brasovDevDto = interpolatedValues.get(i);
-                brasovDevDto.setTimestamp(currentTime);
-                brasovDevDto.setValue(minValues);
-                processedList.add(brasovDevDto);
-                minValues = 0;
-            }
+                if (minValues < Integer.MAX_VALUE) {
+                    BrasovDevDto brasovDevDto = interpolatedValues.get(i);
+                    brasovDevDto.setTimestamp(currentTime);
+                    brasovDevDto.setValue(minValues);
+                    processedList.add(brasovDevDto);
+                    minValues = Integer.MAX_VALUE;
+                }
 
+            }
         }
         return processedList;
     }

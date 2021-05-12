@@ -10,7 +10,7 @@ class LineChartComponent extends Component {
             maxGreen: '',
             minRed: '',
             maxRed: '',
-            currentPollutant: '',
+            currentPollutant: ''
         }
 
     }
@@ -43,25 +43,28 @@ class LineChartComponent extends Component {
                         })
                     } else
                         if (this.props.pollutantName === "so2") {
-                            this.setState({ 
+                            this.setState({
                                 maxGreen: SO2SpecificIndex[0].maxValue,
                                 minRed: SO2SpecificIndex[5].minValue,
                                 maxRed: SO2SpecificIndex[5].maxValue,
-                                currentPollutant: 'so2' })
+                                currentPollutant: 'so2'
+                            })
                         } else
                             if (this.props.pollutantName === "no2") {
-                                this.setState({ 
-                                    maxGreen: NO2SpecificIndex[0].maxValue, 
+                                this.setState({
+                                    maxGreen: NO2SpecificIndex[0].maxValue,
                                     minRed: NO2SpecificIndex[5].minValue,
                                     maxRed: NO2SpecificIndex[5].maxValue,
-                                    currentPollutant: 'no2' })
+                                    currentPollutant: 'no2'
+                                })
                             } else
                                 if (this.props.pollutantName === "cho2" || this.props.pollutantName === "co2" || this.props.pollutantName === "pm1") {
-                                    this.setState({ 
+                                    this.setState({
                                         maxGreen: 0,
                                         minRed: 0,
                                         maxRed: 0,
-                                        currentPollutant: this.props.pollutantName })
+                                        currentPollutant: this.props.pollutantName
+                                    })
                                 }
         }
     }
@@ -102,6 +105,9 @@ class LineChartComponent extends Component {
                         enabled: true,
                         speed: 350
                     }
+                },
+                zoom: {
+                    autoScaleYaxis: true,
                 }
             },
             stroke: {
@@ -113,7 +119,7 @@ class LineChartComponent extends Component {
                 tickAmount: 12,
                 labels: {
                     formatter: function (value, timestamp, opts) {
-                        return opts.dateFormatter(new Date(timestamp), 'dd MMM HH:mm')
+                            return opts.dateFormatter(new Date(timestamp), 'dd MMM HH:mm')
                     }
                 }
             },

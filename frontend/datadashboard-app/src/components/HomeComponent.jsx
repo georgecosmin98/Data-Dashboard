@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
 import Loader from "react-loader-spinner";
 import AirqualityComponent from './AirqualityComponent';
-import {options} from "../Constants"
+import { options, aggregationType } from "../Constants"
 
 class DashboardComponent extends Component {
     constructor(props) {
@@ -23,16 +23,21 @@ class DashboardComponent extends Component {
             pollutant: {
                 value: 'pm25',
                 label: 'PM25'
-            }
-            ,
+            },
+            aggregationType: {
+                value: 'live',
+                label: 'LIVE'
+            },
             pollutantSelectorWindowOn: false,
             date: '',
             currentPollutantName: 'PM25',
             isEnable: true,
             latitude: '',
-            longitude: ''
+            longitude: '',
+            retrievingData: false
         }
         this.onChangePollutant = this.onChangePollutant.bind(this)
+        this.onChangeAggregationType = this.onChangeAggregationType.bind(this)
         this.onChangeData = this.onChangeData.bind(this)
         this.applyChanges = this.applyChanges.bind(this)
         this.retrieveHomePollutionData = this.retrieveHomePollutionData.bind(this);
@@ -45,6 +50,11 @@ class DashboardComponent extends Component {
 
     onChangePollutant(values) {
         this.setState({ pollutant: { value: values.value, label: values.label } })
+    }
+
+    onChangeAggregationType(values) {
+        console.log(values)
+        this.setState({ aggregationType: { value: values.value, label: values.label } })
     }
 
     applyChanges() {
@@ -76,23 +86,79 @@ class DashboardComponent extends Component {
                 longitude = response.data.features[0].center[0];
             }
         })
-        AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
-            console.log(response)
-            if (response.data.length) {
-                var data = []
-                this.setState({ measurement: response.data[0].measurement })
-                this.setState({ currentPollutantName: response.data[0].sensor })
-                for (var i = 0; i < response.data.length; i++) {
-                    data.push([response.data[i].timestamp + 10800000, response.data[i].value])
+        console.log(this.state.aggregationType)
+        if (this.state.aggregationType.value === "live")
+            AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
+                console.log(response)
+                if (response.data.length) {
+                    var data = []
+                    this.setState({ measurement: response.data[0].measurement })
+                    this.setState({ currentPollutantName: response.data[0].sensor })
+                    for (var i = 0; i < response.data.length; i++) {
+                        data.push([response.data[i].timestamp + 10800000, response.data[i].value])
+                    }
+                    this.setState({ pm25Data: data })
+                } else {
+                    this.setState({ pm25Data: [] })
                 }
-                this.setState({ pm25Data: data })
-            } else {
-                this.setState({ pm25Data: [] })
-            }
+                this.setState({ isEnable: true })
 
+            })
+        else
+            if(this.state.aggregationType.value === "max")
+            AirQualityService.retrieveHomePollutionMaxDailyValues(date,sensor,latitude,longitude).then(response => {
+                console.log(response)
+                if (response.data.length) {
+                    var data = []
+                    this.setState({ measurement: response.data[0].measurement })
+                    this.setState({ currentPollutantName: response.data[0].sensor })
+                    for (var i = 0; i < response.data.length; i++) {
+                        data.push([response.data[i].timestamp, response.data[i].value])
+                    }
+                    this.setState({ pm25Data: data })
+                } else {
+                    this.setState({ pm25Data: [] })
+                }
+                this.setState({ isEnable: true })
 
-        })
-        this.setState({ isEnable: true })
+            })
+            else
+            if(this.state.aggregationType.value === "avg")
+            AirQualityService.retrieveHomePollutionAvgDailyValues(date,sensor,latitude,longitude).then(response => {
+                console.log(response)
+                if (response.data.length) {
+                    var data = []
+                    this.setState({ measurement: response.data[0].measurement })
+                    this.setState({ currentPollutantName: response.data[0].sensor })
+                    for (var i = 0; i < response.data.length; i++) {
+                        data.push([response.data[i].timestamp, response.data[i].value])
+                    }
+                    this.setState({ pm25Data: data })
+                } else {
+                    this.setState({ pm25Data: [] })
+                }
+                this.setState({ isEnable: true })
+
+            })
+            else
+            if(this.state.aggregationType.value === "min")
+            AirQualityService.retrieveHomePollutionMinDailyValues(date,sensor,latitude,longitude).then(response => {
+                console.log(response)
+                if (response.data.length) {
+                    var data = []
+                    this.setState({ measurement: response.data[0].measurement })
+                    this.setState({ currentPollutantName: response.data[0].sensor })
+                    for (var i = 0; i < response.data.length; i++) {
+                        data.push([response.data[i].timestamp, response.data[i].value])
+                    }
+                    this.setState({ pm25Data: data })
+                } else {
+                    this.setState({ pm25Data: [] })
+                }
+                this.setState({ isEnable: true })
+
+            })
+        // this.setState({ isEnable: true })
     }
 
     tooglePollutantSelectorWindow() {
@@ -126,6 +192,12 @@ class DashboardComponent extends Component {
                         value={this.state.pollutant}
                         onChange={this.onChangePollutant}
                         options={options}
+                    />
+                    <p>Aggregation Type</p>
+                    <Select
+                        value={this.state.aggregationType}
+                        onChange={this.onChangeAggregationType}
+                        options={aggregationType}
                     />
                     <div className="btn-center">
                         {this.state.isEnable && <button className="btn-controlPanel" onClick={this.applyChanges}>Apply</button>}

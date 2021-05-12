@@ -150,8 +150,6 @@ class AirqualityComponent extends Component {
     }
 
     specificIndex(value, type) {
-        console.log(value)
-        console.log(type)
         if (value >= 0) {
             if (type === "pm25") {
                 return this.processSpecificIndex(PM25SpecificIndex, value, "specificIndexPositionPM25")
@@ -202,7 +200,6 @@ class AirqualityComponent extends Component {
     }
 
     async componentDidUpdate() {
-        var existPM10, existPM25, existO3, existSO2, existNO2 = false;
         if (this.props.latitude !== this.state.latitude && this.props.longitude !== this.state.longitude) {
             this.setState({
                 latitude: this.props.latitude,
@@ -210,63 +207,7 @@ class AirqualityComponent extends Component {
             })
             await AirQualityService.retrievePollutionValuesForAirqualityDashboard('2021-04-19, 18:45', this.props.latitude, this.props.longitude).then(response => {
                 console.log(response.data)
-                // this.processDataForAirqualityDashboard(response.data)
-                for (var i = 0; i < response.data.length; i++)
-                    if (response.data[i].sensor === "pm10")
-                        existPM10 = false;
-                    else
-                        if (response.data[i].sensor === "pm25")
-                            existPM25 = false;
-                        else
-                            if (response.data[i].sensor === "o3")
-                                existO3 = false;
-                            else
-                                if (response.data[i].sensor === "so2")
-                                    existSO2 = false;
-                                else
-                                    if (response.data[i].sensor === "no2")
-                                        existNO2 = false;
-
-                if (existPM10)
-                    console.log("Nu Pm10");
-                else
-                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "pm10", this.props.latitude, this.props.longitude).then(response => {
-                        console.log(response.data)
-                        this.processDataForAirqualityDashboard(response.data)
-                        this.healthEffect(1)
-                    })
-                if (existPM25)
-                    console.log("Nu pm25")
-                else
-                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "pm25", this.props.latitude, this.props.longitude).then(response => {
-                        console.log(response.data)
-                        this.processDataForAirqualityDashboard(response.data)
-                        this.healthEffect(1)
-                    })
-                if (existO3)
-                    console.log("Nu o3")
-                else
-                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "o3", this.props.latitude, this.props.longitude).then(response => {
-                        console.log(response.data)
-                        this.processDataForAirqualityDashboard(response.data)
-                        this.healthEffect(1)
-                    })
-                if (existSO2)
-                    console.log("Nu so2")
-                else
-                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "so2", this.props.latitude, this.props.longitude).then(response => {
-                        console.log(response.data)
-                        this.processDataForAirqualityDashboard(response.data)
-                        this.healthEffect(1)
-                    })
-                if (existNO2)
-                    console.log("Nu no2")
-                else
-                    AirQualityService.retrieveHomePollutionValues('2021-04-19, 18:45', "no2", this.props.latitude, this.props.longitude).then(response => {
-                        // console.log(response.data)
-                        this.processDataForAirqualityDashboard(response.data)
-                        this.healthEffect(1)
-                    })
+                this.processDataForAirqualityDashboard(response.data)
             })
         }
 
