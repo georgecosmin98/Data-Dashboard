@@ -454,7 +454,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
         List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime()).collect(Collectors.toList());
         System.out.println(sensorData.size());
-        return InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, sensorData);
+        return InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
     }
 
     public List<BrasovDevDto> findByCoordinatesTimestampAndInterpolateAllValues(Date date, double latitude, double longitude) throws IOException {
@@ -478,12 +478,100 @@ public class BrasovDevServiceImpl implements BrasovDevService {
             if (sensorData.get(i).getSensor().equals("no2"))
                 no2Data.add(sensorData.get(i));
         }
-        procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, pm25Data));
-        procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, pm10Data));
-        procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, o3Data));
-        procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, so2Data));
-        procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, no2Data));
+        if (!pm25Data.isEmpty())
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, pm25Data));
+        if (!pm10Data.isEmpty())
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, pm10Data));
+        if (!o3Data.isEmpty())
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, o3Data));
+        if (!so2Data.isEmpty())
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, so2Data));
+        if (!no2Data.isEmpty())
+            procesedList.addAll(InverseDistanceWeightingUtil.calculator(brasovDevInterpolationModels, no2Data));
         return procesedList;
 
+    }
+
+    public List<BrasovDevDto> findByCoordinatesTimestampAndReturnDailyAverageValues(Date date, String sensor, double latitude, double longitude) throws IOException {
+        List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime()).collect(Collectors.toList());
+        List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
+        List<BrasovDevDto> processedList = new ArrayList<>();
+        double averageValue = 0;
+        int index = 0;
+        for (int i = 0; i < interpolatedValues.size() - 1; i++) {
+            long currentTime = (interpolatedValues.get(i).getTimestamp() / 1000) % (3600 * 24);
+            currentTime = interpolatedValues.get(i).getTimestamp() - currentTime * 1000;
+            long nextTime = (interpolatedValues.get(i + 1).getTimestamp() / 1000) % (3600 * 24);
+            nextTime = interpolatedValues.get(i + 1).getTimestamp() - nextTime * 1000;
+
+            if (currentTime == nextTime) {
+                averageValue = averageValue + interpolatedValues.get(i).getValue();
+                index++;
+            } else {
+                BrasovDevDto brasovDevDto = interpolatedValues.get(i);
+                brasovDevDto.setTimestamp(currentTime);
+                brasovDevDto.setValue((int) Math.round(averageValue / index));
+                processedList.add(brasovDevDto);
+                averageValue = 0;
+                index = 0;
+            }
+
+        }
+        return processedList;
+    }
+
+    public List<BrasovDevDto> findByCoordinatesTimestampAndReturnDailyMaxValues(Date date, String sensor, double latitude, double longitude) throws IOException {
+        List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime()).collect(Collectors.toList());
+        List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
+        List<BrasovDevDto> processedList = new ArrayList<>();
+        int maxValues = 0;
+        for (int i = 0; i < interpolatedValues.size() - 1; i++) {
+            long currentTime = (interpolatedValues.get(i).getTimestamp() / 1000) % (3600 * 24);
+            currentTime = interpolatedValues.get(i).getTimestamp() - currentTime * 1000;
+            long nextTime = (interpolatedValues.get(i + 1).getTimestamp() / 1000) % (3600 * 24);
+            nextTime = interpolatedValues.get(i + 1).getTimestamp() - nextTime * 1000;
+
+            if (currentTime == nextTime) {
+                if (maxValues < interpolatedValues.get(i).getValue())
+                    maxValues = interpolatedValues.get(i).getValue();
+            } else {
+                BrasovDevDto brasovDevDto = interpolatedValues.get(i);
+                brasovDevDto.setTimestamp(currentTime);
+                brasovDevDto.setValue(maxValues);
+                processedList.add(brasovDevDto);
+                maxValues = 0;
+            }
+
+        }
+        return processedList;
+    }
+
+    public List<BrasovDevDto> findByCoordinatesTimestampAndReturnDailyMinValues(Date date, String sensor, double latitude, double longitude) throws IOException {
+        List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime()).collect(Collectors.toList());
+        List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
+        List<BrasovDevDto> processedList = new ArrayList<>();
+        int minValues = 0;
+        for (int i = 0; i < interpolatedValues.size() - 1; i++) {
+            long currentTime = (interpolatedValues.get(i).getTimestamp() / 1000) % (3600 * 24);
+            currentTime = interpolatedValues.get(i).getTimestamp() - currentTime * 1000;
+            long nextTime = (interpolatedValues.get(i + 1).getTimestamp() / 1000) % (3600 * 24);
+            nextTime = interpolatedValues.get(i + 1).getTimestamp() - nextTime * 1000;
+
+            if (currentTime == nextTime) {
+                if (minValues < interpolatedValues.get(i).getValue())
+                    minValues = interpolatedValues.get(i).getValue();
+            } else {
+                BrasovDevDto brasovDevDto = interpolatedValues.get(i);
+                brasovDevDto.setTimestamp(currentTime);
+                brasovDevDto.setValue(minValues);
+                processedList.add(brasovDevDto);
+                minValues = 0;
+            }
+
+        }
+        return processedList;
     }
 }
