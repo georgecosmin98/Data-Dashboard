@@ -84,8 +84,8 @@ class GoogleHeatMapComponent extends Component {
         const userLocationsData = {
             positions: this.state.heatmapPoints,
             options: {
-                radius: 7,
-                opacity: 0.4
+                radius: 10,
+                opacity: 0.7
             }
         }
 
