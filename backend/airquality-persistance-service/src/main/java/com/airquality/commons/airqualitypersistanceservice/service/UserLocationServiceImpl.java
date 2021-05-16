@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserLocationServiceImpl {
@@ -27,7 +28,7 @@ public class UserLocationServiceImpl {
         return userLocationRepository.findUserLocationDtoByTimestampBetween(fromDate.getTime(), toDate.getTime());
     }
 
-    public List<UserLocationDto> findUserLocationDtoByTimestampAfterAndUsername(Date data, String username){
-        return userLocationRepository.findUserLocationDtoByTimestampAfterAndUsername(data.getTime(),username);
+    public List<UserLocationDto> findDailyUserLocationDtoByTimestampAfterAndUsername(Date data, String username) {
+        return userLocationRepository.findUserLocationDtoByTimestampBetweenAndUsername(data.getTime(), data.getTime() + 86400000, username).collect(Collectors.toList());
     }
 }

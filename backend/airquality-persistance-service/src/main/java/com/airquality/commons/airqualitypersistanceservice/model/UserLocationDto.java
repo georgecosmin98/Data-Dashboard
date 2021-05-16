@@ -33,6 +33,6 @@ public class UserLocationDto {
     private double longitude;
 
     @Field(name = "timestamp", format = DateFormat.epoch_millis)
-    private Date timestamp;
+    private long timestamp;
 
 }

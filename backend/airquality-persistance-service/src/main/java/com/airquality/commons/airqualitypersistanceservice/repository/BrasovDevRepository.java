@@ -22,5 +22,9 @@ public interface BrasovDevRepository extends ElasticsearchRepository<BrasovDevDt
     Stream<BrasovDevDto> findByTimestampAfter(Long date);
     Stream<BrasovDevDto> findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(String name,double lat1,double lat2, double long1,double long2,Long date);
     Stream<BrasovDevDto> findAllByLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(double lat1,double lat2, double long1,double long2,Long date);
+    Stream<BrasovDevDto> findAllByLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(double lat1,double lat2, double long1,double long2,Long firstDate, Long secondDate);
+    Stream<BrasovDevDto> findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterAndValueGreaterThanOrderByTimestampAsc(String name,double lat1,double lat2, double long1,double long2,Long date,int value);
+    Stream<BrasovDevDto> findBySensorMatchesAndTimestampAfter(String name,Long date);
+    Stream<BrasovDevDto> findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(String sensor,double lat1,double lat2, double long1,double long2,Long firstDate, Long secondDate);
 
 }

@@ -68,12 +68,24 @@ public class BrasovDevController {
 
     @GetMapping("/testArea")
     public List<BrasovDevDto> test() throws IOException {
-//       return brasovDevServiceImpl.pollutionDataBasedOnLocation(new Date("2021/04/04"), "PM10");
-        double latitude = 45.6568;
-        double longitude = 25.5917;
-        List<BrasovDevInterpolationModel> brasovDevInterpolationModels = brasovDevServiceImpl.findUniqueSensor("pm10",new Date("2021/05/10"),latitude,longitude, 1.5);
-        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc("pm10",longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, new Date("2021/05/10").getTime()).collect(Collectors.toList());
-        return InverseDistanceWeightingUtil.calculatorForTest(brasovDevInterpolationModels,sensorData);
+//       return brasovDevServiceImpl.pollutionDataBasedOnLocation(new Date("2021/04/24"), "PM10");
+        double latitude = 45.651464;
+        double longitude = 25.615426;
+//        List<BrasovDevInterpolationModel> brasovDevInterpolationModels = brasovDevServiceImpl.findUniqueSensor("o3",new Date("2021/05/10"),latitude,longitude, 1.5);
+//        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc("o3",longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, new Date("2021/05/10").getTime()).collect(Collectors.toList());
+//        return InverseDistanceWeightingUtil.calculatorForTest(brasovDevInterpolationModels,sensorData);
+        return brasovDevServiceImpl.findUserLocationAndBrasovDev(latitude,longitude,"pm10",new Date("2021/04/27"));
+
+//          List<BrasovDevDto> brasovDevDtos = brasovDevRepository.findBySensorMatchesAndTimestampAfter("pm10,pm25",1620598378144L).collect(Collectors.toList());
+//        System.out.println(brasovDevDtos.size());
+//          return brasovDevDtos;
+    }
+
+    @GetMapping("/test/{date}/{sensor}/{latitude}/{longitude}")
+    public List<BrasovDevDto> retrieveUserPollutionData(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                                                                                 @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+        return brasovDevServiceImpl.findUserLocationAndBrasovDev(latitude,longitude,sensor,date);
+
     }
 
     @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
