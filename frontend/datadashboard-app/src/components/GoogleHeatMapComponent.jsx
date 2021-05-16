@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import GoogleMapReact from 'google-map-react';
 import UserLocationService from '../api/UserLocationService'
-import DatePicker from 'react-datepicker'
 import Moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -38,6 +37,12 @@ class GoogleHeatMapComponent extends Component {
 
     componentDidMount() {
         this.updateUserLocationsHeatmapValues("2021-01-01, 00:00")
+    }
+
+    componentDidUpdate(){
+        if(this.state.heatmapPoints !== this.props.heatmapPoints)
+            this.setState({heatmapPoints: this.props.heatmapPoints})
+        
     }
 
     updateUserLocationsHeatmapValues(afterDate) {
@@ -92,18 +97,6 @@ class GoogleHeatMapComponent extends Component {
 
         return (
             <div className="heatMap">
-                {/* <DatePicker popperClassName="datepicker-userslocations"
-                    className="datepicker-userslocations"
-                    selected={this.state.value}
-                    onChange={this.onChange}
-                    on
-                    placeholderText="Start Date"
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    timeIntervals={15}
-                    timeCaption="time"
-                    dateFormat="yyyy MM dd h:mm aa"
-                /> */}
                 <GoogleMapReact
                     ref={(el) => this._googleMap = el}
                     bootstrapURLKeys={apiKey}

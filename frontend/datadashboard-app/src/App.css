@@ -480,7 +480,7 @@ body {
   margin-left: 5%;
 }
 
-.dashboard .datepicker-userslocations,
+.dashboard .datepicker-withoutTime,
 .dashboard .react-datepicker-wrapper {
   position: absolute;
   z-index: 1;
@@ -622,7 +622,7 @@ body {
   font-weight: 600;
 }
 
-.pollutantSelectorWindow .datepicker-userslocations,
+.pollutantSelectorWindow .datepicker-homelocations,
 .pollutantSelectorWindow .react-datepicker-wrapper {
   margin-bottom: 10px;
   right: 25px;
@@ -637,12 +637,43 @@ body {
   margin: 0;
 }
 
+
+.pollutantSelectorWindow .react-datepicker {
+  z-index: 15;
+  right: 0px;
+  top: 0px;
+  width: 328px;
+  position: absolute;
+  margin: 0;
+}
+
+
+.datepicker-withoutTime .react-datepicker {
+  z-index: 15;
+  right: 0px;
+  top: 0px;
+  width: 242px;
+  position: absolute;
+  margin: 0;
+}
+
 .pollutantSelectorWindow .react-datepicker-popper {
   margin: 0 !important;
   ;
 }
 
-.pollutantSelectorWindow .datepicker-userslocations {
+.pollutantSelectorWindow .datepicker-homelocations {
+  border-radius: 4px;
+  height: 38px;
+  width: 190px;
+  border-style: solid;
+  border-color: #ddd;
+  border-width: 1px;
+  line-height: 24px;
+  padding-left: 10px;
+}
+
+.pollutantSelectorWindow .datepicker-withoutTime {
   border-radius: 4px;
   height: 38px;
   width: 190px;

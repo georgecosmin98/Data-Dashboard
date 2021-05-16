@@ -21,5 +21,9 @@ class AirQualityService {
   retrievePollutionValuesForAirqualityDashboard(date, latitude, longitude) {
     return axios.get(`${process.env.REACT_APP_BASE_URL}/brasovdev/findAllAfter/${date}/${latitude}/${longitude}`)
   }
+
+  retrievePollutionForUserLocations(sensor,date,latitude,longitude) {
+    return axios.get(`${process.env.REACT_APP_BASE_URL}/brasovdev/test/${Moment(date).format('YYYY-MM-DD')}/${sensor}/${latitude}/${longitude}`);
+  }
 }
 export default new AirQualityService()
