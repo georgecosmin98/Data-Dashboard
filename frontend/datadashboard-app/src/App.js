@@ -19,7 +19,7 @@ import AuthenticatedRoute from './components/AuthenticatedRoute'
 import SettingsComponent from './components/SettingsComponent'
 import HomeComponent from './components/HomeComponent'
 import LocationDataComponent from './components/LocationDataComponent'
-
+import InfoComponent from './components/InfoComponent'
 
 class App extends Component {
 
@@ -43,6 +43,7 @@ class App extends Component {
                   <Route path="/forgotpassword" exact component={ForgotPasswordComponent} />
                   <Route path="/resetpassword/:token" exact component={ResetPasswordComponent} />
                   <Route path="/signup" exact component={SignupComponent} />
+                  <Route path="/info" exact component={InfoComponent} />
                   <AuthenticatedRoute path="/settings/:category" component={SettingsComponent}></AuthenticatedRoute>
                   <AuthenticatedRoute path="/home" component={HomeComponent}></AuthenticatedRoute>
                   <AuthenticatedRoute path="/location" component={LocationDataComponent}></AuthenticatedRoute>

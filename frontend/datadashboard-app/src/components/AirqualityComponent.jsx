@@ -207,7 +207,7 @@ class AirqualityComponent extends Component {
                 latitude: this.props.latitude,
                 longitude: this.props.longitude
             })
-            await AirQualityService.retrievePollutionValuesForAirqualityDashboard('2021-04-19, 18:45', this.props.latitude, this.props.longitude).then(response => {
+            await AirQualityService.retrievePollutionValuesForAirqualityDashboard(new Date().getTime(), this.props.latitude, this.props.longitude).then(response => {
                 console.log(response.data)
                 this.processDataForAirqualityDashboard(response.data)
             })
