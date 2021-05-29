@@ -980,3 +980,27 @@ body {
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
+
+.col-md-6{
+  text-align:center;
+}
+
+.recommandation-title {
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0!important;
+  padding:0;
+  top:62px;
+  height:30px;
+  width:90%!important;
+  margin-left:50px!important;
+}
+
+.recommandation-window{
+  position: relative;
+  float: left;
+  top:50px;
+  width:50px;
+  height:45px;
+}

@@ -229,7 +229,7 @@ class DashboardComponent extends Component {
                         dateFormat="yyyy MM dd h:mm aa"
                     />
                     </div> */}
-                      <DatePicker popperClassName="datepicker-withoutTime"
+                    <DatePicker popperClassName="datepicker-withoutTime"
                         className="datepicker-withoutTime"
                         selected={this.state.date}
                         onChange={this.onChangeData}
@@ -260,6 +260,9 @@ class DashboardComponent extends Component {
                     </div>
                 </div>}
                 <AirqualityComponent address={this.state.address} latitude={this.state.latitude} longitude={this.state.longitude}></AirqualityComponent>
+               
+
+                <h1>Istoric</h1>
                 {isLoggedIn && <>
                     <LineChartComponent data={this.state.data} pollutantName={this.state.currentPollutantName}>
                     </LineChartComponent></>}

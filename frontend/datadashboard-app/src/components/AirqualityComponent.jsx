@@ -7,7 +7,16 @@ import AirQualityService from '../api/AirQualityService';
 import { CgArrowRight } from "react-icons/cg";
 import { GiHeartOrgan } from "react-icons/gi";
 import SkipNextIcon from '@material-ui/icons/SkipNext';
-import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex } from '../Constants';
+import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex, recommandation } from '../Constants';
+import openWindow from '../img/openWindow.png';
+import closeWindow from '../img/closeWindow.png';
+import greenOutdoor from '../img/greenOutdoor.png';
+import yellowOutdoor from '../img/yellowOutdoor.png';
+import redOutdoor from '../img/redOutdoor.png';
+import redLineOutdoor from '../img/redLineOutdoor.png';
+import sensitiveMask from '../img/sensitiveMask.png'
+import allPersonMask from '../img/allPersonMask.png'
+import airPurifier from '../img/airPurifier.png'
 
 class AirqualityComponent extends Component {
     constructor(props) {
@@ -50,6 +59,10 @@ class AirqualityComponent extends Component {
         this.processAddress = this.processAddress.bind(this);
         this.processSpecificIndex = this.processSpecificIndex.bind(this);
         this.changePollutants = this.changePollutants.bind(this);
+        this.recommandationWindow = this.recommandationWindow.bind(this);
+        this.recommandationPhysicalActivity = this.recommandationPhysicalActivity.bind(this);
+        this.recommandationMask = this.recommandationMask.bind(this);
+        this.recommandationAirPurifier = this.recommandationAirPurifier.bind(this);
     }
 
     healthEffect(pm10, pm25, o3, so2, no2) {
@@ -216,8 +229,6 @@ class AirqualityComponent extends Component {
     }
 
     processDataForAirqualityDashboard(data) {
-
-        console.log(data)
         var currentValues = {
             pm25: '',
             pm10: '',
@@ -278,9 +289,50 @@ class AirqualityComponent extends Component {
     }
 
     changePollutants() {
-        this.setState({no2On: !this.state.no2On});
+        this.setState({ no2On: !this.state.no2On });
     }
 
+    recommandationWindow() {
+        if (this.state.specificIndex === 1)
+            return <div className = "center"><img src={openWindow} className="recommandation-window" /> <p className="recommandation-title">{recommandation[0].windows}</p></div>
+        else if (this.state.specificIndex > 1 && this.state.specificIndex < 7)
+            return <><img src={closeWindow} className="recommandation-window" /> <p className="recommandation-title">{recommandation[1].windows}</p></>
+
+    }
+
+    recommandationPhysicalActivity() {
+        if (this.state.specificIndex === 1)
+            return <><img src={greenOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[0].physicalActivity}</h1></>
+        else if (this.state.specificIndex === 2)
+            return <><img src={yellowOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[1].physicalActivity}</h1></>
+        else if (this.state.specificIndex === 3)
+            return <><img src={redOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[2].physicalActivity}</h1></>
+        else if (this.state.specificIndex === 4)
+            return <><img src={redOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[3].physicalActivity}</h1></>
+        else if (this.state.specificIndex === 5)
+            return <><img src={redLineOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[4].physicalActivity}</h1></>
+        else if (this.state.specificIndex === 6)
+            return <><img src={redLineOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[5].physicalActivity}</h1></>
+
+    }
+
+    recommandationMask() {
+        if (this.state.specificIndex === 3)
+            return <><img src={sensitiveMask} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[2].mask}</h1></>
+        else if (this.state.specificIndex > 3 && this.state.specificIndex < 7)
+            return <><img src={allPersonMask} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[3].mask}</h1></>
+    }
+
+    recommandationAirPurifier() {
+        if (this.state.specificIndex === 3)
+            return <><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[2].airPurifier}</h1></>
+        else if (this.state.specificIndex === 4)
+            return <><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[3].airPurifier}</h1></>
+        else if (this.state.specificIndex === 5)
+            return <><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[4].airPurifier}</h1></>
+        else if (this.state.specificIndex === 6)
+            return <><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[5].airPurifier}</h1></>
+    }
     render() {
         return (
             <><div className="row">
@@ -326,11 +378,37 @@ class AirqualityComponent extends Component {
                             {this.state.no2On && <h1 className="airquality-dashboard-pollutants-name">NO2</h1>}<SkipNextIcon className="settings-airquality" onClick={this.changePollutants}></SkipNextIcon>
                             {this.state.no2On && this.state.currentValues.no2 && <p className="airquality-dashboard-value"> {this.state.currentValues.no2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.no2 && this.trendingLine(this.state.currentValues.no2, this.state.previousValues.no2)}</p>}
                             {this.state.no2On && this.state.currentValues.no2 && this.specificIndex(this.state.currentValues.no2, "no2")}
-                       
+
                         </div>
                     </div>
                 </div>
             </div>
+                {this.state.specificIndex && <h1>Recomandări</h1>}
+                {
+                    this.state.specificIndex && <div className="row">
+                        <div className="col-md-6">
+                            <div className="nestead-row">
+                                {this.state.specificIndex && <div className="col-md-12">
+                                    {this.recommandationWindow()}
+                                </div>}
+                                {this.state.specificIndex > 2 && <div className="col-md-12">
+                                    {/* <img src={redLineOutdoor} className = "recommandation-window" /> <h1 className="recommandation-title">PM25</h1> */}
+                                    {this.recommandationMask()}
+                                </div>}
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="nestead-row">
+                                {this.state.specificIndex && <div className="col-md-12">
+                                    {this.recommandationPhysicalActivity()}
+                                </div>}
+                                {this.state.specificIndex > 2 && <div className="col-md-12">
+                                    {this.recommandationAirPurifier()};
+                            </div>}
+                            </div>
+                        </div>
+                    </div>
+                }
             </>
         )
     }

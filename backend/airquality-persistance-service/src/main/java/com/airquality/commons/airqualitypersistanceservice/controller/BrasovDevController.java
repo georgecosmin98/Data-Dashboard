@@ -39,9 +39,9 @@ public class BrasovDevController {
     }
 
     @GetMapping("/findAllAfter/{first}/{latitude}/{longitude}")
-    public List<BrasovDevDto> findAllAfterDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd, HH:mm") Date first, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+    public List<BrasovDevDto> findAllAfterDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date first, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
 //        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocationAndData(latitude, longitude, first);
-        return brasovDevServiceImpl.findByCoordinatesTimestampAndInterpolateAllValues(new Date("2021/05/10"),latitude,longitude);
+        return brasovDevServiceImpl.findByCoordinatesTimestampAndInterpolateAllValues(first,latitude,longitude);
 
     }
 
