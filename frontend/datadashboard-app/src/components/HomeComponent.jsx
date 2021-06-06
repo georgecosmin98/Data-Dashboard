@@ -260,8 +260,6 @@ class DashboardComponent extends Component {
                     </div>
                 </div>}
                 <AirqualityComponent address={this.state.address} latitude={this.state.latitude} longitude={this.state.longitude}></AirqualityComponent>
-               
-
                 <h1>Istoric</h1>
                 {isLoggedIn && <>
                     <LineChartComponent data={this.state.data} pollutantName={this.state.currentPollutantName}>

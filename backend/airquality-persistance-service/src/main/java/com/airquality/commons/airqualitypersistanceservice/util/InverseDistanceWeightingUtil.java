@@ -67,7 +67,7 @@ public class InverseDistanceWeightingUtil {
             }
             System.out.println(pasi);
             if (dataFromOneSensor)
-                return sensorData.subList(0,sensorData.size()-2);
+                return sensorData.subList(0, sensorData.size() - 2);
             else
                 return processedList;
         } else
@@ -144,7 +144,8 @@ public class InverseDistanceWeightingUtil {
             }
             System.out.println(pasi);
             if (dataFromOneSensor)
-                return sensorData.subList(0, sensorData.size() - 2);
+//                return sensorData.subList(0, sensorData.size() - 2);
+                return sensorData;
             else
                 return processedList;
         } else
@@ -185,7 +186,7 @@ public class InverseDistanceWeightingUtil {
 //                                longitudeDistance0 = brasovDevInterpolationModel.get(j).getLocationLong();
 //                            }
                             if (brasovDevInterpolationModel.get(j).getLocationLat() == sensorData.get(i).getLocationLat() &&
-                                    brasovDevInterpolationModel.get(j).getLocationLong() == sensorData.get(i).getLocationLong() && brasovDevInterpolationModel.get(j).getMinDistance()!=0) {
+                                    brasovDevInterpolationModel.get(j).getLocationLong() == sensorData.get(i).getLocationLong() && brasovDevInterpolationModel.get(j).getMinDistance() != 0) {
                                 weight = weight + (1 / brasovDevInterpolationModel.get(j).getMinDistance());
                                 value = value + (sensorData.get(i).getValue() * (1 / brasovDevInterpolationModel.get(j).getMinDistance()));
                                 break;
