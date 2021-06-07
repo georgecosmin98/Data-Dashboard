@@ -74,11 +74,13 @@ public class BrasovDevController {
 //        List<BrasovDevInterpolationModel> brasovDevInterpolationModels = brasovDevServiceImpl.findUniqueSensor("o3",new Date("2021/05/10"),latitude,longitude, 1.5);
 //        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc("o3",longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, new Date("2021/05/10").getTime()).collect(Collectors.toList());
 //        return InverseDistanceWeightingUtil.calculatorForTest(brasovDevInterpolationModels,sensorData);
-        return brasovDevServiceImpl.findUserLocationAndBrasovDev(latitude,longitude,"pm10",new Date("2021/04/27"));
+//        return brasovDevServiceImpl.findUserLocationAndBrasovDev(latitude,longitude,"pm10",new Date("2021/04/27"));
 
 //          List<BrasovDevDto> brasovDevDtos = brasovDevRepository.findBySensorMatchesAndTimestampAfter("pm10,pm25",1620598378144L).collect(Collectors.toList());
 //        System.out.println(brasovDevDtos.size());
 //          return brasovDevDtos;
+
+        return brasovDevServiceImpl.findUserLocationAndBrasovDevAndInterpolateValues(latitude,longitude,"pm25",new Date("2021/04/28"));
     }
 
     @GetMapping("/test/{date}/{sensor}/{latitude}/{longitude}")

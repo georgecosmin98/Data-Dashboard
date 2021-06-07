@@ -578,6 +578,35 @@ public class BrasovDevServiceImpl implements BrasovDevService {
     }
 
 
+    public List<BrasovDevDto> findUserLocationAndBrasovDevAndInterpolateValues(double latitude, double longitude, String sensor, Date data) throws IOException {
+        double minLat = 255;
+        double maxLat = 0;
+        double minLong = 255;
+        double maxLong = 0;
+        List<UserLocationDto> userLocation = userLocationRepository.findUserLocationDtoByTimestampBetweenOrderByTimestampAsc(data.getTime(), data.getTime() + 86400000);
+        for (int i = 0; i < userLocation.size(); i++) {
+            if (minLat > userLocation.get(i).getLatitude())
+                minLat = userLocation.get(i).getLatitude();
+            if (maxLat < userLocation.get(i).getLatitude())
+                maxLat = userLocation.get(i).getLatitude();
+            if (minLong > userLocation.get(i).getLongitude())
+                minLong = userLocation.get(i).getLongitude();
+            if (maxLong < userLocation.get(i).getLongitude())
+                maxLong = userLocation.get(i).getLongitude();
+        }
+        List<BrasovDevDto> processedList = new ArrayList<>();
+        if(userLocation.size() == 0)
+            return processedList;
+        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(sensor,minLong - 0.015, maxLong + 0.015, minLat - 0.015, maxLat + 0.015, userLocation.get(0).getTimestamp()-3600000, userLocation.get(userLocation.size()-1).getTimestamp()+3600000).collect(Collectors.toList());
+//        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc("pm10,pm25,o3,so2,no2",minLong-0.015, maxLong+0.015, minLat-0.015, maxLat+0.015, userLocation.get(0).getTimestamp() , userLocation.get(userLocation.size()-1).getTimestamp()).collect(Collectors.toList());
+        int pasi = 0;
+        int index = 0;
+        double minDistance = Integer.MAX_VALUE;
+
+//        return processedList;
+        return InverseDistanceWeightingUtil.calculatorForUserLocation(pollutionData,userLocation);
+    }
+
     public List<BrasovDevDto> findUserLocationAndBrasovDev(double latitude, double longitude, String sensor, Date data) throws IOException {
         double minLat = 255;
         double maxLat = 0;
@@ -597,7 +626,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevDto> processedList = new ArrayList<>();
         if(userLocation.size() == 0)
             return processedList;
-        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllByLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(minLong - 0.015, maxLong + 0.015, minLat - 0.015, maxLat + 0.015, userLocation.get(0).getTimestamp()-3600000, userLocation.get(userLocation.size()-1).getTimestamp()+3600000).collect(Collectors.toList());
+        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(sensor,minLong - 0.015, maxLong + 0.015, minLat - 0.015, maxLat + 0.015, userLocation.get(0).getTimestamp()-3600000, userLocation.get(userLocation.size()-1).getTimestamp()+3600000).collect(Collectors.toList());
 //        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc("pm10,pm25,o3,so2,no2",minLong-0.015, maxLong+0.015, minLat-0.015, maxLat+0.015, userLocation.get(0).getTimestamp() , userLocation.get(userLocation.size()-1).getTimestamp()).collect(Collectors.toList());
         int pasi = 0;
         int index = 0;
