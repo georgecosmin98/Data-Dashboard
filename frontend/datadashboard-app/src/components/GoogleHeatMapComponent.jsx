@@ -36,7 +36,7 @@ class GoogleHeatMapComponent extends Component {
     }
 
     componentDidMount() {
-        this.updateUserLocationsHeatmapValues("2021-01-01, 00:00")
+        this.updateUserLocationsHeatmapValues(new Date().getTime() - ((new Date().getTime() / 1000) % 3600) * 1000)
     }
 
     componentDidUpdate(){

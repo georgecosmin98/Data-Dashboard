@@ -41,7 +41,7 @@ class LocationDataComponent extends Component {
             }
             ,
             pollutantSelectorWindowOn: false,
-            date: new Date().getTime() - ((new Date().getTime() / 1000) % 3600) * 1000 - 604800000,    //7 zile in urma
+            date: new Date().getTime() - ((new Date().getTime() / 1000) % 3600) * 1000,    //7 zile in urma
             currentPollutantName: 'PM25',
             isEnable: true,
             latitude: '',
@@ -56,6 +56,7 @@ class LocationDataComponent extends Component {
     }
 
     async componentDidMount() {
+        console.log(this.state.date)
         await UserService.retrieveUserGeneralInfo().then(response => {
             this.setState({ address: response.data.address })
         })
@@ -66,7 +67,8 @@ class LocationDataComponent extends Component {
                 this.setState({ longitude: response.data.features[0].center[0] })
             }
         })
-        await this.retrieveUserLocationPollutionData(new Date((new Date().getTime() - 604800000)).toString(), this.state.pollutant.value, this.state.address);
+        await this.retrieveUserLocationPollutionData(new Date((new Date().getTime())).toString(), this.state.pollutant.value, this.state.address);
+        await this.retrieveLocationData();
     }
 
     tooglePollutantSelectorWindow() {
@@ -87,6 +89,7 @@ class LocationDataComponent extends Component {
     }
 
     retrieveLocationData() {
+        console.log(this.state.date)
         UserLocationService.retriveUserLocationAfter(this.state.date)
             .then(
                 response => {

@@ -338,16 +338,16 @@ recommandationPhysicalActivity() {
             <><div className="row">
                 <div className="col-sm-4">
                     <div className="airquality-dashboard">
-                        <h1 className="airquality-dashboard-header"> Brasov</h1>
+                        <h1 className="airquality-dashboard-header"> Brașov</h1>
                         <p className="airquality-dashboard-street"><span className="text-primary">{this.props.address && this.processAddress()}</span></p>
                         <div className="airquality-separator">
                         </div>
-                        <p className="airquality-dashboard-text"> Specific Index </p>
+                        <p className="airquality-dashboard-text"> Index Specific </p>
                         <p className="airquality-dashboard-value"> {this.state.specificIndex} </p>
                         <p className="airquality-status" style={{ color: this.state.color }}>{this.state.qualifying}</p>
                         <div className="airquality-separator">
                         </div>
-                        <p className="airquality-dashboard-text"> Health Effect</p>
+                        <p className="airquality-dashboard-text"> Efecte asupra sănătății</p>
                         {this.healthEffect(this.state.currentValues.pm10, this.state.currentValues.pm25, this.state.currentValues.o3, this.state.currentValues.so2, this.state.currentValues.no2)}
 
                     </div>
