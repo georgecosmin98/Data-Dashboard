@@ -86,29 +86,13 @@ public class BrasovDevController {
     @GetMapping("/test/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> retrieveUserPollutionData(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                                                                  @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-        return brasovDevServiceImpl.findUserLocationAndBrasovDev(latitude,longitude,sensor,date);
+        return brasovDevServiceImpl.findUserLocationAndBrasovDevAndInterpolateValues(latitude,longitude,sensor,date);
 
     }
 
     @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> findBySensorNameCoordinatesTimestampAndInterpolate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                                                                  @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-//       return brasovDevServiceImpl.pollutionDataBasedOnLocation(new Date("2021/04/04"), "PM10");
-//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.6568,25.5917,1.228));
-//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.642198,25.588532,0.414));
-//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.645914,25.602642,1.029));
-//        brasovDevInterpolationModels.add(new BrasovDevInterpolationModel("pm10",1,45.646976,25.595224,0.469));
-
-//        List<BrasovDevDto> sensorData = new ArrayList<>();
-//        sensorData.add(new BrasovDevDto("","","",13,45.6568,25.5917,251L,""));
-//        sensorData.add(new BrasovDevDto("","","",9,45.642198,25.588532,252L,""));
-//        sensorData.add(new BrasovDevDto("","","",11,45.645914,25.602642,253L,""));
-//        sensorData.add(new BrasovDevDto("","","",9,45.646976,25.595224,254L,""));
-//
-//        sensorData.add(new BrasovDevDto("","","",15,45.6568,25.5917,3251L,""));
-//        sensorData.add(new BrasovDevDto("","","",2,45.642198,25.588532,3252L,""));
-//        sensorData.add(new BrasovDevDto("","","",1,45.645914,25.602642,3253L,""));
-//        sensorData.add(new BrasovDevDto("","","",6,45.646976,25.595224,3254L,""));
           return brasovDevServiceImpl.findBySensorNameCoordinatesTimestampAndInterpolate(date,sensor,latitude,longitude);
 //        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyAverageValues(date,sensor,latitude,longitude);
     }

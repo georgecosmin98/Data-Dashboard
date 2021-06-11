@@ -9,7 +9,6 @@ import com.airquality.commons.airqualitypersistanceservice.service.api.BrasovDev
 import com.airquality.commons.airqualitypersistanceservice.util.HaversinUtil;
 import com.airquality.commons.airqualitypersistanceservice.util.InverseDistanceWeightingUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.catalina.User;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -29,9 +28,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.util.*;
@@ -48,7 +45,8 @@ public class BrasovDevServiceImpl implements BrasovDevService {
 
     private RestHighLevelClient client;
     private ObjectMapper objectMapper;
-
+    private final double deltaLat = 0.0135;
+    private final double deltaLong = 0.0190;
     @Autowired
     public void BrasovDevService(@Qualifier("restClient") RestHighLevelClient client, ObjectMapper objectMapper) {
         this.client = client;
@@ -59,60 +57,6 @@ public class BrasovDevServiceImpl implements BrasovDevService {
     public List<BrasovDevDto> findBySensor(String sensorName) {
         return brasovDevRepository.findBySensor(sensorName);
     }
-
-//    public void pollutionDataBasedOnLocation(Date data, String sensor) throws IOException {
-//        double nearestLatitude = 0;
-//        double nearestLongitude = 0;
-//        List<UserLocationDto> dataFromElasticsearch = userLocationRepository.findUserLocationDtoByTimestampAfterOrderByTimestampAsc(data.getTime());
-//        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValueBySensorNameAndData(sensor, data);
-//        List<BrasovDevDto> pollutionDataBasedOnLocation = new ArrayList<BrasovDevDto>();
-//        List<UserLocationDto> minMax = userLocationRepository.findUserLocationDtoByTimestampAfterOrderByLatitudeAsc(data.getTime());
-//        double minLat = minMax.get(0).getLatitude();
-//        double maxLat = minMax.get(minMax.size() - 1).getLatitude();
-//        minMax = userLocationRepository.findUserLocationDtoByTimestampAfterOrderByLongitudeAsc(data.getTime());
-//        double minLong = minMax.get(0).getLongitude();
-//        double maxLong = minMax.get(minMax.size() - 1).getLongitude();
-//
-//        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorAndLocationLatBetweenAndLocationLongBetweenAndTimestampAfterOrderByTimestampAsc(
-//                "pm10", minLat - 0.015, maxLat + 0.015,
-//                minLong - 0.015, maxLong + 0.015, data.getTime());
-//
-////        for(UserLocationDto user : dataFromElasticsearch) {
-////            for()
-////        }
-////        }
-//
-//    }
-
-    //    public void pollutionDataBasedOnLocation(Date data) throws IOException {
-//        double nearestLatitude = 0;
-//        double nearestLongitude = 0;
-//        List<UserLocationDto> dataFromElasticsearch = userLocationRepository.findUserLocationDtoByTimestampAfterOrderByTimestampAsc(data.getTime());
-//        Map<Double, Double> sensorData = findUniqueLatitudeAndLongitudeValue();
-//        List<BrasovDevDto> pollutionDataBasedOnLocation = new ArrayList<BrasovDevDto>();
-//
-//        //Iterate userLocationDto list and find min distance between our coordinates and near sensors
-//        for (UserLocationDto userLocationDto : dataFromElasticsearch) {
-//            //Key represent Latitude and Value represent Longitude
-//            double minDistance = Double.MAX_VALUE;
-//
-//            for (Map.Entry<Double, Double> entry : sensorData.entrySet()) {
-//                double distance = HaversinUtil.distanceCalculator(userLocationDto.getLatitude(), userLocationDto.getLongitude(),
-//                        entry.getKey(), entry.getValue());
-//                if (distance < minDistance) {
-//                    minDistance = distance;
-//                    nearestLatitude = entry.getKey();
-//                    nearestLongitude = entry.getValue();
-//                }
-//            }
-//            List<BrasovDevDto> result = brasovDevRepository.findByTimestampBetweenAndSensorAndLocationLatAndLocationLong(
-//                    userLocationDto.getTimestamp().getTime(), userLocationDto.getTimestamp().getTime() + (3600 * 1000), "pm25", nearestLatitude, nearestLongitude);
-//            if (!result.isEmpty())
-//                pollutionDataBasedOnLocation.add(result.get(0));
-//            System.out.println(nearestLatitude + "   =>    " + nearestLongitude + " distanta minima " + minDistance
-//                    + "    coordonatele mele: " + userLocationDto.getLatitude() + "=>" + userLocationDto.getLongitude());
-//        }
-//    }
 
     public List<BrasovDevDto> pollutionDataBasedOnLocation(Date data, String sensor) throws IOException {
         double nearestLatitude = 0;
@@ -126,8 +70,8 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<UserLocationDto> userLocation = userLocationRepository.findUserLocationDtoByTimestampAfter(1619808756000L);
 //        List <BrasovDevInterpolationModel> values = retrieveData(sensorData,userLocation);
         List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorAndLocationLatBetweenAndLocationLongBetweenAndTimestampAfterOrderByTimestampAsc(
-                "pm10", minLat - 0.015, maxLat + 0.015,
-                minLong - 0.015, maxLong + 0.015, 1619808756000L);
+                "pm10", minLat - deltaLat, maxLat + deltaLat,
+                minLong - deltaLong, maxLong + deltaLong, 1619808756000L);
         System.out.println(pollutionData.size());
         double minDistance = Double.MAX_VALUE;
         for (UserLocationDto userLocationDto : userLocation)
@@ -144,29 +88,10 @@ public class BrasovDevServiceImpl implements BrasovDevService {
                 if (minDistance < 1.5)
                     test.add(brasovDevDto);
             }
-//        System.out.println(values.size());
         System.out.println(test.size());
         return test;
 
     }
-
-//    private BrasovDevInterpolationModel takeGood(Map<Double, Double> sensorData,List<UserLocationDto> userLocation, BrasovDevInterpolationModel brasovDevDto){
-//        double nearestLatitude = 0;
-//        double nearestLongitude = 0;
-//        double minDistance = Double.MAX_VALUE;
-//        for(int )
-//        for (Map.Entry<Double, Double> entry : sensorData.entrySet()) {
-//                double distance = HaversinUtil.distanceCalculator(brasovDevDto.getLocationLat(), brasovDevDto.getLocationLong(),
-//                        entry.getKey(), entry.getValue());
-//                if (distance < minDistance) {
-//                    minDistance = distance;
-//                    nearestLatitude = entry.getKey();
-//                    nearestLongitude = entry.getValue();
-//                }
-//            }
-//            if(minDistance < 1.5)
-//
-//    }
 
     private List<BrasovDevInterpolationModel> retrieveData(Map<Double, Double> sensorData, List<UserLocationDto> userLocation) throws IOException {
         final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
@@ -311,41 +236,6 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         return sensorData;
     }
 
-    //    public Map<String, String> findUniqueSensorNameForALocation() throws IOException {
-//
-//        Map<String, String> sensorData = new HashMap<String, String>();
-//        // we limit it to one index, wildcard patterns are working
-//        SearchRequest searchRequest = new SearchRequest("brasov-dev");
-//
-//        // Use a builder to construct the search query
-//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//
-//        // Set terms aggregation and subaggregations
-//        TermsAggregationBuilder cardinalityAggregationBuilder = AggregationBuilders.terms("Sensor").field("Sensor.keyword");
-//        //Set aggregations to search source builder
-//        searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
-//
-//        //assign search query to search request
-//        searchRequest.source(searchSourceBuilder);
-//
-//        //Run search on elasticsearch
-//        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-//
-//        //Verify status of elasticsearch client request
-//        RestStatus status = searchResponse.status();
-//
-//        //Verify if request was succesfully
-//        if (status == RestStatus.OK) {
-//            //Process first aggregations data received from elasticsearch
-//            Aggregations firstAggregations = searchResponse.getAggregations();
-//            Aggregation latitudeAggregation = firstAggregations.get("Sensor");
-//            List<? extends Terms.Bucket> buckets = ((Terms) latitudeAggregation).getBuckets();
-//            for (Terms.Bucket firstAggregationBucket : buckets) {
-//                sensorData.put("Sensor",(String) firstAggregationBucket.getKey());
-//            }
-//        }
-//        return sensorData;
-//    }
     public List<BrasovDevDto> test() throws IOException {
         final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
         SearchRequest searchRequest = new SearchRequest("brasov-dev");
@@ -389,7 +279,6 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         ClearScrollResponse clearScrollResponse = client.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
         boolean succeeded = clearScrollResponse.isSucceeded();
         return test;
-
     }
 
     public List<BrasovDevInterpolationModel> findUniqueSensor(String sensor, Date date, double latitude, double longitude, double maxDistance) throws IOException {
@@ -452,14 +341,14 @@ public class BrasovDevServiceImpl implements BrasovDevService {
 
     public List<BrasovDevDto> findBySensorNameCoordinatesTimestampAndInterpolate(Date date, String sensor, double latitude, double longitude) throws IOException {
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
-        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.0135, longitude + 0.0135, latitude - 0.0135, latitude + 0.0135, date.getTime()).collect(Collectors.toList());
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime()).collect(Collectors.toList());
         System.out.println(sensorData.size());
         return InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
     }
 
     public List<BrasovDevDto> findByCoordinatesTimestampAndInterpolateAllValues(Date date, double latitude, double longitude) throws IOException {
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor("", date, latitude, longitude, 1.5);
-        List<BrasovDevDto> sensorData = brasovDevRepository.findAllByLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime() + 10800000).collect(Collectors.toList());
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllByLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime() + 10800000).collect(Collectors.toList());
         List<BrasovDevDto> pm25Data = new ArrayList<>();
         List<BrasovDevDto> pm10Data = new ArrayList<>();
         List<BrasovDevDto> o3Data = new ArrayList<>();
@@ -489,12 +378,11 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         if (!no2Data.isEmpty())
             procesedList.addAll(InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, no2Data));
         return procesedList;
-
     }
 
     public List<BrasovDevDto> findByCoordinatesTimestampAndReturnDailyAverageValues(Date date, String sensor, double latitude, double longitude) throws IOException {
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
-        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime() + 10800000).collect(Collectors.toList());
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime() + 10800000).collect(Collectors.toList());
         List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
         List<BrasovDevDto> processedList = new ArrayList<>();
         double averageValue = 0;
@@ -516,14 +404,13 @@ public class BrasovDevServiceImpl implements BrasovDevService {
                 averageValue = 0;
                 index = 0;
             }
-
         }
         return processedList;
     }
 
     public List<BrasovDevDto> findByCoordinatesTimestampAndReturnDailyMaxValues(Date date, String sensor, double latitude, double longitude) throws IOException {
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
-        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime() + 10800000).collect(Collectors.toList());
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime() + 10800000).collect(Collectors.toList());
 //        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterAndValueGreaterThanOrderByTimestampAsc(sensor, longitude - 0.01, longitude + 0.01, latitude - 0.01, latitude + 0.01, date.getTime()+10800000,5).collect(Collectors.toList());
         List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
         List<BrasovDevDto> processedList = new ArrayList<>();
@@ -544,14 +431,13 @@ public class BrasovDevServiceImpl implements BrasovDevService {
                 processedList.add(brasovDevDto);
                 maxValues = 0;
             }
-
         }
         return processedList;
     }
 
     public List<BrasovDevDto> findByCoordinatesTimestampAndReturnDailyMinValues(Date date, String sensor, double latitude, double longitude) throws IOException {
         List<BrasovDevInterpolationModel> brasovDevInterpolationModels = findUniqueSensor(sensor, date, latitude, longitude, 1.5);
-        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, date.getTime() + 10800000).collect(Collectors.toList());
+        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime() + 10800000).collect(Collectors.toList());
         List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, sensorData);
         List<BrasovDevDto> processedList = new ArrayList<>();
         int minValues = Integer.MAX_VALUE;
@@ -571,7 +457,6 @@ public class BrasovDevServiceImpl implements BrasovDevService {
                     processedList.add(brasovDevDto);
                     minValues = Integer.MAX_VALUE;
                 }
-
             }
         }
         return processedList;
@@ -597,13 +482,8 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevDto> processedList = new ArrayList<>();
         if(userLocation.size() == 0)
             return processedList;
-        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(sensor,minLong - 0.015, maxLong + 0.015, minLat - 0.015, maxLat + 0.015, userLocation.get(0).getTimestamp()-3600000, userLocation.get(userLocation.size()-1).getTimestamp()+3600000).collect(Collectors.toList());
-//        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc("pm10,pm25,o3,so2,no2",minLong-0.015, maxLong+0.015, minLat-0.015, maxLat+0.015, userLocation.get(0).getTimestamp() , userLocation.get(userLocation.size()-1).getTimestamp()).collect(Collectors.toList());
-        int pasi = 0;
-        int index = 0;
-        double minDistance = Integer.MAX_VALUE;
+        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(sensor,minLong - deltaLong, maxLong + deltaLong, minLat - deltaLat, maxLat + deltaLat, userLocation.get(0).getTimestamp()-3600000, userLocation.get(userLocation.size()-1).getTimestamp()+3600000).collect(Collectors.toList());
 
-//        return processedList;
         return InverseDistanceWeightingUtil.calculatorForUserLocation(pollutionData,userLocation);
     }
 
@@ -626,7 +506,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevDto> processedList = new ArrayList<>();
         if(userLocation.size() == 0)
             return processedList;
-        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(sensor,minLong - 0.015, maxLong + 0.015, minLat - 0.015, maxLat + 0.015, userLocation.get(0).getTimestamp()-3600000, userLocation.get(userLocation.size()-1).getTimestamp()+3600000).collect(Collectors.toList());
+        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc(sensor,minLong - 0.015, maxLong + 0.015, minLat - deltaLat, maxLat + deltaLat, userLocation.get(0).getTimestamp()-3600000, userLocation.get(userLocation.size()-1).getTimestamp()+3600000).collect(Collectors.toList());
 //        List<BrasovDevDto> pollutionData = brasovDevRepository.findAllBySensorMatchesAndLocationLongBetweenAndLocationLatBetweenAndTimestampBetweenOrderByTimestampAsc("pm10,pm25,o3,so2,no2",minLong-0.015, maxLong+0.015, minLat-0.015, maxLat+0.015, userLocation.get(0).getTimestamp() , userLocation.get(userLocation.size()-1).getTimestamp()).collect(Collectors.toList());
         int pasi = 0;
         int index = 0;

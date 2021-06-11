@@ -87,16 +87,7 @@ public class InverseDistanceWeightingUtil {
         System.out.println(brasovDevInterpolationModel.size());
         System.out.println(sensorData.size());
         if (brasovDevInterpolationModel.size() > 1) {
-//            sensorData.add(new BrasovDevDto("", "", "", 0, 0, 0, 0, ""));
             for (int i = 0; i < sensorData.size(); i++) {
-//                long time = (sensorData.get(i).getTimestamp() / 1000) % 3600;
-//                if (time < 600)
-//                    time = sensorData.get(i).getTimestamp() - time * 1000;
-//                else if (time > 3000)
-//                    time = sensorData.get(i).getTimestamp() + (3600 - time) * 1000;
-//                if (time > 600 && time < 3600) {
-//                    time = -1;
-//                }
                 long lastTime = 0;
                 long time = timestampProcessor(sensorData.get(i).getTimestamp());
                 if (i > 1)
@@ -137,16 +128,6 @@ public class InverseDistanceWeightingUtil {
                     } else if (latitudeDistance0 == sensorData.get(i).getLocationLat() && longitudeDistance0 == sensorData.get(i).getLocationLong() && isSensorNear) {
                         processedList.add(sensorData.get(i));
                     }
-
-//                } else {
-//                    if (!isSensorNear && weight != 0 && value != 0 && time != -1 && time != lastTime) {
-//                        BrasovDevDto brasovDevDto = sensorData.get(i);
-//                        brasovDevDto.setTimestamp(time);
-//                        brasovDevDto.setValue((int) Math.round(value / weight));
-//                        processedList.add(brasovDevDto);
-//                        weight = 0;
-//                        value = 0;
-//                    }
                 }
                 //Treat last element case
                 if (i == sensorData.size() - 1 && weight != 0 && value != 0 && !isSensorNear && time != -1) {
@@ -166,7 +147,6 @@ public class InverseDistanceWeightingUtil {
             }
             System.out.println(pasi);
             if (dataFromOneSensor)
-//                return sensorData.subList(0, sensorData.size() - 2);
                 return sensorData;
             else
                 return processedList;
@@ -179,11 +159,6 @@ public class InverseDistanceWeightingUtil {
         List<BrasovDevDto> processedList = new ArrayList<>();
         double value = 0;
         double weight = 0;
-        int pasi = 0;
-        boolean isSensorNear = false;
-        boolean dataFromOneSensor = true;
-        double latitudeDistance0 = 0;
-        double longitudeDistance0 = 0;
         long sensorDataProcessedTimestamp = 0;
         long userLocationProcessedTimestamp = 0;
         long previousTimestamp = 0;
@@ -206,6 +181,17 @@ public class InverseDistanceWeightingUtil {
                     System.out.println("Min distance: " + distance);
                     System.out.println("Value: " + sensorData.get(j).getValue());
                     System.out.println(weight);
+                    if (distance == 0) {
+                        BrasovDevDto brasovDevDto = sensorData.get(j);
+                        brasovDevDto.setTimestamp(userLocations.get(i).getTimestamp());
+                        brasovDevDto.setLocationLat(userLocations.get(i).getLatitude());
+                        brasovDevDto.setLocationLong(userLocations.get(i).getLongitude());
+                        brasovDevDto.setValue(sensorData.get(j).getValue());
+                        processedList.add(brasovDevDto);
+                        weight = 0;
+                        value = 0;
+                        break;
+                    }
                 } else if (sensorDataProcessedTimestamp != userLocationProcessedTimestamp && weight != 0) {
                     BrasovDevDto brasovDevDto = sensorData.get(j);
                     brasovDevDto.setTimestamp(userLocations.get(i).getTimestamp());
