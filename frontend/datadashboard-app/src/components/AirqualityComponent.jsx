@@ -85,19 +85,19 @@ class AirqualityComponent extends Component {
             // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
-                brainColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
+                brainColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].healthEffectColor;
             }
         }
         if (isNaN(this.state.specificIndexPositionPM10.length)) {
             if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
                 maxSpecificIndex = this.state.specificIndexPositionPM10
-                brainColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
+                brainColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].healthEffectColor;
             }
         }
         if (isNaN(this.state.specificIndexPositionSO2.length)) {
             if (maxSpecificIndex < this.state.specificIndexPositionSO2) {
                 maxSpecificIndex = this.state.specificIndexPositionSO2
-                brainColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].color;
+                brainColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].healthEffectColor;
             }
         }
 
@@ -114,13 +114,13 @@ class AirqualityComponent extends Component {
             // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
-                lungsColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
+                lungsColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].healthEffectColor;
             }
         }
         if (isNaN(this.state.specificIndexPositionPM10.length)) {
             if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
                 maxSpecificIndex = this.state.specificIndexPositionPM10
-                lungsColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
+                lungsColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].healthEffectColor;
             }
         }
         if (maxSpecificIndex === -1)
@@ -136,25 +136,25 @@ class AirqualityComponent extends Component {
             // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
-                heartColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].color;
+                heartColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].healthEffectColor;
             }
         }
         if (isNaN(this.state.specificIndexPositionPM10.length)) {
             if (maxSpecificIndex < this.state.specificIndexPositionPM10) {
                 maxSpecificIndex = this.state.specificIndexPositionPM10
-                heartColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].color;
+                heartColor = PM10SpecificIndex[this.state.specificIndexPositionPM10].healthEffectColor;
             }
         }
         if (isNaN(this.state.specificIndexPositionSO2.length)) {
             if (maxSpecificIndex < this.state.specificIndexPositionSO2) {
                 maxSpecificIndex = this.state.specificIndexPositionSO2
-                heartColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].color;
+                heartColor = SO2SpecificIndex[this.state.specificIndexPositionSO2].healthEffectColor;
             }
         }
         if (isNaN(this.state.specificIndexPositionO3.length)) {
             if (maxSpecificIndex < this.state.specificIndexPositionO3) {
                 maxSpecificIndex = this.state.specificIndexPositionO3
-                heartColor = SO2SpecificIndex[this.state.specificIndexPositionO3].color;
+                heartColor = SO2SpecificIndex[this.state.specificIndexPositionO3].healthEffectColor;
             }
         }
 
@@ -191,7 +191,6 @@ class AirqualityComponent extends Component {
         for (var i = 0; i < pollutants.length; i++) {
             if (pollutants[i].minValue <= value && value <= pollutants[i].maxValue) {
                 if (pollutants[i].specificIndex > this.state.specificIndex) {
-
                     this.setState({ specificIndex: pollutants[i].specificIndex, qualifying: pollutants[i].qualifying, color: pollutants[i].color, [pollutantName]: i });
                 } else if (this.state.[pollutantName] < i || this.state.[pollutantName] === "") {
                     this.setState({ [pollutantName]: i });
@@ -206,7 +205,7 @@ class AirqualityComponent extends Component {
             return <TrendingUpOutlinedIcon className="trend-line" style={{ color: 'red' }} />
         else
             if (currentValues === previousValues)
-                return <CgArrowRight className="trend-line" style={{ color: '#ffcc00' }} />
+                return <CgArrowRight className="trend-line" style={{ color: '#eed202' }} />
             else
                 return <TrendingDownOutlinedIcon className="trend-line" style={{ color: 'Green' }} />
     }
@@ -280,7 +279,7 @@ class AirqualityComponent extends Component {
             var address = this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))
             // console.log(address)
             if (address.length > 0) {
-                return address
+                return "Str. " + address
             }
         }
         else {
@@ -294,44 +293,44 @@ class AirqualityComponent extends Component {
 
     recommandationWindow() {
         if (this.state.specificIndex === 1)
-            return <div className = "center"><img src={openWindow} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[0].windows}</h1></div>
+            return <div className = "center"><img src={openWindow} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[0].windows}</h1></div>
         else if (this.state.specificIndex > 1 && this.state.specificIndex < 7)
-            return <div className = "center"><img src={closeWindow} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[1].windows}</h1></div>
+            return <div className = "center"><img src={closeWindow} className="recommandation-window" alt="" /> <h1 className="recommandation-title">{recommandation[1].windows}</h1></div>
 
     }
 
 recommandationPhysicalActivity() {
         if (this.state.specificIndex === 1)
-            return <div className = "center"><img src={greenOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[0].physicalActivity}</h1></div>
+            return <div className = "center"><img src={greenOutdoor} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[0].physicalActivity}</h1></div>
         else if (this.state.specificIndex === 2)
-            return <div className = "center"><img src={yellowOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[1].physicalActivity}</h1></div>
+            return <div className = "center"><img src={yellowOutdoor} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[1].physicalActivity}</h1></div>
         else if (this.state.specificIndex === 3)
-            return <div className = "center"><img src={redOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[2].physicalActivity}</h1></div>
+            return <div className = "center"><img src={redOutdoor} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[2].physicalActivity}</h1></div>
         else if (this.state.specificIndex === 4)
-            return <div className = "center"><img src={redOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[3].physicalActivity}</h1></div>
+            return <div className = "center"><img src={redOutdoor} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[3].physicalActivity}</h1></div>
         else if (this.state.specificIndex === 5)
-            return <div className = "center"><img src={redLineOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[4].physicalActivity}</h1></div>
+            return <div className = "center"><img src={redLineOutdoor} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[4].physicalActivity}</h1></div>
         else if (this.state.specificIndex === 6)
-            return <div className = "center"><img src={redLineOutdoor} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[5].physicalActivity}</h1></div>
+            return <div className = "center"><img src={redLineOutdoor} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[5].physicalActivity}</h1></div>
 
     }
 
     recommandationMask() {
         if (this.state.specificIndex === 3)
-            return <div className = "center"><img src={sensitiveMask} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[2].mask}</h1></div>
+            return <div className = "center"><img src={sensitiveMask} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[2].mask}</h1></div>
         else if (this.state.specificIndex > 3 && this.state.specificIndex < 7)
-            return <div className = "center"><img src={allPersonMask} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[3].mask}</h1></div>
+            return <div className = "center"><img src={allPersonMask} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[3].mask}</h1></div>
     }
 
     recommandationAirPurifier() {
         if (this.state.specificIndex === 3)
-            return <div className = "center"><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[2].airPurifier}</h1></div>
+            return <div className = "center"><img src={airPurifier} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[2].airPurifier}</h1></div>
         else if (this.state.specificIndex === 4)
-            return <div className = "center"><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[3].airPurifier}</h1></div>
+            return <div className = "center"><img src={airPurifier} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[3].airPurifier}</h1></div>
         else if (this.state.specificIndex === 5)
-            return <div className = "center"><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[4].airPurifier}</h1></div>
+            return <div className = "center"><img src={airPurifier} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[4].airPurifier}</h1></div>
         else if (this.state.specificIndex === 6)
-            return <div className = "center"><img src={airPurifier} className="recommandation-window" /> <h1 className="recommandation-title">{recommandation[5].airPurifier}</h1></div>
+            return <div className = "center"><img src={airPurifier} className="recommandation-window" alt=""/> <h1 className="recommandation-title">{recommandation[5].airPurifier}</h1></div>
     }
     render() {
         return (
@@ -374,7 +373,7 @@ recommandationPhysicalActivity() {
                         <div className="col-md-12">
                             {!this.state.no2On && <h1 className="airquality-dashboard-pollutants-name">SO2</h1>}<SkipNextIcon className="settings-airquality" onClick={this.changePollutants}></SkipNextIcon>
                             {!this.state.no2On && this.state.currentValues.so2 && <p className="airquality-dashboard-value"> {this.state.currentValues.so2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.so2 && this.trendingLine(this.state.currentValues.so2, this.state.previousValues.so2)}</p>}
-                            {!this.state.no2On && this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.no2, "no2")}
+                            {!this.state.no2On && this.state.currentValues.so2 && this.specificIndex(this.state.currentValues.so2, "so2")}
                             {this.state.no2On && <h1 className="airquality-dashboard-pollutants-name">NO2</h1>}<SkipNextIcon className="settings-airquality" onClick={this.changePollutants}></SkipNextIcon>
                             {this.state.no2On && this.state.currentValues.no2 && <p className="airquality-dashboard-value"> {this.state.currentValues.no2} <span className="measurement-unit">ug/m3</span>{this.state.currentValues.no2 && this.trendingLine(this.state.currentValues.no2, this.state.previousValues.no2)}</p>}
                             {this.state.no2On && this.state.currentValues.no2 && this.specificIndex(this.state.currentValues.no2, "no2")}
