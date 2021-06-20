@@ -90,7 +90,7 @@ class GoogleHeatMapComponent extends Component {
             positions: this.state.heatmapPoints,
             options: {
                 radius: 10,
-                opacity: 0.7
+                opacity: 1
             }
         }
 

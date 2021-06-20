@@ -1,8 +1,7 @@
 import axios from 'axios'
 import Moment from 'moment';
 class AirQualityService {
-
-  retrieveHomePollutionValues(date, sensor, latitude, longitude) {
+retrieveHomePollutionValues(date, sensor, latitude, longitude) {
     return axios.get(`${process.env.REACT_APP_BASE_URL}/brasovdev/${Moment(date).format('YYYY-MM-DD')}/${sensor}/${latitude}/${longitude}`);
   }
 
@@ -22,8 +21,8 @@ class AirQualityService {
     return axios.get(`${process.env.REACT_APP_BASE_URL}/brasovdev/findAllAfter/${Moment(date).format('YYYY-MM-DD')}/${latitude}/${longitude}`)
   }
 
-  retrievePollutionForUserLocations(sensor,date,latitude,longitude) {
-    return axios.get(`${process.env.REACT_APP_BASE_URL}/brasovdev/test/${Moment(date).format('YYYY-MM-DD')}/${sensor}/${latitude}/${longitude}`);
+  retrievePollutionForUserLocations(sensor,date) {
+    return axios.get(`${process.env.REACT_APP_BASE_URL}/brasovdev/userPollution/${Moment(date).format('YYYY-MM-DD')}/${sensor}`);
   }
 }
 export default new AirQualityService()

@@ -124,7 +124,7 @@ class LineChartComponent extends Component {
                 }
             },
             title: {
-                text: 'AirQuality',
+                text: this.props.pollutantName.toUpperCase(),
                 align: 'left',
                 style: {
                     fontSize: "16px",

@@ -56,18 +56,7 @@ class LocationDataComponent extends Component {
     }
 
     async componentDidMount() {
-        console.log(this.state.date)
-        await UserService.retrieveUserGeneralInfo().then(response => {
-            this.setState({ address: response.data.address })
-        })
-        await UtilityService.addressToCoordinates(this.state.address).then(response => {
-            if (response.data.features.length !== 0) {
-                console.log(response.data.features[0].place_name)
-                this.setState({ latitude: response.data.features[0].center[1] })
-                this.setState({ longitude: response.data.features[0].center[0] })
-            }
-        })
-        await this.retrieveUserLocationPollutionData(new Date((new Date().getTime())).toString(), this.state.pollutant.value, this.state.address);
+        await this.retrieveUserLocationPollutionData(new Date((new Date().getTime())).toString(), this.state.pollutant.value);
         await this.retrieveLocationData();
     }
 
@@ -103,21 +92,9 @@ class LocationDataComponent extends Component {
             )
     }
 
-    async retrieveUserLocationPollutionData(date, sensor, address) {
-        var latitude, longitude;
+    async retrieveUserLocationPollutionData(date, sensor) {
 
-        await UtilityService.addressToCoordinates(address).then(response => {
-            if (response.data.features.length !== 0) {
-                console.log(response.data.features[0].place_name)
-                latitude = response.data.features[0].center[1];
-                longitude = response.data.features[0].center[0];
-            }
-        })
-
-        console.log(latitude)
-        console.log(longitude)
-
-        AirQualityService.retrievePollutionForUserLocations(sensor,date,latitude,longitude).then(response => {
+        AirQualityService.retrievePollutionForUserLocations(sensor,date).then(response => {
             // console.log(response)
                 if (response.data.length) {
                     var data = []
