@@ -82,21 +82,6 @@ public class UserController {
         }
         return HttpStatus.NOT_FOUND;
     }
-//
-//    @PostMapping("/changepassword")
-//    public HttpStatus changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
-//        //Verify if password is too short
-//        if (changePasswordDto.getPassword().length() < 5)
-//            return HttpStatus.BAD_REQUEST;
-//        Optional<UserDto> userDto = userServiceImpl.findUserByUsername(changePasswordDto.getUsername());
-//        if (userDto.isPresent()) {
-//            userDto.get().setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
-//            userServiceImpl.createUser(userDto.get());
-//            return HttpStatus.OK;
-//        }
-//        return HttpStatus.NOT_FOUND;
-//    }
-
 
     @PostMapping("/changepassword")
     public HttpStatus changePassword(@RequestBody ChangePasswordDto changePasswordDto, HttpServletRequest request) {

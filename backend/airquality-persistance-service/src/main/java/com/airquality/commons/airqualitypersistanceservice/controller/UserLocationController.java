@@ -28,7 +28,7 @@ public class UserLocationController {
         return userLocationService.findUserLocationDtoByTimestampAfter(data);
     }
 
-    @GetMapping("/findAllAfter/{date}/{username}")
+    @GetMapping("/findByDate/{date}/{username}")
     public List<UserLocationDto> findByTimeIntervalAndUsername(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date data,
                                                                @PathVariable String username) {
         return userLocationService.findDailyUserLocationDtoByTimestampAfterAndUsername(data,username);

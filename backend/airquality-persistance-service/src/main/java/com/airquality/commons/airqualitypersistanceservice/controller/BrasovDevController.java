@@ -41,7 +41,7 @@ public class BrasovDevController {
     @GetMapping("/findAllAfter/{first}/{latitude}/{longitude}")
     public List<BrasovDevDto> findAllAfterDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date first, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
 //        return brasovDevServiceImpl.pollutionDataBasedOnAddressLocationAndData(latitude, longitude, first);
-        return brasovDevServiceImpl.findByCoordinatesTimestampAndInterpolateAllValues(first,latitude,longitude);
+        return brasovDevServiceImpl.findByCoordinatesTimestampAndInterpolateAllValues(first, latitude, longitude);
 
     }
 
@@ -68,48 +68,40 @@ public class BrasovDevController {
 
     @GetMapping("/testArea")
     public List<BrasovDevDto> test() throws IOException {
-//       return brasovDevServiceImpl.pollutionDataBasedOnLocation(new Date("2021/04/24"), "PM10");
-        double latitude = 45.651464;
-        double longitude = 25.615426;
-//        List<BrasovDevInterpolationModel> brasovDevInterpolationModels = brasovDevServiceImpl.findUniqueSensor("o3",new Date("2021/05/10"),latitude,longitude, 1.5);
-//        List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc("o3",longitude - 0.015, longitude + 0.015, latitude - 0.015, latitude + 0.015, new Date("2021/05/10").getTime()).collect(Collectors.toList());
-//        return InverseDistanceWeightingUtil.calculatorForTest(brasovDevInterpolationModels,sensorData);
-//        return brasovDevServiceImpl.findUserLocationAndBrasovDev(latitude,longitude,"pm10",new Date("2021/04/27"));
-
-//          List<BrasovDevDto> brasovDevDtos = brasovDevRepository.findBySensorMatchesAndTimestampAfter("pm10,pm25",1620598378144L).collect(Collectors.toList());
-//        System.out.println(brasovDevDtos.size());
-//          return brasovDevDtos;
-
-        return brasovDevServiceImpl.findUserLocationAndBrasovDevAndInterpolateValues(latitude,longitude,"pm25",new Date("2021/04/28"));
+        double latitude = 45.638767;
+        double longitude = 25.586021;
+        return brasovDevServiceImpl.findBySensorNameCoordinatesTimestampAndInterpolate(new Date("2021/06/19"), "pm25", latitude, longitude);
     }
 
-    @GetMapping("/test/{date}/{sensor}/{latitude}/{longitude}")
+    @GetMapping("/userPollution/{date}/{sensor}")
     public List<BrasovDevDto> retrieveUserPollutionData(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                                                 @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-        return brasovDevServiceImpl.findUserLocationAndBrasovDevAndInterpolateValues(latitude,longitude,sensor,date);
+                                                        @PathVariable String sensor) throws IOException {
+        return brasovDevServiceImpl.findUserLocationAndBrasovDevAndInterpolateValues(sensor, date);
 
     }
 
     @GetMapping("/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> findBySensorNameCoordinatesTimestampAndInterpolate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                                                                  @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-          return brasovDevServiceImpl.findBySensorNameCoordinatesTimestampAndInterpolate(date,sensor,latitude,longitude);
+        return brasovDevServiceImpl.findBySensorNameCoordinatesTimestampAndInterpolate(date, sensor, latitude, longitude);
 //        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyAverageValues(date,sensor,latitude,longitude);
     }
 
     @GetMapping("/averageDaily/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> returnAverageValuesPerDay(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                    @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyAverageValues(date,sensor,latitude,longitude);
+                                                        @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyAverageValues(date, sensor, latitude, longitude);
     }
+
     @GetMapping("/maxDaily/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> returnMaxValuesPerDay(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                                                 @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyMaxValues(date,sensor,latitude,longitude);
+                                                    @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyMaxValues(date, sensor, latitude, longitude);
     }
+
     @GetMapping("/minDaily/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> returnMinValuesPerDay(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
                                                     @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
-        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyMinValues(date,sensor,latitude,longitude);
+        return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyMinValues(date, sensor, latitude, longitude);
     }
 }
