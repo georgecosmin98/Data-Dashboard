@@ -1,0 +1,38 @@
+"filename", "language", "JavaScript", "CSS", "JavaScript React", "comment", "blank", "total"
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\App.css", "CSS", 0, 850, 0, 22, 180, 1052
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\App.js", "JavaScript", 70, 0, 0, 0, 3, 73
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\Constants.js", "JavaScript", 262, 0, 0, 2, 6, 270
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\api\AirQualityService.js", "JavaScript", 23, 0, 0, 0, 6, 29
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\api\AuthenticationService.js", "JavaScript", 54, 0, 0, 2, 13, 69
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\api\UserLocationService.js", "JavaScript", 9, 0, 0, 0, 3, 12
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\api\UserService.js", "JavaScript", 10, 0, 0, 2, 3, 15
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\api\UtilityService.js", "JavaScript", 11, 0, 0, 0, 2, 13
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\api\contact\ContactService.js", "JavaScript", 9, 0, 0, 0, 2, 11
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\api\contact\dist\ContactService.dev.js", "JavaScript", 34, 0, 0, 1, 12, 47
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\bootstrap.css", "CSS", 0, 1, 0, 0, 1, 2
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\AirqualityComponent.jsx", "JavaScript React", 0, 0, 381, 5, 30, 416
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\AuthenticatedRoute.jsx", "JavaScript React", 0, 0, 14, 0, 3, 17
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Charts\BarChartComponent.jsx", "JavaScript React", 0, 0, 168, 0, 4, 172
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Charts\LineChartComponent.jsx", "JavaScript React", 0, 0, 177, 1, 6, 184
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\ContactComponent.jsx", "JavaScript React", 0, 0, 120, 0, 8, 128
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\DashboardComponent.jsx", "JavaScript React", 0, 0, 17, 0, 2, 19
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\ErrorComponent.jsx", "JavaScript React", 0, 0, 16, 0, 2, 18
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\FooterComponent.jsx", "JavaScript React", 0, 0, 11, 0, 1, 12
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\GoogleHeatMapComponent.jsx", "JavaScript React", 0, 0, 94, 8, 13, 115
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Header\HeaderComponent.jsx", "JavaScript React", 0, 0, 39, 0, 5, 44
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\HomeComponent.jsx", "JavaScript React", 0, 0, 250, 13, 10, 273
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\InfoComponent.jsx", "JavaScript React", 0, 0, 272, 12, 2, 286
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\LocationDataComponent.jsx", "JavaScript React", 0, 0, 179, 1, 16, 196
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\SettingsComponent.jsx", "JavaScript React", 0, 0, 241, 5, 19, 265
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\SidebarComponent.jsx", "JavaScript React", 0, 0, 58, 0, 8, 66
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\SidebarRowComponent.jsx", "JavaScript React", 0, 0, 10, 2, 3, 15
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Users\ForgotPasswordComponent.jsx", "JavaScript React", 0, 0, 106, 0, 7, 113
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Users\Login.css", "CSS", 0, 186, 0, 6, 41, 233
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Users\LoginComponent.jsx", "JavaScript React", 0, 0, 189, 1, 12, 202
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Users\ResetPasswordComponent.jsx", "JavaScript React", 0, 0, 139, 0, 7, 146
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Users\SignupComponent.jsx", "JavaScript React", 0, 0, 204, 0, 13, 217
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\components\Users\SocialButton.jsx", "JavaScript React", 0, 0, 13, 0, 3, 16
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\index.css", "CSS", 0, 0, 0, 13, 1, 14
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\index.js", "JavaScript", 12, 0, 0, 3, 3, 18
+"c:\Users\ylyho\Data-Dashboard\frontend\datadashboard-app\src\serviceWorker.js", "JavaScript", 92, 0, 0, 31, 13, 136
+"Total", "-", 586, 1037, 2698, 130, 463, 4914

@@ -1,21 +1,15 @@
 package com.airquality.commons.airqualitypersistanceservice.controller;
 
 import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevDto;
-import com.airquality.commons.airqualitypersistanceservice.model.BrasovDevInterpolationModel;
 import com.airquality.commons.airqualitypersistanceservice.repository.BrasovDevRepository;
 import com.airquality.commons.airqualitypersistanceservice.service.BrasovDevServiceImpl;
-import com.airquality.commons.airqualitypersistanceservice.util.InverseDistanceWeightingUtil;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/brasovdev")
@@ -66,11 +60,11 @@ public class BrasovDevController {
         return brasovDevRepository.findAllBySensorAndLocationLatBetweenAndLocationLongBetweenAndTimestampAfterOrderByTimestampAsc(name, lat1, lat2, long1, long2, firstDate.getTime());
     }
 
-    @GetMapping("/testArea")
-    public List<BrasovDevDto> test() throws IOException {
-        double latitude = 45.638767;
-        double longitude = 25.586021;
-        return brasovDevServiceImpl.findBySensorNameCoordinatesTimestampAndInterpolate(new Date("2021/06/19"), "pm25", latitude, longitude);
+    @GetMapping("/testArea/{lat1}/{long1}")
+    public List<BrasovDevDto> test(@PathVariable double lat1, @PathVariable double long1) throws IOException {
+        double latitude = lat1;
+        double longitude = long1;
+        return brasovDevServiceImpl.testInterpolate(new Date("2021/06/20"), "o3", latitude, longitude);
     }
 
     @GetMapping("/userPollution/{date}/{sensor}")

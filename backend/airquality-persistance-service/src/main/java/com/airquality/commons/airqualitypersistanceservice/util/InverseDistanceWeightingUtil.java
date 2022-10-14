@@ -21,7 +21,7 @@ public class InverseDistanceWeightingUtil {
 
             distance = HaversinUtil.distanceCalculator(sensorData.get(i).getLocationLat(), sensorData.get(i).getLocationLong(),
                     latitude, longitude);
-            if (time != -1 && distance < 1.5) {
+            if (time != -1 && distance < 1.5 && sensorData.get(i).getValue()!=999) {
                 weight = weight + (1 / distance);
                 value = value + (sensorData.get(i).getValue() * (1 / distance));
                 if (distance < 0.1) {
@@ -82,7 +82,7 @@ public class InverseDistanceWeightingUtil {
         return processedList;
     }
 
-    public static List<BrasovDevDto> testingArea(List<BrasovDevDto> sensorData, double latitude, double longitude) {
+    public static List<BrasovDevDto> testingArea(List<BrasovDevDto> sensorData, double latitude, double longitude, double minLat, double minLong) {
         List<BrasovDevDto> processedList = new ArrayList<>();
         double value = 0;
         double weight = 0;
@@ -98,29 +98,22 @@ public class InverseDistanceWeightingUtil {
                         sensorData.get(i).getLocationLong() == sensorData.get(i + 1).getLocationLong())
                     distance = Integer.MAX_VALUE;
             }
-            if(distance == 0) {
-                System.out.println("Timestamp: " + time + "     ----->     " + "Value: " + sensorData.get(i));
+            if (distance == 0) {
+//                System.out.println("Valoarea monitorizata");
+//                distance = distance+0.7;
+                System.out.println("Timestamp: " + time + "     ----->     " + "Valoarea monitorizata: " + sensorData.get(i).getValue());
             }
-            if (time != -1 && distance < 1.5 && distance != 0 && !sensorData.get(i).getSource().equals("Waqi")) {
-//                weight = weight + Math.pow((1 / distance),2);
-//                value = value + (sensorData.get(i).getValue() *  Math.pow((1 / distance),2));
-                weight = weight + (1 / distance);
-                value = value + (sensorData.get(i).getValue() * (1 / distance));
-                if (distance < 0.1) {
-                    BrasovDevDto brasovDevDto = new BrasovDevDto();
-                    if (time == -1 && !processedList.isEmpty())
-                        brasovDevDto.setTimestamp(processedList.get(processedList.size() - 1).getTimestamp() + 3600000);
-                    else if (processedList.isEmpty() && time == -1)
-                        brasovDevDto.setTimestamp(sensorData.get(i).getTimestamp() - (sensorData.get(i).getTimestamp() % 3600000));
-                    else
-                        brasovDevDto.setTimestamp(time);
-                    brasovDevDto.setLocationLat(latitude);
-                    brasovDevDto.setLocationLong(longitude);
-                    brasovDevDto.setValue(sensorData.get(i).getValue());
-                    processedList.add(brasovDevDto);
-                    weight = 0;
-                    value = 0;
-                }
+
+            if (sensorData.get(i).getLocationLat() == minLat && sensorData.get(i).getLocationLong() == minLong) {
+//                System.out.println("Valoarea celui mai apropiat senzor");
+                System.out.println("Timestamp: " + time + "     ----->     " + "Valoarea celui mai apropiat senzor: " + sensorData.get(i).getValue());
+            }
+
+            if (time != -1 && distance < 5 && distance != 0) {
+                weight = weight + Math.pow((1 / distance),2);
+                value = value + (sensorData.get(i).getValue() *  Math.pow((1 / distance),2));
+//                weight = weight + (1 / distance);
+//                value = value + (sensorData.get(i).getValue() * (1 / distance));
             }
             if (time != nextTime && weight != 0) {
                 BrasovDevDto brasovDevDto = new BrasovDevDto();
