@@ -67,7 +67,6 @@ class AirqualityComponent extends Component {
 
     healthEffect(pm10, pm25, o3, so2, no2) {
         if (pm10 || pm25 || o3 || so2 || no2) {
-            // console.log("HealthEffect")
             return <div className="health-effect">
                 <GiBrain className="health-effect-images" style={{ color: this.brainEffect() }} />
                 <RiLungsLine className="health-effect-images" style={{ color: this.lungsEffect() }} />
@@ -80,9 +79,7 @@ class AirqualityComponent extends Component {
     brainEffect() {
         var brainColor;
         var maxSpecificIndex = -1;
-        console.log(this.state)
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 brainColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].healthEffectColor;
@@ -111,7 +108,6 @@ class AirqualityComponent extends Component {
         var lungsColor;
         var maxSpecificIndex = -1;
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 lungsColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].healthEffectColor;
@@ -133,7 +129,6 @@ class AirqualityComponent extends Component {
         var heartColor;
         var maxSpecificIndex = -1;
         if (isNaN(this.state.specificIndexPositionPM25.length)) {
-            // console.log(this.state.specificIndexPositionPM25)
             if (maxSpecificIndex < this.state.specificIndexPositionPM25) {
                 maxSpecificIndex = this.state.specificIndexPositionPM25
                 heartColor = PM25SpecificIndex[this.state.specificIndexPositionPM25].healthEffectColor;
@@ -220,7 +215,6 @@ class AirqualityComponent extends Component {
                 longitude: this.props.longitude
             })
             await AirQualityService.retrievePollutionValuesForAirqualityDashboard(new Date().getTime(), this.props.latitude, this.props.longitude).then(response => {
-                console.log(response.data)
                 this.processDataForAirqualityDashboard(response.data)
             })
         }
@@ -269,15 +263,12 @@ class AirqualityComponent extends Component {
                 currentValues.no2 = data[i].value;
             }
         }
-        console.log(currentValues)
-        console.log(previousValues)
         this.setState({ currentValues: currentValues, previousValues: previousValues })
     }
 
     processAddress() {
         if (this.props.address.startsWith("Strada")) {
             var address = this.props.address.slice(this.props.address.indexOf(" "), this.props.address.indexOf(','))
-            // console.log(address)
             if (address.length > 0) {
                 return "Str. " + address
             }

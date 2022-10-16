@@ -16,8 +16,6 @@ class BarChartComponent extends Component {
 
     componentDidUpdate() {
         if (this.props.data && this.props.pollutantName !== this.state.currentPollutant) {
-            console.log(this.props.data)
-            console.log(this.props.pollutantName)
             if (this.props.pollutantName === "pm25") {
                 this.setState({
                     maxGreen: PM25SpecificIndex[0].maxValue,

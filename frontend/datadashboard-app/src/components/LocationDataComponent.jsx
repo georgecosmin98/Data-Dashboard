@@ -78,11 +78,9 @@ class LocationDataComponent extends Component {
     }
 
     retrieveLocationData() {
-        console.log(this.state.date)
         UserLocationService.retriveUserLocationAfter(this.state.date)
             .then(
                 response => {
-                    console.log(response)
                     var data = []
                     for (var i = 0; i < response.data.length; i++) {
                         data.push({ lat: response.data[i].latitude, lng: response.data[i].longitude })
@@ -93,9 +91,7 @@ class LocationDataComponent extends Component {
     }
 
     async retrieveUserLocationPollutionData(date, sensor) {
-
         AirQualityService.retrievePollutionForUserLocations(sensor,date).then(response => {
-            // console.log(response)
                 if (response.data.length) {
                     var data = []
                     this.setState({ measurement: response.data[0].measurement })
@@ -108,8 +104,6 @@ class LocationDataComponent extends Component {
                     this.setState({ pollutionData: [] })
                 }
                 this.setState({ isEnable: true })
-                console.log(data)
-                console.log(this.state.currentPollutantName)
             }).catch(response => {
                 toast.error('An error occured. Please try again.', {
                     position: "top-right",

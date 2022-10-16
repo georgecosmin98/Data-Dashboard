@@ -59,8 +59,6 @@ class GoogleHeatMapComponent extends Component {
     }
 
     toggleHeatMap() {
-        console.log("Toogle heatmap")
-        console.log(this._googleMap.map_.zoom)
         this.setState({
             heatmapVisible: !this.state.heatmapVisible
         }, () => {

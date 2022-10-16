@@ -54,7 +54,6 @@ class DashboardComponent extends Component {
     }
 
     onChangeAggregationType(values) {
-        console.log(values)
         this.setState({ aggregationType: { value: values.value, label: values.label } })
     }
 
@@ -69,7 +68,6 @@ class DashboardComponent extends Component {
         })
         await UtilityService.addressToCoordinates(this.state.address).then(response => {
             if (response.data.features.length !== 0) {
-                console.log(response.data.features[0].place_name)
                 this.setState({ latitude: response.data.features[0].center[1] })
                 this.setState({ longitude: response.data.features[0].center[0] })
             }
@@ -82,15 +80,12 @@ class DashboardComponent extends Component {
 
         await UtilityService.addressToCoordinates(address).then(response => {
             if (response.data.features.length !== 0) {
-                console.log(response.data.features[0].place_name)
                 latitude = response.data.features[0].center[1];
                 longitude = response.data.features[0].center[0];
             }
         })
-        console.log(this.state.aggregationType)
         if (this.state.aggregationType.value === "live")
             AirQualityService.retrieveHomePollutionValues(date, sensor, latitude, longitude).then(response => {
-                console.log(response)
                 if (response.data.length) {
                     var data = []
                     this.setState({ measurement: response.data[0].measurement })
@@ -118,7 +113,6 @@ class DashboardComponent extends Component {
         else
             if (this.state.aggregationType.value === "max")
                 AirQualityService.retrieveHomePollutionMaxDailyValues(date, sensor, latitude, longitude).then(response => {
-                    console.log(response)
                     if (response.data.length) {
                         var data = []
                         this.setState({ measurement: response.data[0].measurement })
@@ -146,7 +140,6 @@ class DashboardComponent extends Component {
             else
                 if (this.state.aggregationType.value === "avg")
                     AirQualityService.retrieveHomePollutionAvgDailyValues(date, sensor, latitude, longitude).then(response => {
-                        console.log(response)
                         if (response.data.length) {
                             var data = []
                             this.setState({ measurement: response.data[0].measurement })
@@ -174,7 +167,6 @@ class DashboardComponent extends Component {
                 else
                     if (this.state.aggregationType.value === "min")
                         AirQualityService.retrieveHomePollutionMinDailyValues(date, sensor, latitude, longitude).then(response => {
-                            console.log(response)
                             if (response.data.length) {
                                 var data = []
                                 this.setState({ measurement: response.data[0].measurement })

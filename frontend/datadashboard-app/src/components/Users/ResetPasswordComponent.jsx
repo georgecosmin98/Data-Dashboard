@@ -19,7 +19,6 @@ class ResetPasswordComponent extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.match.params.token)
         AuthenticationService.isTokenExpired(this.props.match.params.token).then(
             response => {
                 if (response.data === "BAD_REQUEST") {
@@ -42,7 +41,6 @@ class ResetPasswordComponent extends Component {
         this.setState({ isEnable: false })
         if (values.password === values.confirmPassword) {
             AuthenticationService.resetPassword(this.props.match.params.token, values.password).then(response => {
-                console.log(response)
                 if (response.data === "OK") {
                     toast.success('Your password has been reset successfully!', {
                         position: "top-right",
