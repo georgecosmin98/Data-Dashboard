@@ -150,8 +150,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         System.out.println(nearestLatitude + "   =>    " + nearestLongitude + " distanta minima " + minDistance
                 + "    coordonatele mele: " + latitude + "=>" + longitude);
         if (minDistance < 1) {
-            List<BrasovDevDto> result = brasovDevRepository.findAllByLocationLatAndLocationLongAndTimestampAfterOrderByTimestampDesc(nearestLatitude, nearestLongitude, data.getTime());
-            return result;
+            return brasovDevRepository.findAllByLocationLatAndLocationLongAndTimestampAfterOrderByTimestampDesc(nearestLatitude, nearestLongitude, data.getTime());
         }
         return null;
     }
@@ -174,9 +173,8 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         System.out.println(nearestLatitude + "   =>    " + nearestLongitude + " distanta minima " + minDistance
                 + "    coordonatele mele: " + latitude + "=>" + longitude);
         if (minDistance < 2) {
-            List<BrasovDevDto> result = brasovDevRepository.findByTimestampBetweenAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(
+            return brasovDevRepository.findByTimestampBetweenAndSensorAndLocationLatAndLocationLongOrderByTimestampAsc(
                     data.getTime(), new Date().getTime(), sensor, nearestLatitude, nearestLongitude);
-            return result;
         }
         return null;
     }

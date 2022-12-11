@@ -59,8 +59,7 @@ public class UserServiceImpl implements UserService {
     //Method findByUsername is similar with loadByUsername
     //but this return an Optional object instead of an UserDto object
     public Optional<UserDto> findUserByUsername(String username) {
-        Optional<UserDto> userDto = userRepository.findByUsername(username);
-        return userDto;
+        return userRepository.findByUsername(username);
     }
 
     @Override

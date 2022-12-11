@@ -111,11 +111,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public boolean validateEmailAddressParameter(String responseFromAPI, String parameterCheck) {
-        String response = responseFromAPI;
-        int indexParameterCheck = response.indexOf(parameterCheck);
+        int indexParameterCheck = responseFromAPI.indexOf(parameterCheck);
         int startIndexSubstring = indexParameterCheck + parameterCheck.length() + 3;
         int endIndexSubstring = indexParameterCheck + parameterCheck.length() + 7;
-        return response.substring(startIndexSubstring, endIndexSubstring).equals("true");
+        return responseFromAPI.substring(startIndexSubstring, endIndexSubstring).equals("true");
     }
 
 }

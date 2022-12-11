@@ -62,9 +62,7 @@ public class BrasovDevController {
 
     @GetMapping("/testArea/{lat1}/{long1}")
     public List<BrasovDevDto> test(@PathVariable double lat1, @PathVariable double long1) throws IOException {
-        double latitude = lat1;
-        double longitude = long1;
-        return brasovDevServiceImpl.testInterpolate(new Date("2021/06/20"), "o3", latitude, longitude);
+        return brasovDevServiceImpl.testInterpolate(new Date("2021/06/20"), "o3", lat1, long1);
     }
 
     @GetMapping("/userPollution/{date}/{sensor}")
