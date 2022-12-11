@@ -1,7 +1,6 @@
 package com.airquality.commons.airqualitypersistanceservice.repository;
 
 import com.airquality.commons.airqualitypersistanceservice.model.UserLocationDto;
-import org.apache.catalina.User;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

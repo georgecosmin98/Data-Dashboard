@@ -9,9 +9,6 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
-
 @Data
 //Data is a shortcut for ToString EqualsAndHasCode, Getter, Setter
 //and RequiredArgsConstructor annotation!

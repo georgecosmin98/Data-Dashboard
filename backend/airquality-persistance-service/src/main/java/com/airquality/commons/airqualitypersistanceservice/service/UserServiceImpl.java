@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
         return username;
     }
 
-    public UserDto getUserDetailsFromProvider(String id,String provider, String token) throws IOException, ParseException {
+    public UserDto getUserDetailsFromProvider(String id,String provider, String token) throws ParseException {
         String API_URL;
         String responseFromAPI="";
 

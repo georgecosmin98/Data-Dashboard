@@ -338,7 +338,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
             return null;
     }
 
-    public List<BrasovDevDto> findBySensorNameCoordinatesTimestampAndInterpolate(Date date, String sensor, double latitude, double longitude) throws IOException {
+    public List<BrasovDevDto> findBySensorNameCoordinatesTimestampAndInterpolate(Date date, String sensor, double latitude, double longitude)  {
         List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime()).collect(Collectors.toList());
         return InverseDistanceWeightingUtil.calculator(sensorData, latitude, longitude);
     }
@@ -362,7 +362,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         return InverseDistanceWeightingUtil.testingArea(sensorData, latitude, longitude, minLat, minLong);
     }
 
-    public List<BrasovDevDto> findByCoordinatesTimestampAndInterpolateAllValues(Date date, double latitude, double longitude) throws IOException {
+    public List<BrasovDevDto> findByCoordinatesTimestampAndInterpolateAllValues(Date date, double latitude, double longitude) {
         List<BrasovDevDto> sensorData = brasovDevRepository.findAllByLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime() + 10800000).collect(Collectors.toList());
         List<BrasovDevDto> pm25Data = new ArrayList<>();
         List<BrasovDevDto> pm10Data = new ArrayList<>();
@@ -489,7 +489,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
     }
 
     public List<BrasovDevDto> findByCoordinatesTimestampAndReturnDailyMinValues(Date date, String sensor,
-                                                                                double latitude, double longitude) throws IOException {
+                                                                                double latitude, double longitude) {
         List<BrasovDevDto> sensorData = brasovDevRepository.findAllBySensorAndLocationLongBetweenAndLocationLatBetweenAndTimestampAfterOrderByTimestampAsc(sensor, longitude - deltaLong, longitude + deltaLong, latitude - deltaLat, latitude + deltaLat, date.getTime() + 10800000).collect(Collectors.toList());
         List<BrasovDevDto> interpolatedValues = InverseDistanceWeightingUtil.calculator(sensorData, latitude, longitude);
         List<BrasovDevDto> processedList = new ArrayList<>();
@@ -532,7 +532,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
     }
 
 
-    public List<BrasovDevDto> findUserLocationAndBrasovDevAndInterpolateValues(String sensor, Date data) throws IOException {
+    public List<BrasovDevDto> findUserLocationAndBrasovDevAndInterpolateValues(String sensor, Date data) {
         double minLat = 255;
         double maxLat = 0;
         double minLong = 255;
@@ -557,7 +557,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
     }
 
     public List<BrasovDevDto> findUserLocationAndBrasovDev(double latitude, double longitude, String sensor, Date
-            data) throws IOException {
+            data) {
         double minLat = 255;
         double maxLat = 0;
         double minLong = 255;

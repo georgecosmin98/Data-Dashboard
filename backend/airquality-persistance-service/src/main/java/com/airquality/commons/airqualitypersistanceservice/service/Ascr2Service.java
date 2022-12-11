@@ -2,7 +2,6 @@ package com.airquality.commons.airqualitypersistanceservice.service;
 
 import com.airquality.commons.airqualitypersistanceservice.model.Ascr2Dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

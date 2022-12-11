@@ -33,7 +33,7 @@ public class JwtAuthenticationRestController {
 
     //In this method we create authentication toekn
     @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
-    public ResponseEntity createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) throws Exception {
+    public ResponseEntity createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest) {
         //Verify if requested user have correct credentials
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername()

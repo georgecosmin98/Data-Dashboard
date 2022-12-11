@@ -76,13 +76,13 @@ public class BrasovDevController {
 
     @GetMapping("/averageDaily/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> returnAverageValuesPerDay(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                        @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+                                                        @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) {
         return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyAverageValues(date, sensor, latitude, longitude);
     }
 
     @GetMapping("/maxDaily/{date}/{sensor}/{latitude}/{longitude}")
     public List<BrasovDevDto> returnMaxValuesPerDay(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                    @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) throws IOException {
+                                                    @PathVariable String sensor, @PathVariable double latitude, @PathVariable double longitude) {
         return brasovDevServiceImpl.findByCoordinatesTimestampAndReturnDailyMaxValues(date, sensor, latitude, longitude);
     }
 

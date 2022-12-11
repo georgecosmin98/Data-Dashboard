@@ -16,9 +16,9 @@ public class ContactController {
 
     @Autowired
     EmailServiceImpl emailService;
-    
+
     @PutMapping("/sendMail/{from}/{subject}/{text}")
-    public void sendMail(@PathVariable String from, @PathVariable String subject, @PathVariable String text) throws Exception {
+    public void sendMail(@PathVariable String from, @PathVariable String subject, @PathVariable String text) {
         emailService.sendMail(from, subject, new String(Base64.getDecoder().decode(text)));
     }
 

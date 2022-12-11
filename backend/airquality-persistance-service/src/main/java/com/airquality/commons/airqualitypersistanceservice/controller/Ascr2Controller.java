@@ -26,22 +26,22 @@ public class Ascr2Controller {
 
 
     @GetMapping("{id}")
-    public Optional<Ascr2Dto> findById1(@PathVariable String id) throws Exception {
+    public Optional<Ascr2Dto> findById1(@PathVariable String id) {
         return ascr2Repository.findById(id);
     }
 
     @GetMapping("/humidity/{id}")
-    public List<Ascr2Dto> findById2(@PathVariable float id) throws Exception {
+    public List<Ascr2Dto> findById2(@PathVariable float id) {
         return ascr2Repository.findByHumidity(id);
     }
 
     @GetMapping("/findAll")
-    public Iterable<Ascr2Dto> findAll() throws Exception {
+    public Iterable<Ascr2Dto> findAll() {
         return ascr2Repository.findAll();
     }
 
     @GetMapping("/findAll/{date}")
-    public Iterable<Ascr2Dto> findByTimeInterval(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date data) throws Exception {
+    public Iterable<Ascr2Dto> findByTimeInterval(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date data) {
         return ascr2Repository.findByTimestampIsBetween(data, new Date(2020, 12, 3));
     }
 }
