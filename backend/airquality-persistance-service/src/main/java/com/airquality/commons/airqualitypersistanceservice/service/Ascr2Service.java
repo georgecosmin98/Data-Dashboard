@@ -13,8 +13,8 @@ import java.util.Map;
 @Service
 public class Ascr2Service {
 
-    private RestHighLevelClient client;
-    private ObjectMapper objectMapper;
+    private final RestHighLevelClient client;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public Ascr2Service(@Qualifier("restClient") RestHighLevelClient client, ObjectMapper objectMapper) {

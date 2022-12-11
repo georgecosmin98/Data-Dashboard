@@ -23,7 +23,7 @@ import java.util.Map;
 @Log4j2
 public class JwtTokenUtil {
 
-    private Clock clock = DefaultClock.INSTANCE;
+    private final Clock clock = DefaultClock.INSTANCE;
 
     @Value("${jwt.signing.key.secret}")
     private String secret;

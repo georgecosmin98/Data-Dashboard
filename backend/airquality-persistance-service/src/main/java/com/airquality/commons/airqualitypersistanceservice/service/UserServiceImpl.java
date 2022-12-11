@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private static final String GOOGLE_API_URL = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=";
     public static final String FACEBOOK_URL = "https://graph.facebook.com/";
-    private Clock clock = DefaultClock.INSTANCE;
+    private final Clock clock = DefaultClock.INSTANCE;
     private static final int expirationTimeInSeconds = 3600;
 
     @Autowired
