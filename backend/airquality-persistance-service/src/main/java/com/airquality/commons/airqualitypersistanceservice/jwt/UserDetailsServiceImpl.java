@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     //and authenticate it
     public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserDto> userDto = userService.findUserByUsername(username);
-        if(userDto == null){
+        if(!userDto.isPresent()){
             log.info("User with invalid credentials trying to login");
             throw new UsernameNotFoundException("Invalid username or password.");
         }

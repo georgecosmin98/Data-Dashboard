@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public UserDto loadUserByUsername(String username) {
         Optional<UserDto> userDto = userRepository.findByUsername(username);
 
-        if (userDto == null) {
+        if (!userDto.isPresent()) {
             log.info("User not found: " + username);
             throw new UsernameNotFoundException(String.format("User not found '%s'.", username));
         }
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     //Find user by reset token
     public Optional<UserDto> findUserByResetToken(String resetToken) {
         Optional<UserDto> userDto = userRepository.findByResetToken(resetToken);
-        if (userDto == null) {
+        if (!userDto.isPresent()) {
             log.info("Token not found: " + resetToken);
             throw new UsernameNotFoundException(String.format("Token not found '%s'.", resetToken));
         }
