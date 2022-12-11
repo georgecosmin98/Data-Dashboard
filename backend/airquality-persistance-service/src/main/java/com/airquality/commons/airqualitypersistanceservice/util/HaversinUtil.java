@@ -9,12 +9,12 @@ public class HaversinUtil {
 
     public static double distanceCalculator(double toLatitude, double toLongitude, double fromLatitude, double fromLongitude) {
         final int earthRadius = 6371;
-        Double latDistance = Math.toRadians(fromLatitude - toLatitude);
-        Double lonDistance = Math.toRadians(fromLongitude - toLongitude);
-        Double a = Math.pow(Math.sin(latDistance / 2), 2) +
+        double latDistance = Math.toRadians(fromLatitude - toLatitude);
+        double lonDistance = Math.toRadians(fromLongitude - toLongitude);
+        double a = Math.pow(Math.sin(latDistance / 2), 2) +
                 Math.cos(Math.toRadians(toLatitude)) * Math.cos(Math.toRadians(fromLatitude)) *
                         Math.pow(Math.sin(lonDistance / 2), 2);
-        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return earthRadius * c;
     }
 }
