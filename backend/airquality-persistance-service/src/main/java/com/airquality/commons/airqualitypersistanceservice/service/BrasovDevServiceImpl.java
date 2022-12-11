@@ -181,7 +181,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
 
     private Map<Double, Double> findUniqueLatitudeAndLongitudeValueBySensorNameAndData(String sensor, Date data) throws IOException {
 
-        Map<Double, Double> sensorData = new HashMap<Double, Double>();
+        Map<Double, Double> sensorData = new HashMap<>();
         // we limit it to one index, wildcard patterns are working
         SearchRequest searchRequest = new SearchRequest("brasov-dev");
 
@@ -352,11 +352,11 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         double minLat = 0;
         double minLong = 0;
         double minDistance = 3.0;
-        for (int i = 0; i < brasovDevInterpolationModels.size(); i++) {
-            if (brasovDevInterpolationModels.get(i).getMinDistance() != 0 && brasovDevInterpolationModels.get(i).getMinDistance() < minDistance) {
-                minDistance = brasovDevInterpolationModels.get(i).getMinDistance();
-                minLat = brasovDevInterpolationModels.get(i).getLocationLat();
-                minLong = brasovDevInterpolationModels.get(i).getLocationLong();
+        for (BrasovDevInterpolationModel brasovDevInterpolationModel : brasovDevInterpolationModels) {
+            if (brasovDevInterpolationModel.getMinDistance() != 0 && brasovDevInterpolationModel.getMinDistance() < minDistance) {
+                minDistance = brasovDevInterpolationModel.getMinDistance();
+                minLat = brasovDevInterpolationModel.getLocationLat();
+                minLong = brasovDevInterpolationModel.getLocationLong();
             }
         }
         return InverseDistanceWeightingUtil.testingArea(sensorData, latitude, longitude, minLat, minLong);
@@ -370,17 +370,17 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevDto> so2Data = new ArrayList<>();
         List<BrasovDevDto> no2Data = new ArrayList<>();
         List<BrasovDevDto> procesedList = new ArrayList<>();
-        for (int i = 0; i < sensorData.size(); i++) {
-            if (sensorData.get(i).getSensor().equals("pm25"))
-                pm25Data.add(sensorData.get(i));
-            if (sensorData.get(i).getSensor().equals("pm10"))
-                pm10Data.add(sensorData.get(i));
-            if (sensorData.get(i).getSensor().equals("o3"))
-                o3Data.add(sensorData.get(i));
-            if (sensorData.get(i).getSensor().equals("so2"))
-                so2Data.add(sensorData.get(i));
-            if (sensorData.get(i).getSensor().equals("no2"))
-                no2Data.add(sensorData.get(i));
+        for (BrasovDevDto sensorDatum : sensorData) {
+            if (sensorDatum.getSensor().equals("pm25"))
+                pm25Data.add(sensorDatum);
+            if (sensorDatum.getSensor().equals("pm10"))
+                pm10Data.add(sensorDatum);
+            if (sensorDatum.getSensor().equals("o3"))
+                o3Data.add(sensorDatum);
+            if (sensorDatum.getSensor().equals("so2"))
+                so2Data.add(sensorDatum);
+            if (sensorDatum.getSensor().equals("no2"))
+                no2Data.add(sensorDatum);
         }
         if (!pm25Data.isEmpty())
 //            procesedList.addAll(InverseDistanceWeightingUtil.calculator2(brasovDevInterpolationModels, pm25Data));
@@ -407,10 +407,10 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         double averageValue = 0;
         int index = 0;
         List<BrasovDevDto> processInterpolatedList = new ArrayList<>();
-        for (int j = 0; j < interpolatedValues.size(); j++) {
-            long timestamp = interpolatedValues.get(j).getTimestamp() + 10800000;
+        for (BrasovDevDto interpolatedValue : interpolatedValues) {
+            long timestamp = interpolatedValue.getTimestamp() + 10800000;
             BrasovDevDto brasovDevDto;
-            brasovDevDto = interpolatedValues.get(j);
+            brasovDevDto = interpolatedValue;
             brasovDevDto.setTimestamp(timestamp);
             processInterpolatedList.add(brasovDevDto);
         }
@@ -450,10 +450,10 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevDto> processedList = new ArrayList<>();
         int maxValues = 0;
         List<BrasovDevDto> processInterpolatedList = new ArrayList<>();
-        for (int j = 0; j < interpolatedValues.size(); j++) {
-            long timestamp = interpolatedValues.get(j).getTimestamp() + 10800000;
+        for (BrasovDevDto interpolatedValue : interpolatedValues) {
+            long timestamp = interpolatedValue.getTimestamp() + 10800000;
             BrasovDevDto brasovDevDto;
-            brasovDevDto = interpolatedValues.get(j);
+            brasovDevDto = interpolatedValue;
             brasovDevDto.setTimestamp(timestamp);
             processInterpolatedList.add(brasovDevDto);
         }
@@ -495,10 +495,10 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         List<BrasovDevDto> processedList = new ArrayList<>();
         int minValues = Integer.MAX_VALUE;
         List<BrasovDevDto> processInterpolatedList = new ArrayList<>();
-        for (int j = 0; j < interpolatedValues.size(); j++) {
-            long timestamp = interpolatedValues.get(j).getTimestamp() + 10800000;
+        for (BrasovDevDto interpolatedValue : interpolatedValues) {
+            long timestamp = interpolatedValue.getTimestamp() + 10800000;
             BrasovDevDto brasovDevDto;
-            brasovDevDto = interpolatedValues.get(j);
+            brasovDevDto = interpolatedValue;
             brasovDevDto.setTimestamp(timestamp);
             processInterpolatedList.add(brasovDevDto);
         }
@@ -538,15 +538,15 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         double minLong = 255;
         double maxLong = 0;
         List<UserLocationDto> userLocation = userLocationRepository.findUserLocationDtoByTimestampBetweenOrderByTimestampAsc(data.getTime(), data.getTime() + 86400000);
-        for (int i = 0; i < userLocation.size(); i++) {
-            if (minLat > userLocation.get(i).getLatitude())
-                minLat = userLocation.get(i).getLatitude();
-            if (maxLat < userLocation.get(i).getLatitude())
-                maxLat = userLocation.get(i).getLatitude();
-            if (minLong > userLocation.get(i).getLongitude())
-                minLong = userLocation.get(i).getLongitude();
-            if (maxLong < userLocation.get(i).getLongitude())
-                maxLong = userLocation.get(i).getLongitude();
+        for (UserLocationDto userLocationDto : userLocation) {
+            if (minLat > userLocationDto.getLatitude())
+                minLat = userLocationDto.getLatitude();
+            if (maxLat < userLocationDto.getLatitude())
+                maxLat = userLocationDto.getLatitude();
+            if (minLong > userLocationDto.getLongitude())
+                minLong = userLocationDto.getLongitude();
+            if (maxLong < userLocationDto.getLongitude())
+                maxLong = userLocationDto.getLongitude();
         }
         List<BrasovDevDto> processedList = new ArrayList<>();
         if (userLocation.size() == 0)
@@ -563,15 +563,15 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         double minLong = 255;
         double maxLong = 0;
         List<UserLocationDto> userLocation = userLocationRepository.findUserLocationDtoByTimestampBetweenOrderByTimestampAsc(data.getTime(), data.getTime() + 86400000);
-        for (int i = 0; i < userLocation.size(); i++) {
-            if (minLat > userLocation.get(i).getLatitude())
-                minLat = userLocation.get(i).getLatitude();
-            if (maxLat < userLocation.get(i).getLatitude())
-                maxLat = userLocation.get(i).getLatitude();
-            if (minLong > userLocation.get(i).getLongitude())
-                minLong = userLocation.get(i).getLongitude();
-            if (maxLong < userLocation.get(i).getLongitude())
-                maxLong = userLocation.get(i).getLongitude();
+        for (UserLocationDto userLocationDto : userLocation) {
+            if (minLat > userLocationDto.getLatitude())
+                minLat = userLocationDto.getLatitude();
+            if (maxLat < userLocationDto.getLatitude())
+                maxLat = userLocationDto.getLatitude();
+            if (minLong > userLocationDto.getLongitude())
+                minLong = userLocationDto.getLongitude();
+            if (maxLong < userLocationDto.getLongitude())
+                maxLong = userLocationDto.getLongitude();
         }
         List<BrasovDevDto> processedList = new ArrayList<>();
         if (userLocation.size() == 0)
@@ -581,17 +581,17 @@ public class BrasovDevServiceImpl implements BrasovDevService {
         int pasi = 0;
         int index = 0;
         double minDistance = Integer.MAX_VALUE;
-        for (int i = 0; i < userLocation.size(); i++) {
+        for (UserLocationDto userLocationDto : userLocation) {
             for (int j = 0; j < pollutionData.size(); j++) {
                 pasi++;
-                long firstTime = userLocation.get(i).getTimestamp() - userLocation.get(i).getTimestamp() % 3600000;
+                long firstTime = userLocationDto.getTimestamp() - userLocationDto.getTimestamp() % 3600000;
                 long secondTime = pollutionData.get(j).getTimestamp() - pollutionData.get(j).getTimestamp() % 3600000;
                 if (firstTime == secondTime) {
                     if (pollutionData.get(j).getSensor().equals(sensor)) {
-                        if (minDistance > HaversinUtil.distanceCalculator(userLocation.get(i).getLatitude(), userLocation.get(i).getLongitude(),
+                        if (minDistance > HaversinUtil.distanceCalculator(userLocationDto.getLatitude(), userLocationDto.getLongitude(),
                                 pollutionData.get(j).getLocationLat(), pollutionData.get(j).getLocationLong())) {
                             index = j;
-                            minDistance = HaversinUtil.distanceCalculator(userLocation.get(i).getLatitude(), userLocation.get(i).getLongitude(),
+                            minDistance = HaversinUtil.distanceCalculator(userLocationDto.getLatitude(), userLocationDto.getLongitude(),
                                     pollutionData.get(j).getLocationLat(), pollutionData.get(j).getLocationLong());
                         }
                     }
@@ -602,7 +602,7 @@ public class BrasovDevServiceImpl implements BrasovDevService {
                     brasovDevDto.setValue(pollutionData.get(index).getValue());
                     brasovDevDto.setLocationLong(pollutionData.get(index).getLocationLong());
                     brasovDevDto.setLocationLat(pollutionData.get(index).getLocationLat());
-                    brasovDevDto.setTimestamp(userLocation.get(i).getTimestamp());
+                    brasovDevDto.setTimestamp(userLocationDto.getTimestamp());
                     brasovDevDto.setMeasurement(pollutionData.get(index).getMeasurement());
                     processedList.add(brasovDevDto);
                     System.out.println(brasovDevDto);
