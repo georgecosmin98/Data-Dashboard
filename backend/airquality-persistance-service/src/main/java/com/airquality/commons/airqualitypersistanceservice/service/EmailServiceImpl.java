@@ -106,10 +106,7 @@ public class EmailServiceImpl implements EmailService {
             return false;
         if (!validateEmailAddressParameter(responseFromAPI, "smtpCheck"))
             return false;
-        if (!validateEmailAddressParameter(responseFromAPI, "dnsCheck"))
-            return false;
-
-        return true;
+        return validateEmailAddressParameter(responseFromAPI, "dnsCheck");
     }
 
     @Override
@@ -118,10 +115,7 @@ public class EmailServiceImpl implements EmailService {
         int indexParameterCheck = response.indexOf(parameterCheck);
         int startIndexSubstring = indexParameterCheck + parameterCheck.length() + 3;
         int endIndexSubstring = indexParameterCheck + parameterCheck.length() + 7;
-        if (response.substring(startIndexSubstring, endIndexSubstring).equals("true"))
-            return true;
-        else
-            return false;
+        return response.substring(startIndexSubstring, endIndexSubstring).equals("true");
     }
 
 }
