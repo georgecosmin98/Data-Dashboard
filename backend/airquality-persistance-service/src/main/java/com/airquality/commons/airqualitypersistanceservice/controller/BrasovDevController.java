@@ -22,11 +22,6 @@ public class BrasovDevController {
     @Autowired
     private BrasovDevRepository brasovDevRepository;
 
-    @GetMapping("/hello")
-    public String helloWorld() {
-        return "Hello world from brasov dev controller";
-    }
-
     @GetMapping("/{sensorName}")
     public List<BrasovDevDto> findBySensorName(@PathVariable String sensorName) {
         return brasovDevServiceImpl.findBySensor(sensorName);
