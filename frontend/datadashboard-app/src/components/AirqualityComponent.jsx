@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { GiBrain } from "react-icons/gi";
 import { RiLungsLine } from "react-icons/ri";
-import TrendingUpOutlinedIcon from '@material-ui/icons/TrendingUpOutlined';
-import TrendingDownOutlinedIcon from '@material-ui/icons/TrendingDownOutlined';
+import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
+import TrendingDownOutlinedIcon from '@mui/icons-material/TrendingDownOutlined';
 import AirQualityService from '../api/AirQualityService';
 import { CgArrowRight } from "react-icons/cg";
 import { GiHeartOrgan } from "react-icons/gi";
-import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex, recommandation } from '../Constants';
 import openWindow from '../img/openWindow.png';
 import closeWindow from '../img/closeWindow.png';
@@ -187,7 +187,7 @@ class AirqualityComponent extends Component {
             if (pollutants[i].minValue <= value && value <= pollutants[i].maxValue) {
                 if (pollutants[i].specificIndex > this.state.specificIndex) {
                     this.setState({ specificIndex: pollutants[i].specificIndex, qualifying: pollutants[i].qualifying, color: pollutants[i].color, [pollutantName]: i });
-                } else if (this.state.[pollutantName] < i || this.state.[pollutantName] === "") {
+                } else if (this.state[pollutantName] < i || this.state[pollutantName] === "") {
                     this.setState({ [pollutantName]: i });
                 }
                 return <p className="airquality-status" style={{ color: pollutants[i].color }} >{pollutants[i].qualifying}</p>

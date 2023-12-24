@@ -3,7 +3,7 @@ import ContactService from '../api/contact/ContactService'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import UtilityService from '../api/UtilityService';
 import { toast } from 'react-toastify';
-import Loader from "react-loader-spinner";
+import { Puff } from 'react-loader-spinner';
 
 class ContactComponent extends Component {
 
@@ -108,8 +108,7 @@ class ContactComponent extends Component {
                                     </fieldset>
                                     <div className="btn-center">
                                         {this.state.isEnable && <button className="btn" type="submit">Submit</button>}
-                                        {!this.state.isEnable && <Loader
-                                            type="Puff"
+                                        {!this.state.isEnable && <Puff
                                             color="#00BFFF"
                                             height={50}
                                             width={50}

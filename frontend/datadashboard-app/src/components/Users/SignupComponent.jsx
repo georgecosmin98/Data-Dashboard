@@ -7,7 +7,7 @@ import AuthenticationService from "../../api/AuthenticationService"
 import UtilityService from "../../api/UtilityService"
 import { toast } from 'react-toastify';
 import SocialButton from './SocialButton'
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 
 class SignupComponent extends Component {
     constructor(props) {
@@ -101,7 +101,7 @@ class SignupComponent extends Component {
     }
 
     handleSocialLoginSuccess = (user) => {
-        AuthenticationService.authenticateWithSocialAccount(user._profile.id,user._provider, user._token.accessToken).then(response => {
+        AuthenticationService.authenticateWithSocialAccount(user._profile.id, user._provider, user._token.accessToken).then(response => {
             if (response.status === 200) {
                 AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.data.token);
                 toast.success('You have signed up successfully!', {
@@ -154,7 +154,7 @@ class SignupComponent extends Component {
                             onLoginFailure={this.handleSocialLoginFailure}
                         >
                             <img src={googleLogo} alt="Google" /> Sign up with Google
-                            </SocialButton>
+                        </SocialButton>
 
                         <SocialButton
                             className="btn-block social-btn facebook"
@@ -164,7 +164,7 @@ class SignupComponent extends Component {
                             onLoginFailure={this.handleSocialLoginFailure}
                         >
                             <img src={fbLogo} alt="Facebook" /> Sign up with Facebook
-                            </SocialButton>
+                        </SocialButton>
                     </div>
                     <div className="login-separator">
                         <span className="login-separator-text">OR</span>
@@ -195,8 +195,7 @@ class SignupComponent extends Component {
                                 </fieldset>
                                 <div className="btn-center">
                                     {this.state.isEnable && <button className="btn-login" type="submit">Sign Up</button>}
-                                    {!this.state.isEnable && <Loader
-                                        type="Puff"
+                                    {!this.state.isEnable && <Puff
                                         color="#00BFFF"
                                         height={50}
                                         width={50}

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import AuthenticationService from '../api/AuthenticationService'
 import GoogleHeatMapComponent from './GoogleHeatMapComponent';
 import AirqualityComponent from './AirqualityComponent'
-import TuneIcon from '@material-ui/icons/Tune';
+import TuneIcon from '@mui/icons-material/Tune';
 import DatePicker from 'react-datepicker'
 import Select from 'react-select';
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import UserLocationService from '../api/UserLocationService';
 import LineChartComponent from './Charts/LineChartComponent';
 import BarChartComponent from './Charts/BarChartComponent';
@@ -74,7 +74,7 @@ class LocationDataComponent extends Component {
 
     applyChanges() {
         this.retrieveLocationData();
-        this.retrieveUserLocationPollutionData(this.state.date,this.state.pollutant.value,this.state.address)
+        this.retrieveUserLocationPollutionData(this.state.date, this.state.pollutant.value, this.state.address)
     }
 
     retrieveLocationData() {
@@ -91,31 +91,31 @@ class LocationDataComponent extends Component {
     }
 
     async retrieveUserLocationPollutionData(date, sensor) {
-        AirQualityService.retrievePollutionForUserLocations(sensor,date).then(response => {
-                if (response.data.length) {
-                    var data = []
-                    this.setState({ measurement: response.data[0].measurement })
-                    this.setState({ currentPollutantName: response.data[0].sensor })
-                    for (var i = 0; i < response.data.length; i++) {
-                        data.push([response.data[i].timestamp + 10800000, response.data[i].value])
-                    }
-                    this.setState({ pollutionData: data })
-                } else {
-                    this.setState({ pollutionData: [] })
+        AirQualityService.retrievePollutionForUserLocations(sensor, date).then(response => {
+            if (response.data.length) {
+                var data = []
+                this.setState({ measurement: response.data[0].measurement })
+                this.setState({ currentPollutantName: response.data[0].sensor })
+                for (var i = 0; i < response.data.length; i++) {
+                    data.push([response.data[i].timestamp + 10800000, response.data[i].value])
                 }
-                this.setState({ isEnable: true })
-            }).catch(response => {
-                toast.error('An error occured. Please try again.', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    draggable: true,
-                    progress: undefined,
-                }
-                )
-                this.setState({ isEnable: true })
-            })
+                this.setState({ pollutionData: data })
+            } else {
+                this.setState({ pollutionData: [] })
+            }
+            this.setState({ isEnable: true })
+        }).catch(response => {
+            toast.error('An error occured. Please try again.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+            }
+            )
+            this.setState({ isEnable: true })
+        })
     }
 
     render() {
@@ -144,8 +144,7 @@ class LocationDataComponent extends Component {
                     />
                     <div className="btn-center">
                         {this.state.isEnable && <button className="btn-controlPanel" onClick={this.applyChanges}>Apply</button>}
-                        {!this.state.isEnable && <Loader
-                            type="Puff"
+                        {!this.state.isEnable && <Puff
                             color="#00BFFF"
                             height={50}
                             width={50}

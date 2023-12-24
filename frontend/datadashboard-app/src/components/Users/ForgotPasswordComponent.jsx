@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Login.css'
 import AuthenticationService from '../../api/AuthenticationService';
 import { toast } from 'react-toastify';
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 
 class ForgotPasswordComponent extends Component {
     constructor(props) {
@@ -75,7 +75,7 @@ class ForgotPasswordComponent extends Component {
                 <div className="forgot-password-content">
                     <h1 className="login-title"><span className="text-primary">Forgot</span> Password</h1>
                     <p> Submit your Harta Poluare Brasov account email address
-                    below to change your password.
+                        below to change your password.
                     </p>
                     <Formik
                         initialValues={{ email }}
@@ -94,8 +94,7 @@ class ForgotPasswordComponent extends Component {
                                 </fieldset>
                                 <div className="btn-center">
                                     {this.state.isEnable && <button className="btn-reset-password" type="submit">Request Password Reset</button>}
-                                    {!this.state.isEnable && <Loader
-                                        type="Puff"
+                                    {!this.state.isEnable && <Puff
                                         color="#00BFFF"
                                         height={50}
                                         width={50}

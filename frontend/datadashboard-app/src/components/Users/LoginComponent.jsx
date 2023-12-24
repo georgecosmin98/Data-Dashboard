@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom'
 import AuthenticationService from '../../api/AuthenticationService';
 import { toast } from 'react-toastify';
 import SocialButton from './SocialButton'
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
+import withNavigateHook from '../HOC/UseNavigateHook';
 
 class LoginComponent extends Component {
 
@@ -46,7 +47,7 @@ class LoginComponent extends Component {
                     progress: undefined,
                 })
                 this.setState({ isEnable: true })
-                this.props.history.push('/');
+                this.props.navigation('/');
             }
             else {
                 toast.error('Wrong email or password', {
@@ -61,6 +62,7 @@ class LoginComponent extends Component {
                 this.setState({ isEnable: true })
             }
         }).catch(response => {
+            console.log(response)
             toast.error('An error occured. Please try again.', {
                 position: "top-right",
                 autoClose: 3000,
@@ -91,7 +93,7 @@ class LoginComponent extends Component {
     }
 
     handleSocialLoginSuccess = (user) => {
-        AuthenticationService.authenticateWithSocialAccount(user._profile.id,user._provider, user._token.accessToken).then(response => {
+        AuthenticationService.authenticateWithSocialAccount(user._profile.id, user._provider, user._token.accessToken).then(response => {
             if (response.status === 200 && response.data.length !== 0) {
                 AuthenticationService.registerSuccesfulLoginWithJwt(user._profile.email, response.data.token);
                 toast.success('You have signed up successfully!', {
@@ -143,7 +145,7 @@ class LoginComponent extends Component {
                             onLoginFailure={this.handleSocialLoginFailure}
                         >
                             <img src={googleLogo} alt="Google" /> Login with Google
-                            </SocialButton>
+                        </SocialButton>
 
                         <SocialButton
                             className="btn-block social-btn facebook"
@@ -153,7 +155,7 @@ class LoginComponent extends Component {
                             onLoginFailure={this.handleSocialLoginFailure}
                         >
                             <img src={fbLogo} alt="Facebook" /> Login with Facebook
-                            </SocialButton>
+                        </SocialButton>
                     </div>
                     <div className="login-separator">
                         <span className="login-separator-text">OR</span>
@@ -179,8 +181,7 @@ class LoginComponent extends Component {
                                 </fieldset>
                                 <div className="btn-center">
                                     {this.state.isEnable && <button className="btn-login" type="submit">Login</button>}
-                                    {!this.state.isEnable && <Loader
-                                        type="Puff"
+                                    {!this.state.isEnable && <Puff
                                         color="#00BFFF"
                                         height={50}
                                         width={50}
@@ -197,4 +198,4 @@ class LoginComponent extends Component {
         )
     }
 }
-export default LoginComponent
+export default withNavigateHook(LoginComponent)

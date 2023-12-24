@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { PM10SpecificIndex, PM25SpecificIndex, SO2SpecificIndex, NO2SpecificIndex, O3SpecificIndex } from '../Constants';
 
 class InfoComponent extends Component {
@@ -23,7 +23,7 @@ class InfoComponent extends Component {
                             <Typography className="">Dioxid de azot (NO2)</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
+                            <Typography component="span">
                                 <div className="accordion-details">
                                     <h1 className="info-section">1.Generalități</h1>
                                     <p className="info-paragraph">Oxizii de azot sunt un grup de gaze foarte reactive, care conțin azot și oxigen în cantităţi variabile. Majoritatea oxizilor de azot sunt gaze fără culoare sau miros.</p>
@@ -78,7 +78,7 @@ class InfoComponent extends Component {
                             <Typography className="">Dioxid de sulf (SO2)</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
+                            <Typography component="span">
                                 <h1 className="info-section">1.Generalități</h1>
                                 <p className="info-paragraph">Dioxidul de sulf este un gaz incolor, amărui, neinflamabil, cu un miros pătrunzător care irită ochii și căile respiratorii.</p>
                                 <h1 className="info-section">2.Efecte asupra sănătății publice</h1>
@@ -132,7 +132,7 @@ Dioxidul de sulf poate potența efectele periculoase ale ozonului.</p>
                             <Typography className="">Ozon (O3)</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
+                            <Typography component="span">
                                 <h1 className="info-section">1.Generalități</h1>
                                 <p className="info-paragraph">Gaz foarte oxidant, foarte reactiv, cu miros înecăcios. Se concentrează în stratosferă și asigură protecția împotriva radiației UV dăunătoare vieții. Ozonul prezent la nivelul solului se comportă ca o componentă a"smogului fotochimic". Se formează prin intermediul unei reacții care implică în particular oxizi de azot și compuși organici volatili.</p>
                                 <h1 className="info-section">2.Efecte asupra sănătății publice</h1>
@@ -183,7 +183,7 @@ Dioxidul de sulf poate potența efectele periculoase ale ozonului.</p>
                             <Typography className="">Particule în suspensie PM2.5 și PM10</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
+                            <Typography component="span">
                                 <h1 className="info-section">1.Generalități</h1>
                                 <p className="info-paragraph">Particulele în suspensie reprezintă un amestec complex de particule foarte mici și picături de lichid.</p>
                                 <h1 className="info-section">2.Efecte asupra sănătății publice</h1>

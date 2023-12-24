@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import './bootstrap.css'
 import './App.css'
 import DashboardComponent from './components/DashboardComponent'
@@ -27,33 +27,34 @@ class App extends Component {
     document.title = 'Harta Poluare Brasov'
     AuthenticationService.axiosInterceptors();
   }
+
   render() {
     return (
       <>
         <div className="DashboardApp">
-          <Router>
-            <>
+          <>
+            <Router>
               <HeaderComponent />
               <div className="app-page">
                 <SidebarComponent />
-                <Switch>
-                  <Route path="/" exact component={DashboardComponent} />
-                  <Route path="/contact" exact component={ContactComponent} />
-                  <Route path="/login" exact component={LoginComponent} />
-                  <Route path="/forgotpassword" exact component={ForgotPasswordComponent} />
-                  <Route path="/resetpassword/:token" exact component={ResetPasswordComponent} />
-                  <Route path="/signup" exact component={SignupComponent} />
-                  <Route path="/city" exact component={CityComponent}/>
-                  <Route path="/info" exact component={InfoComponent} />
-                  <AuthenticatedRoute path="/settings/:category" component={SettingsComponent}></AuthenticatedRoute>
-                  <AuthenticatedRoute path="/home" component={HomeComponent}></AuthenticatedRoute>
-                  <AuthenticatedRoute path="/location" component={LocationDataComponent}></AuthenticatedRoute>
-                  <Route component={ErrorComponent} />
-                </Switch>
+                <Routes>
+                  <Route path="/" element={<DashboardComponent />} />
+                  <Route path="/contact" element={<ContactComponent />} />
+                  <Route path="/login" element={<LoginComponent />} />
+                  <Route path="/forgotpassword" element={<ForgotPasswordComponent />} />
+                  <Route path="/resetpassword/:token" element={<ResetPasswordComponent />} />
+                  <Route path="/signup" element={<SignupComponent />} />
+                  <Route path="/city" element={<CityComponent />} />
+                  <Route path="/info" element={<InfoComponent />} />
+                  <Route path="/settings/:category" element={<AuthenticatedRoute><SettingsComponent /></AuthenticatedRoute>} />
+                  <Route path="/home" element={<HomeComponent />} />
+                  <Route path="/location" element={<LocationDataComponent />} />
+                  <Route path="*" element={<ErrorComponent />} />
+                </Routes>
               </div>
               <FooterComponent />
-            </>
-          </Router>
+            </Router>
+          </>
         </div>
         <ToastContainer
           position="top-right"

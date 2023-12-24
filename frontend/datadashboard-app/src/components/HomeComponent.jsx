@@ -5,11 +5,11 @@ import BarChartComponent from './Charts/BarChartComponent';
 import UserService from '../api/UserService';
 import AirQualityService from '../api/AirQualityService';
 import UtilityService from '../api/UtilityService';
-import TuneIcon from '@material-ui/icons/Tune';
+import TuneIcon from '@mui/icons-material/Tune';
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Select from 'react-select';
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import AirqualityComponent from './AirqualityComponent';
 import { options, aggregationType } from "../Constants"
 import { toast } from 'react-toastify';
@@ -243,8 +243,7 @@ class DashboardComponent extends Component {
                     />
                     <div className="btn-center">
                         {this.state.isEnable && <button className="btn-controlPanel" onClick={this.applyChanges}>Apply</button>}
-                        {!this.state.isEnable && <Loader
-                            type="Puff"
+                        {!this.state.isEnable && <Puff
                             color="#00BFFF"
                             height={50}
                             width={50}
